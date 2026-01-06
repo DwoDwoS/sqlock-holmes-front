@@ -37,8 +37,8 @@ SQLock-Holmes est un jeu éducatif qui transforme l'apprentissage du SQL en aven
 - Axios (HTTP client)
 
 **Backend :**
-- Java + Spring Boot
-- PostgreSQL (base de données des enquêtes)
+- Java 17 + Spring Boot
+- PostgreSQL 16 (base de données des enquêtes)
 - API REST
 
 **Outils qualité :**
@@ -52,7 +52,7 @@ SQLock-Holmes est un jeu éducatif qui transforme l'apprentissage du SQL en aven
 
 - Node.js >= 20.x
 - npm >= 10.x
-- Backend SQLock-Holmes (Java/Spring Boot) en cours d'exécution
+- Backend SQLock-Holmes (Java/Spring Boot) : [@SQLock Holmes Back](https://github.com/DwoDwoS/sqlock-holmes-back)
 
 ### Étapes
 
@@ -202,7 +202,7 @@ MIT License - voir [LICENSE](LICENSE)
 
 ## Contributeurs
 
-- Elouan GAURIAUD [@DwoDwoS](https://github.com/DwoDwoS) - Créateur et développeur principal
+- Elouan GAURIAUD - [@DwoDwoS](https://github.com/DwoDwoS) - Créateur et développeur principal
 
 ## Support
 
