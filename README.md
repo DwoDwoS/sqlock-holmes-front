@@ -1,3 +1,5 @@
+[![CI](https://github.com/DwoDwoS/sqlock-holmes-front/actions/workflows/ci.yml/badge.svg)](https://github.com/DwoDwoS/sqlock-holmes-front/actions/workflows/ci.yml)
+
 # SQLock-Holmes Front
 
 Application web ludique pour résoudre des enquêtes policières en utilisant des requêtes SQL. 
@@ -200,7 +202,7 @@ MIT License - voir [LICENSE](LICENSE)
 
 ## Contributeurs
 
-- [@DwoDwoS](https://github.com/DwoDwoS) - Créateur et développeur principal
+- Elouan GAURIAUD [@DwoDwoS](https://github.com/DwoDwoS) - Créateur et développeur principal
 
 ## Support
 
