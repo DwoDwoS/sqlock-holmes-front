@@ -28,6 +28,16 @@ export default defineConfig({
           'src/assets/**',
           'public/**'
       ]
-    } as any
+    } as Partial<{
+      provider: 'v8';
+      reporter: Array<'text' | 'lcov' | 'json' | 'html'>;
+      reportsDirectory: string;
+      all: boolean;
+      statements: number;
+      branches: number;
+      functions: number;
+      lines: number;
+      exclude: string[];
+    }>
   }
 });
