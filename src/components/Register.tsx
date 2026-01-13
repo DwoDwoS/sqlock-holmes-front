@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 
 const Register: React.FC = () => {
@@ -14,14 +14,14 @@ const Register: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      setError('Passwords do not match.');
+      setError('Les mots de passe ne correspondent pas.');
       return;
     }
     try {
       await register(username, email, password);
       navigate('/login');
-    } catch (err) {
-      setError('Registration failed. Please try again.');
+    } catch {
+      setError("L'inscription a échoué. Veuillez réessayer.");
     }
   };
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
@@ -14,7 +14,7 @@ const Login: React.FC = () => {
     try {
       await login(username, password);
       navigate('/');
-    } catch (err) {
+    } catch {
       setError('Login failed. Please check your credentials.');
     }
   };
