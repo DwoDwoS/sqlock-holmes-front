@@ -1,9 +1,19 @@
 import { render, screen } from '@testing-library/react';
+import { AuthProvider } from '../contexts/AuthContext';
 import App from '../App';
+import { describe, it, expect } from 'vitest';
 
-test('renders heading and initial count button', () => {
-  render(<App />);
-  expect(screen.getByText(/Vite \+ React/i)).toBeInTheDocument();
-  const btn = screen.getByRole('button', { name: /count is 0/i });
-  expect(btn).toBeInTheDocument();
+const renderWithProviders = (component: React.ReactElement) => {
+  return render(
+    <AuthProvider>
+      {component}
+    </AuthProvider>
+  );
+};
+
+describe('App', () => {
+  it('renders login page by default when not authenticated', () => {
+    renderWithProviders(<App />);
+    expect(screen.getByRole('heading', { name: /Connexion/i })).toBeInTheDocument();
+  });
 });
