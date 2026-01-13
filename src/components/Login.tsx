@@ -15,7 +15,7 @@ const Login: React.FC = () => {
       await login(username, password);
       navigate('/');
     } catch {
-      setError('Login failed. Please check your credentials.');
+      setError('La connexion a échouée. Veuillez réessayer.');
     }
   };
 
