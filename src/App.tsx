@@ -5,6 +5,8 @@ import { useAuth } from './hooks/useAuth';
 import Login from './components/Login';
 import Register from './components/Register';
 import ProtectedRoute from './components/ProtectedRoute';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import './App.css';
 
 const Home: React.FC = () => {
@@ -19,6 +21,16 @@ const Home: React.FC = () => {
   );
 };
 
+const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="layout">
+    <Navbar />
+    <main style={{ paddingTop: '80px', paddingBottom: '80px', flex: 1 }}>
+      {children}
+    </main>
+    <Footer />
+  </div>
+);
+
 function App() {
   return (
     <AuthProvider>
@@ -31,7 +43,9 @@ function App() {
               path="/"
               element={
                 <ProtectedRoute>
-                  <Home />
+                  <Layout>
+                    <Home />
+                  </Layout>
                 </ProtectedRoute>
               }
             />

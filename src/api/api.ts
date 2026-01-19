@@ -5,7 +5,7 @@ const API_BASE_URL = import.meta.env.PROD
   : '/';
 
 axios.defaults.baseURL = API_BASE_URL;
-axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.headers.post['Content-Type'] = 'text/plain';
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -18,3 +18,5 @@ axios.interceptors.response.use(
 );
 
 export default axios;
+
+//Revoir pourquoi on a ce fichier api.ts il n'est appelé nul part dans le projet
