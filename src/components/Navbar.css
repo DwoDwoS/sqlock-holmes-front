@@ -1,0 +1,148 @@
+.navbar {
+  background-color: #333;
+  color: white;
+  padding: 1rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+}
+
+.hamburger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 30px;
+  margin-right: 1rem;
+}
+
+.hamburger-line {
+  width: 100%;
+  height: 4px;
+  background-color: white;
+  transition: all 0.3s;
+  border-radius: 2px;
+}
+
+.hamburger.open .hamburger-line:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.open .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.open .hamburger-line:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
+.navbar-title {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.navbar-menu {
+  list-style: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #333;
+  min-width: 200px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  z-index: 1001;
+  display: none;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-menu.open {
+  display: flex;
+}
+
+.navbar-menu li {
+  margin: 0;
+}
+
+.navbar-menu a {
+  color: white;
+  text-decoration: none;
+  padding: 1rem;
+  display: block;
+  transition: background-color 0.3s;
+}
+
+.navbar-menu a:hover {
+  background-color: #555;
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: none;
+  }
+
+  .navbar-menu {
+    display: none;
+  }
+
+.mobile-navbar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-navbar {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #333;
+    z-index: 1000;
+  }
+
+  .mobile-navbar-menu {
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    margin: 0;
+    padding: 0;
+  }
+
+  .mobile-navbar-menu li {
+    flex: 1;
+  }
+
+  .mobile-navbar-menu a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    color: white;
+    text-decoration: none;
+    font-size: 0.8rem;
+  }
+
+  .mobile-navbar-menu span {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+  }
+}
+
+.hamburger:focus,
+.navbar-menu a:focus,
+.mobile-navbar-menu a:focus {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+}
