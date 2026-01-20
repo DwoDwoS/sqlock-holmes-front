@@ -58,8 +58,8 @@ describe('Investigations', () => {
 
   it('renders status badges', () => {
     renderWithProviders(<Investigations />);
-    const statusBadges = screen.getAllByText('Disponible');
-    expect(statusBadges).toHaveLength(3);
+    const statusIcons = screen.getAllByLabelText('Disponible');
+    expect(statusIcons).toHaveLength(3);
   });
 
   it('renders start buttons for available investigations', () => {
@@ -92,14 +92,17 @@ describe('Investigations', () => {
     // Check that the museum investigation has the correct class
     const museumCard = screen.getByText('Le vol du musée').closest('.investigation-card');
     expect(museumCard).toHaveClass('investigation-museum');
+    expect(museumCard).toHaveClass('status-available');
 
     // Check that the corporate investigation has the correct class
     const corporateCard = screen.getByText('Fraudes corporatives').closest('.investigation-card');
     expect(corporateCard).toHaveClass('investigation-corporate');
+    expect(corporateCard).toHaveClass('status-available');
 
     // Check that the manor investigation has the correct class
     const manorCard = screen.getByText('Meurtre au Manoir').closest('.investigation-card');
     expect(manorCard).toHaveClass('investigation-manor');
+    expect(manorCard).toHaveClass('status-available');
   });
 
   it('does not apply background classes to cards without specific IDs', () => {
@@ -107,9 +110,10 @@ describe('Investigations', () => {
     const cards = screen.getAllByText(/commencer l'enquête/i).map(button =>
       button.closest('.investigation-card')
     );
-    // All cards should have exactly one class (investigation-card + background class)
+    // All cards should have at least 3 classes (investigation-card + background class + status class)
     cards.forEach(card => {
-      expect(card?.className.split(' ').length).toBe(2);
+      expect(card?.className.split(' ').length).toBeGreaterThanOrEqual(3);
+      expect(card).toHaveClass('status-available');
     });
   });
 });

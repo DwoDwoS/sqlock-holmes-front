@@ -49,19 +49,10 @@ const Investigations: React.FC = () => {
     }
   };
 
-  const getStatutColor = (statut: string) => {
-    switch (statut) {
-      case 'Disponible': return 'statut-disponible';
-      case 'En cours': return 'statut-en-cours';
-      case 'Terminée': return 'statut-terminee';
-      default: return '';
-    }
-  };
-
   return (
     <div className="investigations-container">
       <h1>Sélection des Enquêtes</h1>
-      <p>Choisissez une enquête à résoudre en utilisant vos compétences SQL.</p>
+      <p>Choisissez une enquête à résoudre en utilisant vos compétences SQL. Survolez les enquêtes avec votre souris pour en connaître l'intrigue.</p>
 
       <div className="investigations-grid">
         {investigations.map((investigation) => {
@@ -71,19 +62,32 @@ const Investigations: React.FC = () => {
           else if (investigation.id === 3) backgroundClass = 'investigation-manor';
           
           return (
-            <div key={investigation.id} className={`investigation-card ${backgroundClass}`}>
-            <div className="investigation-header">
-              <h2>{investigation.titre}</h2>
-              <div className="investigation-badges">
-                <span className={`badge difficulte ${getDifficulteColor(investigation.difficulte)}`}>
-                  {investigation.difficulte}
-                </span>
-                <span className={`badge statut ${getStatutColor(investigation.statut)}`}>
-                  {investigation.statut}
-                </span>
+            <div key={investigation.id} className={`investigation-card ${backgroundClass} ${investigation.statut === 'Disponible' ? 'status-available' : 'status-unavailable'}`}>
+              <div className="investigation-header">
+                <h2>{investigation.titre}</h2>
+                <div className="investigation-badges">
+                  <span className={`badge difficulte ${getDifficulteColor(investigation.difficulte)}`}>
+                    {investigation.difficulte}
+                  </span>
+                  <div className="status-icon" aria-label={investigation.statut}>
+                    {investigation.statut === 'Disponible' ? (
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-check-circle">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                        <polyline points="22,4 12,14.01 9,11.01"/>
+                      </svg>
+                    ) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-x-circle">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="m15 9-6 6"/>
+                        <path d="m9 9 6 6"/>
+                      </svg>
+                    )}
+                  </div>
+                </div>
               </div>
-            </div>
-            <p className="investigation-description">{investigation.description}</p>
+              <div className="investigation-description">
+                <p>{investigation.description}</p>
+              </div>
             <button
               className="primary-button"
               onClick={() => handleStartInvestigation(investigation.id)}
