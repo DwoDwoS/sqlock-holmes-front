@@ -1,8 +1,8 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 .logo {
@@ -95,6 +95,12 @@
   margin-bottom: 1rem;
 }
 
+.auth-container .field-error {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
 .auth-container p {
   margin-top: 1rem;
 }
@@ -106,4 +112,441 @@
 
 .auth-container a:hover {
   text-decoration: underline;
+}
+
+/* Layout styles */
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.layout main {
+  flex: 1;
+}
+
+.hero-section {
+  padding: 1rem 2rem 2rem;
+  text-align: center;
+  background: linear-gradient(135deg, #333 0%, #1a1a1a 100%);
+  border-bottom: 1px solid #444;
+  margin-top: -80px;
+  padding-top: 100px;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin: 0 0 1rem 0;
+  background: linear-gradient(45deg, #fff, #ccc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  color: #ccc;
+  margin: 0;
+  font-weight: 300;
+}
+
+.welcome-section {
+  padding: 3rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.welcome-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 2.5rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.welcome-card h2 {
+  color: #fff;
+  font-size: 2rem;
+  margin: 0 0 1rem 0;
+  text-align: center;
+}
+
+.welcome-card p {
+  color: #ccc;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0 0 2rem 0;
+  text-align: center;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.feature-item {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.feature-item h3 {
+  color: #fff;
+  font-size: 1.3rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.feature-item p {
+  color: #ccc;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.primary-button,
+.secondary-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.primary-button {
+  background: linear-gradient(45deg, #434bec, #535bf2);
+  color: white;
+  box-shadow: 0 4px 12px rgba(100, 108, 255, 0.3);
+}
+
+.primary-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(100, 108, 255, 0.4);
+}
+
+.secondary-button {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.secondary-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-section {
+    padding: 1rem 1rem 1.5rem;
+    padding-top: 90px;
+  }
+
+  .welcome-section {
+    padding: 2rem 1rem;
+  }
+
+  .welcome-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .primary-button,
+  .secondary-button {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+/* Styles pour la page Investigations */
+.investigations-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.investigations-container h1 {
+  text-align: center;
+  color: #83afdb;
+  margin-bottom: 0.5rem;
+}
+
+.investigations-container > p {
+  text-align: center;
+  color: #7f8c8d;
+  margin-bottom: 2rem;
+}
+
+.investigations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.investigation-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e1e8ed;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.investigation-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.investigation-museum {
+  background-image: url('/museum-heist.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+}
+
+.investigation-museum .investigation-header h2,
+.investigation-museum .investigation-description {
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.investigation-museum .badge {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #2c3e50;
+  text-shadow: none;
+}
+
+.investigation-corporate {
+  background-image: url('/corporate-fraud.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+}
+
+.investigation-corporate .investigation-header h2,
+.investigation-corporate .investigation-description {
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.investigation-corporate .badge {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #2c3e50;
+  text-shadow: none;
+}
+
+.investigation-manor {
+  background-image: url('/manor-murder.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+}
+
+.investigation-manor .investigation-header h2,
+.investigation-manor .investigation-description {
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.investigation-manor .badge {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #2c3e50;
+  text-shadow: none;
+}
+
+.investigation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.investigation-header h2 {
+  font-size: 1.25rem;
+  color: #2c3e50;
+  margin: 0;
+  flex: 1;
+}
+
+.investigation-badges {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.difficulte-facile {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.difficulte-moyen {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.difficulte-difficile {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.statut-disponible {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.statut-en-cours {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.statut-terminee {
+  background-color: #d6d8db;
+  color: #383d41;
+}
+
+.status-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+}
+
+.status-icon:hover {
+  transform: scale(1.1);
+}
+
+.status-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.status-available .status-icon svg {
+  color: #28a745; /* Vert pour disponible */
+}
+
+.status-unavailable .status-icon svg {
+  color: #dc3545; /* Rouge pour non disponible */
+}
+
+.investigation-card .primary-button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.investigation-card:hover .primary-button {
+  opacity: 1;
+}
+
+.investigation-card .primary-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.investigation-card .primary-button:disabled:hover {
+  opacity: 0.5;
+}
+
+.investigation-description {
+  color: #5a6c7d;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease, max-height 0.3s ease;
+}
+
+.investigation-card:hover .investigation-description {
+  opacity: 1;
+  max-height: 200px;
+}
+
+.investigations-actions {
+  text-align: center;
+}
+
+.investigations-actions .secondary-button {
+  padding: 0.75rem 2rem;
+}
+
+/* Responsive pour investigations */
+@media (max-width: 768px) {
+  .investigations-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .investigation-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .investigation-badges {
+    align-self: flex-start;
+  }
 }
