@@ -522,7 +522,7 @@
 
 .investigation-card:hover .investigation-description {
   opacity: 1;
-  max-height: 200px; /* Ajuster selon la hauteur nécessaire */
+  max-height: 200px;
 }
 
 .investigations-actions {
