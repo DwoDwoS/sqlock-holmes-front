@@ -303,3 +303,204 @@
     max-width: 300px;
   }
 }
+
+/* Styles pour la page Investigations */
+.investigations-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.investigations-container h1 {
+  text-align: center;
+  color: #83afdb;
+  margin-bottom: 0.5rem;
+}
+
+.investigations-container > p {
+  text-align: center;
+  color: #7f8c8d;
+  margin-bottom: 2rem;
+}
+
+.investigations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.investigation-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e1e8ed;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.investigation-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.investigation-museum {
+  background-image: url('/museum-heist.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+}
+
+.investigation-museum .investigation-header h2,
+.investigation-museum .investigation-description {
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.investigation-museum .badge {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #2c3e50;
+  text-shadow: none;
+}
+
+.investigation-corporate {
+  background-image: url('/corporate-fraud.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+}
+
+.investigation-corporate .investigation-header h2,
+.investigation-corporate .investigation-description {
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.investigation-corporate .badge {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #2c3e50;
+  text-shadow: none;
+}
+
+.investigation-manor {
+  background-image: url('/manor-murder.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+}
+
+.investigation-manor .investigation-header h2,
+.investigation-manor .investigation-description {
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.investigation-manor .badge {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #2c3e50;
+  text-shadow: none;
+}
+
+.investigation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.investigation-header h2 {
+  font-size: 1.25rem;
+  color: #2c3e50;
+  margin: 0;
+  flex: 1;
+}
+
+.investigation-badges {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.difficulte-facile {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.difficulte-moyen {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.difficulte-difficile {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.statut-disponible {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.statut-en-cours {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.statut-terminee {
+  background-color: #d6d8db;
+  color: #383d41;
+}
+
+.investigation-description {
+  color: #5a6c7d;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.investigation-card .primary-button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+}
+
+.investigation-card .primary-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.investigations-actions {
+  text-align: center;
+}
+
+.investigations-actions .secondary-button {
+  padding: 0.75rem 2rem;
+}
+
+/* Responsive pour investigations */
+@media (max-width: 768px) {
+  .investigations-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .investigation-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .investigation-badges {
+    align-self: flex-start;
+  }
+}
