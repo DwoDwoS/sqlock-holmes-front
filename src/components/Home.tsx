@@ -1,7 +1,9 @@
 import { useAuth } from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -37,7 +39,7 @@ const Home = () => {
           </div>
 
           <div className="action-buttons">
-            <button className="primary-button">Commencer une enquête</button>
+            <button className="primary-button" onClick={() => navigate('/investigations')}>Trouver une enquête</button>
             <button className="secondary-button" onClick={logout}>Déconnexion</button>
           </div>
         </div>

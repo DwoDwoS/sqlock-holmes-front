@@ -4,6 +4,7 @@ import { AuthProvider } from './contexts/AuthProvider';
 import Login from './components/Login';
 import Register from './components/Register';
 import Home from './components/Home';
+import Investigations from './components/Investigations';
 import ProtectedRoute from './components/ProtectedRoute';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -33,6 +34,16 @@ function App() {
                 <ProtectedRoute>
                   <Layout>
                     <Home />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/investigations"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <Investigations />
                   </Layout>
                 </ProtectedRoute>
               }

@@ -54,7 +54,7 @@ describe('Home', () => {
 
   it('renders action buttons', () => {
     renderWithProviders(<Home />);
-    expect(screen.getByRole('button', { name: /commencer une enquête/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /trouver une enquête/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /déconnexion/i })).toBeInTheDocument();
   });
 
