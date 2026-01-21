@@ -1,18 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios, { AxiosError } from 'axios';
 import { AuthContext } from './AuthContext';
 import type { AuthProviderProps, User } from '../types/auth';
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      return { id: 1, username: 'user', email: 'user@example.com' };
-    }
-    return null;
-  });
-  const isLoading = false;
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          const response = await axios.get('/api/users/me');
+          setUser(response.data);
+        } catch (error) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          delete axios.defaults.headers.common['Authorization'];
+        }
+      }
+      setIsLoading(false);
+    };
+
+    checkAuth();
+  }, []);
 
   const login = async (username: string, password: string) => {
     try {
@@ -20,6 +33,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
         localStorage.setItem('user', JSON.stringify(response.data));
         setUser(response.data);
       } else {

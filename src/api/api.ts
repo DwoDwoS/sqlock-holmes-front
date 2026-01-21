@@ -1,11 +1,20 @@
 import axios from 'axios';
 
+interface Investigation {
+  id: number;
+  titre: string;
+  description: string;
+  difficulte: 'Facile' | 'Moyen' | 'Difficile';
+  statut: 'Disponible' | 'En cours' | 'Terminée';
+  databaseId: string;
+}
+
 const API_BASE_URL = import.meta.env.PROD
   ? import.meta.env.VITE_API_BASE_URL
   : '/';
 
 axios.defaults.baseURL = API_BASE_URL;
-axios.defaults.headers.post['Content-Type'] = 'text/plain';
+axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -17,6 +26,13 @@ axios.interceptors.response.use(
   }
 );
 
-export default axios;
+export const getInvestigations = async (): Promise<Investigation[]> => {
+  const response = await axios.get('/investigations');
+  return Array.isArray(response.data) ? response.data : [];
+};
 
-//Revoir pourquoi on a ce fichier api.ts il n'est appelé nul part dans le projet
+export const startInvestigation = async (investigationId: number, databaseId: string): Promise<void> => {
+  await axios.post(`/investigations/${investigationId}/start`, { databaseId });
+};
+
+export default axios;
