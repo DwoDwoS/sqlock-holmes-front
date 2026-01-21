@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getInvestigations, startInvestigation } from '../api/api';
 
 interface Investigation {
   id: number;
@@ -7,37 +8,63 @@ interface Investigation {
   description: string;
   difficulte: 'Facile' | 'Moyen' | 'Difficile';
   statut: 'Disponible' | 'En cours' | 'Terminée';
+  databaseId: string;
 }
 
 const Investigations: React.FC = () => {
   const navigate = useNavigate();
-
-  const investigations: Investigation[] = [
+  const [investigations, setInvestigations] = useState<Investigation[]>([
     {
       id: 1,
       titre: 'Le vol du musée',
       description: 'Un tableau de valeur inestimable a disparu du musée national. Les caméras de sécurité ont filmé plusieurs personnes suspectes. Analysez les données pour identifier le voleur.',
       difficulte: 'Facile',
-      statut: 'Disponible'
+      statut: 'Disponible',
+      databaseId: 'museum_db'
     },
     {
       id: 2,
       titre: 'Fraudes corporatives',
       description: 'Des transactions suspectes ont été détectées dans les comptes de l\'entreprise TechCorp. Identifiez l\'employé responsable et découvrez comment il a détourné les fonds.',
       difficulte: 'Moyen',
-      statut: 'Disponible'
+      statut: 'Disponible',
+      databaseId: 'corporate_db'
     },
     {
       id: 3,
       titre: 'Meurtre au Manoir',
       description: 'Lord Blackwood a été retrouvé mort dans sa bibliothèque. Six personnes étaient présentes ce soir-là. Qui est le meurtrier ? Et pourquoi ?',
       difficulte: 'Difficile',
-      statut: 'Disponible'
+      statut: 'Disponible',
+      databaseId: 'manor_db'
     }
-  ];
+  ]);
+  const [loading, setLoading] = useState(false);
 
-  const handleStartInvestigation = (investigationId: number) => {
-    navigate(`/investigation/${investigationId}`);
+  useEffect(() => {
+    const loadInvestigations = async () => {
+      try {
+        const data = await getInvestigations();
+        if (Array.isArray(data) && data.length > 0) {
+          setInvestigations(data);
+        }
+      } catch (error) {
+        console.error('Erreur lors du chargement des investigations:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadInvestigations();
+  }, []);
+
+  const handleStartInvestigation = async (investigation: Investigation) => {
+    try {
+      await startInvestigation(investigation.id, investigation.databaseId);
+      navigate(`/investigation/${investigation.id}`);
+    } catch (error) {
+      console.error('Erreur lors du démarrage de l\'investigation:', error);
+    }
   };
 
   const getDifficulteColor = (difficulte: string) => {
@@ -54,8 +81,10 @@ const Investigations: React.FC = () => {
       <h1>Sélection des Enquêtes</h1>
       <p>Choisissez une enquête à résoudre en utilisant vos compétences SQL. Survolez les enquêtes avec votre souris pour en connaître l'intrigue.</p>
 
+      {loading && <p>Chargement des données depuis le serveur...</p>}
+
       <div className="investigations-grid">
-        {investigations.map((investigation) => {
+        {Array.isArray(investigations) && investigations.map((investigation) => {
           let backgroundClass = '';
           if (investigation.id === 1) backgroundClass = 'investigation-museum';
           else if (investigation.id === 2) backgroundClass = 'investigation-corporate';
@@ -90,7 +119,7 @@ const Investigations: React.FC = () => {
               </div>
             <button
               className="primary-button"
-              onClick={() => handleStartInvestigation(investigation.id)}
+              onClick={() => handleStartInvestigation(investigation)}
               disabled={investigation.statut !== 'Disponible'}
             >
               {investigation.statut === 'Disponible' ? 'Commencer l\'enquête' :
