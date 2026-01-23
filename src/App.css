@@ -248,7 +248,7 @@
 }
 
 .primary-button {
-  background: linear-gradient(45deg, #434bec, #535bf2);
+  background: linear-gradient(45deg, #333, #2f2e2e);
   color: white;
   box-shadow: 0 4px 12px rgba(100, 108, 255, 0.3);
 }
@@ -433,32 +433,32 @@
   text-transform: uppercase;
 }
 
-.difficulte-facile {
+.difficulty-easy {
   background-color: #d4edda;
   color: #155724;
 }
 
-.difficulte-moyen {
+.difficulty-medium {
   background-color: #fff3cd;
   color: #856404;
 }
 
-.difficulte-difficile {
+.difficulty-hard {
   background-color: #f8d7da;
   color: #721c24;
 }
 
-.statut-disponible {
+.status-available {
   background-color: #d1ecf1;
   color: #0c5460;
 }
 
-.statut-en-cours {
+.status-in-progress {
   background-color: #d4edda;
   color: #155724;
 }
 
-.statut-terminee {
+.status-completed {
   background-color: #d6d8db;
   color: #383d41;
 }
@@ -503,10 +503,11 @@
   font-weight: 600;
   transition: all 0.3s ease;
   margin-top: 1rem;
+  box-sizing: border-box;
 }
 
 .investigation-card:hover .primary-button {
-  background-color: #0056b3;
+  background-color: #333;
   color: white;
   border-color: #0056b3;
   transform: translateY(-1px);

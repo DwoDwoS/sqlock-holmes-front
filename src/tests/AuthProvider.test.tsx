@@ -1,6 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import axios from 'axios';
 import { AuthProvider } from '../contexts/AuthProvider';
 import { useAuth } from '../hooks/useAuth';
 import React from 'react';

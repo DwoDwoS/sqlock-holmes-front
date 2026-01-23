@@ -60,9 +60,9 @@ const Investigations: React.FC = () => {
 
   const getDifficulteColor = (difficulte: string) => {
     switch (difficulte) {
-      case 'Facile': return 'difficulte-facile';
-      case 'Moyen': return 'difficulte-moyen';
-      case 'Difficile': return 'difficulte-difficile';
+      case 'Facile': return 'difficulty-easy';
+      case 'Moyen': return 'difficulty-medium';
+      case 'Difficile': return 'difficulty-hard';
       default: return '';
     }
   };
