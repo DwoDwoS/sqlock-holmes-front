@@ -234,7 +234,8 @@
 }
 
 .primary-button,
-.secondary-button {
+.secondary-button
+ {
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 6px;
@@ -482,32 +483,61 @@
 }
 
 .status-available .status-icon svg {
-  color: #28a745; /* Vert pour disponible */
+  color: #28a745;
 }
 
 .status-unavailable .status-icon svg {
-  color: #dc3545; /* Rouge pour non disponible */
+  color: #dc3545;
 }
 
 .investigation-card .primary-button {
   width: 100%;
   padding: 0.75rem 1rem;
-  opacity: 0.7;
-  transition: opacity 0.3s ease;
+  background-color: #333;
+  color: white;
+  border: 2px solid #333;
+  border-radius: 8px;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
 }
 
 .investigation-card:hover .primary-button {
-  opacity: 1;
+  background-color: #0056b3;
+  color: white;
+  border-color: #0056b3;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .investigation-card .primary-button:disabled {
   background-color: #6c757d;
+  color: white;
   cursor: not-allowed;
-  opacity: 0.5;
+  border-color: #6c757d;
 }
 
 .investigation-card .primary-button:disabled:hover {
-  opacity: 0.5;
+  background-color: #6c757d;
+  color: white;
+  border-color: #6c757d;
+  transform: none;
+  box-shadow: none;
+}
+
+.primary-button.disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.primary-button.disabled:hover {
+  background-color: #6c757d;
+  transform: none;
+  box-shadow: none;
 }
 
 .investigation-description {
