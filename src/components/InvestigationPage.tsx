@@ -14,6 +14,13 @@ interface Investigation {
   image?: string;
 }
 
+interface SQLResult {
+  columns?: string[];
+  rows?: unknown[];
+  error?: string;
+  message?: string;
+}
+
 const getMockInvestigationData = (id: number): Investigation => {
   const mockInvestigations = {
     1: {
@@ -60,7 +67,7 @@ const InvestigationPage: React.FC = () => {
   const navigate = useNavigate();
   const [investigation, setInvestigation] = useState<Investigation | null>(null);
   const [sqlCode, setSqlCode] = useState<string>('SELECT * FROM table_name;');
-  const [results, setResults] = useState<any>(null);
+  const [results, setResults] = useState<SQLResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [hints, setHints] = useState<string[]>([]);
   const [showHints, setShowHints] = useState(false);
@@ -86,7 +93,7 @@ const InvestigationPage: React.FC = () => {
             // Ne pas bloquer l'affichage de la page
           }
         }
-      } catch (error: any) {
+      } catch {
         console.log('Back-end non disponible, utilisation des données mockées');
         // Garder les données mockées déjà définies
       }
@@ -100,8 +107,12 @@ const InvestigationPage: React.FC = () => {
     try {
       const data = await executeSQL(parseInt(id), sqlCode);
       setResults(data);
-    } catch (error: any) {
-      if (error.response?.status === 404) {
+    } catch (error: unknown) {
+      const is404Error = error && typeof error === 'object' && 'response' in error &&
+                        error.response && typeof error.response === 'object' && 'status' in error.response &&
+                        error.response.status === 404;
+
+      if (is404Error) {
         setResults({ error: 'Le back-end n\'est pas encore implémenté. Cette fonctionnalité sera disponible prochainement.' });
       } else {
         setResults({ error: 'Erreur lors de l\'exécution de la requête.' });

@@ -7,6 +7,14 @@ interface Investigation {
   difficulte: 'Facile' | 'Moyen' | 'Difficile';
   statut: 'Disponible' | 'En cours' | 'Terminée';
   databaseId: string;
+  image?: string;
+}
+
+interface SQLResult {
+  columns?: string[];
+  rows?: unknown[];
+  error?: string;
+  message?: string;
 }
 
 const API_BASE_URL = import.meta.env.PROD
@@ -40,7 +48,7 @@ export const getInvestigationDetails = async (investigationId: number): Promise<
   return response.data;
 };
 
-export const executeSQL = async (investigationId: number, sql: string): Promise<any> => {
+export const executeSQL = async (investigationId: number, sql: string): Promise<SQLResult> => {
   const response = await axios.post(`/api/investigations/${investigationId}/execute`, { sql });
   return response.data;
 };

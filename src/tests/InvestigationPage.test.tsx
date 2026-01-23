@@ -14,7 +14,7 @@ vi.mock('../api/api', () => ({
 
 // Mock Monaco Editor
 vi.mock('@monaco-editor/react', () => ({
-  default: ({ value, onChange }: any) => (
+  default: ({ value, onChange }: { value: string; onChange: (value: string) => void }) => (
     <textarea
       value={value}
       onChange={(e) => onChange(e.target.value)}

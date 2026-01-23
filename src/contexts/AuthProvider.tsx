@@ -49,7 +49,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       return response.data;
 
-    } catch (error: unknown) {
+    } catch {
       console.log('Back-end non disponible pour l\'authentification, utilisation des données mockées');
       
       const mockUser = {
@@ -82,7 +82,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       return response.data;
 
-    } catch (error: unknown) {
+    } catch {
       console.log('Back-end non disponible pour l\'inscription, simulation d\'une inscription réussie');
       
       const mockUser = {
