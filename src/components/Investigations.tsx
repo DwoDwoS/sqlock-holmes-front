@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getInvestigations, startInvestigation } from '../api/api';
+import { Link, useNavigate } from 'react-router-dom';
+import { getInvestigations } from '../api/api';
 
 interface Investigation {
   id: number;
@@ -58,20 +58,11 @@ const Investigations: React.FC = () => {
     loadInvestigations();
   }, []);
 
-  const handleStartInvestigation = async (investigation: Investigation) => {
-    try {
-      await startInvestigation(investigation.id, investigation.databaseId);
-      navigate(`/investigation/${investigation.id}`);
-    } catch (error) {
-      console.error('Erreur lors du démarrage de l\'investigation:', error);
-    }
-  };
-
   const getDifficulteColor = (difficulte: string) => {
     switch (difficulte) {
-      case 'Facile': return 'difficulte-facile';
-      case 'Moyen': return 'difficulte-moyen';
-      case 'Difficile': return 'difficulte-difficile';
+      case 'Facile': return 'difficulty-easy';
+      case 'Moyen': return 'difficulty-medium';
+      case 'Difficile': return 'difficulty-hard';
       default: return '';
     }
   };
@@ -117,15 +108,19 @@ const Investigations: React.FC = () => {
               <div className="investigation-description">
                 <p>{investigation.description}</p>
               </div>
-            <button
-              className="primary-button"
-              onClick={() => handleStartInvestigation(investigation)}
-              disabled={investigation.statut !== 'Disponible'}
-            >
-              {investigation.statut === 'Disponible' ? 'Commencer l\'enquête' :
-               investigation.statut === 'En cours' ? 'Continuer' : 'Revoir'}
-            </button>
-          </div>
+              <Link
+                to={`/investigation/${investigation.id}`}
+                className={`primary-button ${investigation.statut !== 'Disponible' ? 'disabled' : ''}`}
+                onClick={(e) => {
+                  if (investigation.statut !== 'Disponible') {
+                    e.preventDefault();
+                  }
+                }}
+              >
+                {investigation.statut === 'Disponible' ? 'Commencer l\'enquête' :
+                 investigation.statut === 'En cours' ? 'Continuer' : 'Revoir'}
+              </Link>
+            </div>
           );
         })}
       </div>

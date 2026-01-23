@@ -1,0 +1,195 @@
+.investigation-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+}
+
+.investigation-overlay h1 {
+  color: #ffffff;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Styles spécifiques pour chaque enquête */
+.investigation-1 {
+  background-image: url('/museum-heist.png');
+}
+
+.investigation-2 {
+  background-image: url('/corporate-fraud.png');
+}
+
+.investigation-3 {
+  background-image: url('/manor-murder.png');
+}
+
+/* Fallback pour les enquêtes sans image */
+.investigation-page:not([style*="background-image"]) {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.investigation-page:not([style*="background-image"]) .investigation-overlay {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.investigation-plot {
+  font-size: 1.2em;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  color: #ffffff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.editor-container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.editor-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.hints-button {
+  background-color: rgba(51, 51, 51, 0.9);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  backdrop-filter: blur(10px);
+}
+
+.hints-button:hover {
+  background-color: rgba(0, 86, 179, 0.9);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.execute-button {
+  margin-top: 10px;
+  background-color: rgba(51, 51, 51, 0.9);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+.execute-button:hover {
+  background-color: rgba(0, 86, 179, 0.9);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.execute-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.results-container {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: rgba(248, 249, 250, 0.95);
+  border: 1px solid rgba(222, 226, 230, 0.3);
+  border-radius: 5px;
+  backdrop-filter: blur(10px);
+}
+
+.results-container h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.results-container pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: #333;
+  background-color: rgba(248, 249, 250, 0.9);
+  padding: 10px;
+  border-radius: 3px;
+  border: 1px solid rgba(233, 236, 239, 0.5);
+}
+
+.hints-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 1000;
+}
+
+.hints-content {
+  background-color: white;
+  width: 100%;
+  padding: 20px;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+  overflow-y: auto;
+}
+
+.hints-content h3 {
+  margin-top: 0;
+}
+
+.hints-content ul {
+  padding-left: 20px;
+}
+
+.hints-content button {
+  margin-top: 20px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.hints-content button:hover {
+  background-color: #5a6268;
+}
+
+.actions {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.secondary-button {
+  background-color: rgba(108, 117, 125, 0.9);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  backdrop-filter: blur(10px);
+}
+
+.secondary-button:hover {
+  background-color: rgba(90, 98, 104, 0.9);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.primary-button.disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.primary-button.disabled:hover {
+  background-color: #6c757d;
+}

@@ -106,24 +106,19 @@ describe('Investigations', () => {
   it('renders start buttons for available investigations', async () => {
     renderWithProviders(<Investigations />);
     await waitFor(() => {
-      const startButtons = screen.getAllByRole('button', { name: /commencer l'enquête/i });
-      expect(startButtons).toHaveLength(3);
+      const startLinks = screen.getAllByRole('link', { name: /commencer l'enquête/i });
+      expect(startLinks).toHaveLength(3);
     });
   });
 
-  it('navigates to investigation page when start button is clicked', async () => {
-    const { startInvestigation } = await import('../api/api');
+  it('navigates to investigation page when start link is clicked', async () => {
     renderWithProviders(<Investigations />);
     await waitFor(() => {
-      const startButtons = screen.getAllByRole('button', { name: /commencer l'enquête/i });
-      expect(startButtons).toHaveLength(3);
+      const startLinks = screen.getAllByRole('link', { name: /commencer l'enquête/i });
+      expect(startLinks).toHaveLength(3);
     });
-    const startButtons = screen.getAllByRole('button', { name: /commencer l'enquête/i });
-    fireEvent.click(startButtons[0]);
-    await waitFor(() => {
-      expect(startInvestigation).toHaveBeenCalledWith(1, 'museum_db');
-    });
-    expect(mockNavigate).toHaveBeenCalledWith('/investigation/1');
+    const startLinks = screen.getAllByRole('link', { name: /commencer l'enquête/i });
+    expect(startLinks[0]).toHaveAttribute('href', '/investigation/1');
   });
 
   it('renders back to home button', async () => {
