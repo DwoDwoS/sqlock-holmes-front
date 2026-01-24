@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { AxiosError } from 'axios';
+import { authService } from '../services/authService';
 import { AuthContext } from './AuthContext';
 import type { AuthProviderProps, User } from '../types/auth';
 
@@ -10,15 +11,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       const token = localStorage.getItem('token');
-      if (token) {
+      const storedUser = localStorage.getItem('user');
+      
+      if (token && storedUser) {
         try {
-          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-          const response = await axios.get('/api/users/me');
-          setUser(response.data);
-        } catch {
+          const userData = await authService.getCurrentUser();
+          setUser(userData);
+        } catch (error) {
+          console.error('Token invalide ou expiré:', error);
           localStorage.removeItem('token');
           localStorage.removeItem('user');
-          delete axios.defaults.headers.common['Authorization'];
+          setUser(null);
         }
       }
       setIsLoading(false);
@@ -27,78 +30,94 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     checkAuth();
   }, []);
 
-  const login = async (username: string, password: string) => {
+  const login = async (username: string, password: string): Promise<void> => {
     try {
-      const response = await axios.post('/api/users/login', { username, password });
+      const response = await authService.login(username, password);
 
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-        localStorage.setItem('user', JSON.stringify(response.data));
-        setUser(response.data);
-      } else {
-        const userData = {
-          id: response.data.id || 1,
-          username: response.data.username || username,
-          email: response.data.email || `${username}@example.com`,
-          role: response.data.role || 'USER'
+      console.log('Réponse login:', response);
+
+      if (response.token) {
+        localStorage.setItem('token', response.token);
+        
+        const userData: User = {
+          id: response.id.toString(),
+          username: response.username,
+          email: response.email,
+          role: response.role || 'USER'
         };
+        
+        localStorage.setItem('user', JSON.stringify(userData));
+        setUser(userData);
+      } else {
+        throw new Error('Token non reçu du serveur');
+      }
+
+    } catch (error) {
+      console.error('Erreur lors de la connexion:', error);
+      
+      if (error instanceof AxiosError && (error.code === 'ERR_NETWORK' || error.message === 'Network Error')) {
+        console.log('Back-end non disponible, utilisation des données mockées');
+        
+        const mockUser: User = {
+          id: '1',
+          username: username,
+          email: `${username}@example.com`,
+          role: 'USER'
+        };
+        
+        const mockToken = 'mock-jwt-token-' + Date.now();
+        localStorage.setItem('token', mockToken);
+        localStorage.setItem('user', JSON.stringify(mockUser));
+        setUser(mockUser);
+      } else {
+        throw error;
+      }
+    }
+  };
+
+  const register = async (username: string, email: string, password: string): Promise<void> => {
+    try {
+      const response = await authService.register(username, email, password);
+
+      console.log('Réponse inscription:', response);
+
+      if (response.token) {
+        localStorage.setItem('token', response.token);
+        
+        const userData: User = {
+          id: response.id.toString(),
+          username: response.username,
+          email: response.email,
+          role: response.role || 'USER'
+        };
+        
         localStorage.setItem('user', JSON.stringify(userData));
         setUser(userData);
       }
 
-      return response.data;
-
-    } catch {
-      console.log('Back-end non disponible pour l\'authentification, utilisation des données mockées');
+    } catch (error) {
+      console.error('Erreur lors de l\'inscription:', error);
       
-      const mockUser = {
-        id: 1,
-        username: username,
-        email: `${username}@example.com`,
-        role: 'USER'
-      };
-      
-      const mockToken = 'mock-jwt-token-' + Date.now();
-      localStorage.setItem('token', mockToken);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${mockToken}`;
-      localStorage.setItem('user', JSON.stringify(mockUser));
-      setUser(mockUser);
-      
-      return mockUser;
-    }
-  };
-
-  const register = async (username: string, email: string, password: string) => {
-    try {
-      delete axios.defaults.headers.common['Authorization'];
-
-      const response = await axios.post('/api/users/register', { username, email, password }, {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        timeout: 10000
-      });
-
-      return response.data;
-
-    } catch {
-      console.log('Back-end non disponible pour l\'inscription, simulation d\'une inscription réussie');
-      
-      const mockUser = {
-        id: Date.now(),
-        username: username,
-        email: email,
-        role: 'USER'
-      };
-      
-      return mockUser;
+      if (error instanceof AxiosError && (error.code === 'ERR_NETWORK' || error.message === 'Network Error')) {
+        console.log('Back-end non disponible, simulation d\'une inscription réussie');
+        
+        const mockUser: User = {
+          id: Date.now().toString(),
+          username: username,
+          email: email,
+          role: 'USER'
+        };
+        
+        setUser(mockUser);
+      } else {
+        throw error;
+      }
     }
   };
 
   const logout = () => {
     localStorage.removeItem('token');
-    delete axios.defaults.headers.common['Authorization'];
+    localStorage.removeItem('user');
     setUser(null);
   };
 

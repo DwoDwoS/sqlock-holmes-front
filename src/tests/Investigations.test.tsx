@@ -6,33 +6,45 @@ import Investigations from '../components/Investigations';
 
 // Mock the API
 vi.mock('../api/api', () => ({
-  getInvestigations: vi.fn(() => Promise.resolve([
-    {
-      id: 1,
-      titre: 'Le vol du musée',
-      description: 'Un tableau de valeur inestimable a disparu du musée national. Les caméras de sécurité ont filmé plusieurs personnes suspectes. Analysez les données pour identifier le voleur.',
-      difficulte: 'Facile',
-      statut: 'Disponible',
-      databaseId: 'museum_db'
-    },
-    {
-      id: 2,
-      titre: 'Fraudes corporatives',
-      description: 'Des transactions suspectes ont été détectées dans les comptes de l\'entreprise TechCorp. Identifiez l\'employé responsable et découvrez comment il a détourné les fonds.',
-      difficulte: 'Moyen',
-      statut: 'Disponible',
-      databaseId: 'corporate_db'
-    },
-    {
-      id: 3,
-      titre: 'Meurtre au Manoir',
-      description: 'Lord Blackwood a été retrouvé mort dans sa bibliothèque. Six personnes étaient présentes ce soir-là. Qui est le meurtrier ? Et pourquoi ?',
-      difficulte: 'Difficile',
-      statut: 'Disponible',
-      databaseId: 'manor_db'
-    }
-  ])),
-  startInvestigation: vi.fn(() => Promise.resolve())
+  default: {
+    get: vi.fn((url) => {
+      if (url === '/investigations') {
+        return Promise.resolve({
+          data: [
+            {
+              id: 1,
+              title: 'Le vol du musée',
+              description: 'Un tableau de valeur inestimable a disparu du musée national. Les caméras de sécurité ont filmé plusieurs personnes suspectes. Analysez les données pour identifier le voleur.',
+              difficulty: 'Facile',
+              status: 'Disponible',
+              databaseId: 'museum_db'
+            },
+            {
+              id: 2,
+              title: 'Fraudes corporatives',
+              description: 'Des transactions suspectes ont été détectées dans les comptes de l\'entreprise TechCorp. Identifiez l\'employé responsable et découvrez comment il a détourné les fonds.',
+              difficulty: 'Moyen',
+              status: 'Disponible',
+              databaseId: 'corporate_db'
+            },
+            {
+              id: 3,
+              title: 'Meurtre au Manoir',
+              description: 'Lord Blackwood a été retrouvé mort dans sa bibliothèque. Six personnes étaient présentes ce soir-là. Qui est le meurtrier ? Et pourquoi ?',
+              difficulty: 'Difficile',
+              status: 'Disponible',
+              databaseId: 'manor_db'
+            }
+          ]
+        });
+      }
+    }),
+    post: vi.fn((url) => {
+      if (url.startsWith('/investigations/') && url.endsWith('/start')) {
+        return Promise.resolve();
+      }
+    })
+  }
 }));
 
 // Mock useNavigate

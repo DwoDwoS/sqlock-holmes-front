@@ -6,10 +6,31 @@ import InvestigationPage from '../components/InvestigationPage';
 
 // Mock the API
 vi.mock('../api/api', () => ({
-  getInvestigationDetails: vi.fn(() => Promise.reject({ response: { status: 404 } })), // Simuler 404 pour utiliser les mocks
+  default: {
+    get: vi.fn((url) => {
+      if (url === '/investigations/1') {
+        return Promise.reject({ response: { status: 404 } }); // Simuler 404 pour utiliser les mocks
+      }
+      if (url === '/investigations/1/hints') {
+        return Promise.reject({ response: { status: 404 } });
+      }
+    }),
+    post: vi.fn((url) => {
+      if (url === '/sql/execute') {
+        return Promise.reject({ response: { status: 404 } });
+      }
+      if (url === '/investigations/1/start') {
+        return Promise.resolve();
+      }
+    })
+  }
+}));
+
+// Mock the investigation service
+vi.mock('../services/investigationService', () => ({
   executeSQL: vi.fn(() => Promise.reject({ response: { status: 404 } })),
   getHints: vi.fn(() => Promise.reject({ response: { status: 404 } })),
-  startInvestigation: vi.fn(() => Promise.resolve())
+  getInvestigationDetails: vi.fn(() => Promise.reject({ response: { status: 404 } }))
 }));
 
 // Mock Monaco Editor
@@ -67,7 +88,7 @@ describe('InvestigationPage', () => {
   });
 
   it('should execute SQL when button is clicked', async () => {
-    const { executeSQL } = await import('../api/api');
+    const { executeSQL } = await import('../services/investigationService');
     renderWithProviders(<InvestigationPage />);
 
     await waitFor(() => {
@@ -78,12 +99,12 @@ describe('InvestigationPage', () => {
     fireEvent.click(executeButton);
 
     await waitFor(() => {
-      expect(executeSQL).toHaveBeenCalledWith(1, 'SELECT * FROM table_name;');
+      expect(executeSQL).toHaveBeenCalledWith({ investigationId: 1, sql: 'SELECT * FROM table_name;' });
     });
   });
 
   it('should handle hints error gracefully', async () => {
-    const { getHints } = await import('../api/api');
+    const { getHints } = await import('../services/investigationService');
     renderWithProviders(<InvestigationPage />);
 
     await waitFor(() => {
