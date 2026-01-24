@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { AxiosError } from 'axios';
 import Editor from '@monaco-editor/react';
-import { getInvestigationDetails, executeSQL, getHints, startInvestigation } from '../api/api';
+import { getInvestigationDetails, executeSQL, getHints } from '../services/investigationService';
 import './InvestigationPage.css';
 
 interface Investigation {
   id: number;
-  titre: string;
+  title: string;
   description: string;
-  difficulte: 'Facile' | 'Moyen' | 'Difficile';
-  statut: 'Disponible' | 'En cours' | 'Terminée';
+  difficulty: 'Facile' | 'Moyen' | 'Difficile';
+  status: 'Disponible' | 'En cours' | 'Terminée';
   databaseId: string;
   image?: string;
 }
@@ -21,32 +22,37 @@ interface SQLResult {
   message?: string;
 }
 
+interface Hint {
+  id?: number;
+  content: string;
+}
+
 const getMockInvestigationData = (id: number): Investigation => {
   const mockInvestigations = {
     1: {
       id: 1,
-      titre: 'Le vol du musée',
+      title: 'Le vol du musée',
       description: 'Un tableau de valeur inestimable a disparu du musée national. Les caméras de sécurité ont filmé plusieurs personnes suspectes. Analysez les données pour identifier le voleur.',
-      difficulte: 'Facile' as const,
-      statut: 'En cours' as const,
+      difficulty: 'Facile' as const,
+      status: 'En cours' as const,
       databaseId: 'museum_db',
       image: '/museum-heist.png'
     },
     2: {
       id: 2,
-      titre: 'Fraudes corporatives',
+      title: 'Fraudes corporatives',
       description: 'Des transactions suspectes ont été détectées dans les comptes de l\'entreprise TechCorp. Identifiez l\'employé responsable et découvrez comment il a détourné les fonds.',
-      difficulte: 'Moyen' as const,
-      statut: 'En cours' as const,
+      difficulty: 'Moyen' as const,
+      status: 'En cours' as const,
       databaseId: 'corporate_db',
       image: '/corporate-fraud.png'
     },
     3: {
       id: 3,
-      titre: 'Meurtre au Manoir',
+      title: 'Meurtre au Manoir',
       description: 'Lord Blackwood a été retrouvé mort dans sa bibliothèque. Six personnes étaient présentes ce soir-là. Qui est le meurtrier ? Et pourquoi ?',
-      difficulte: 'Difficile' as const,
-      statut: 'En cours' as const,
+      difficulty: 'Difficile' as const,
+      status: 'En cours' as const,
       databaseId: 'manor_db',
       image: '/manor-murder.png'
     }
@@ -54,10 +60,10 @@ const getMockInvestigationData = (id: number): Investigation => {
 
   return mockInvestigations[id as keyof typeof mockInvestigations] || {
     id,
-    titre: 'Enquête inconnue',
+    title: 'Enquête inconnue',
     description: 'Description non disponible.',
-    difficulte: 'Facile' as const,
-    statut: 'En cours' as const,
+    difficulty: 'Facile' as const,
+    status: 'En cours' as const,
     databaseId: 'unknown_db'
   };
 };
@@ -69,54 +75,47 @@ const InvestigationPage: React.FC = () => {
   const [sqlCode, setSqlCode] = useState<string>('SELECT * FROM table_name;');
   const [results, setResults] = useState<SQLResult | null>(null);
   const [loading, setLoading] = useState(false);
-  const [hints, setHints] = useState<string[]>([]);
+  const [hints, setHints] = useState<Hint[]>([]);
   const [showHints, setShowHints] = useState(false);
 
   useEffect(() => {
     const loadInvestigation = async () => {
       if (!id) return;
-      
-      // Utiliser d'abord les données mockées
-      const mockData = getMockInvestigationData(parseInt(id));
+            const mockData = getMockInvestigationData(parseInt(id));
       setInvestigation(mockData);
-      
-      // Essayer de charger depuis l'API si disponible
-      try {
+            try {
         const data = await getInvestigationDetails(parseInt(id));
         setInvestigation(data);
-        // Démarrer l'investigation si elle n'est pas déjà en cours
-        if (data.statut === 'Disponible') {
-          try {
-            await startInvestigation(parseInt(id), data.databaseId);
-          } catch (startError) {
-            console.warn('Impossible de démarrer l\'investigation côté serveur:', startError);
-            // Ne pas bloquer l'affichage de la page
-          }
-        }
+        // if (data.status === 'Disponible') {
+        //   try {
+        //     await startInvestigation(parseInt(id));
+        //   } catch (startError) {
+        //     console.warn('Impossible de démarrer l\'investigation côté serveur:', startError);
+        //   }
+        // }
       } catch {
         console.log('Back-end non disponible, utilisation des données mockées');
-        // Garder les données mockées déjà définies
       }
     };
     loadInvestigation();
   }, [id]);
 
   const handleExecuteSQL = async () => {
-    if (!id) return;
+    if (!id || !investigation) return;
     setLoading(true);
     try {
-      const data = await executeSQL(parseInt(id), sqlCode);
+      const data = await executeSQL({ sql: sqlCode, investigationId: parseInt(id) });
       setResults(data);
-    } catch (error: unknown) {
-      const is404Error = error && typeof error === 'object' && 'response' in error &&
-                        error.response && typeof error.response === 'object' && 'status' in error.response &&
-                        error.response.status === 404;
-
-      if (is404Error) {
-        setResults({ error: 'Le back-end n\'est pas encore implémenté. Cette fonctionnalité sera disponible prochainement.' });
-      } else {
-        setResults({ error: 'Erreur lors de l\'exécution de la requête.' });
+    } catch (error) {
+      let errorMessage = 'Erreur lors de l\'exécution de la requête.';
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 404) {
+          errorMessage = 'Le back-end n\'est pas encore implémenté. Cette fonctionnalité sera disponible prochainement.';
+        } else if (error.response?.status === 403) {
+          errorMessage = 'Accès refusé. Vérifiez vos permissions ou contactez un administrateur.';
+        }
       }
+      setResults({ error: errorMessage });
     } finally {
       setLoading(false);
     }
@@ -126,7 +125,7 @@ const InvestigationPage: React.FC = () => {
     if (!id) return;
     try {
       const data = await getHints(parseInt(id));
-      setHints(data);
+      setHints(data.map((hint: { id: number; content?: string; text?: string }) => ({ id: hint.id, content: hint.content || hint.text || '' })));
       setShowHints(true);
     } catch (error) {
       console.error('Erreur lors du chargement des indices:', error);
@@ -140,7 +139,7 @@ const InvestigationPage: React.FC = () => {
   return (
     <div className={`investigation-page investigation-${investigation.id}`} style={investigation.image ? { backgroundImage: `url(${investigation.image})` } : undefined}>
       <div className="investigation-overlay">
-        <h1>{investigation.titre}</h1>
+        <h1>{investigation.title}</h1>
         <p className="investigation-plot">{investigation.description}</p>
 
         <div className="editor-container">
@@ -178,7 +177,7 @@ const InvestigationPage: React.FC = () => {
               <h3>Indices</h3>
               <ul>
                 {hints.map((hint, index) => (
-                  <li key={index}>{hint}</li>
+                  <li key={index}>{hint.content}</li>
                 ))}
               </ul>
               <button onClick={() => setShowHints(false)}>Fermer</button>

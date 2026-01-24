@@ -1,9 +1,10 @@
 import type { ReactNode } from 'react';
 
 export interface User {
-  id: number;
+  id: string;
   username: string;
   email: string;
+  role: 'USER' | 'ADMIN';
 }
 
 export interface AuthContextType {
