@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { authService } from './authService';
+import type { Mock } from 'vitest';
+import { authService } from '../services/authService';
 import api from '../api/api';
 
 // Mock the API module
@@ -26,7 +27,7 @@ describe('authService', () => {
           token: 'mock-token',
         },
       };
-      (api.post as any).mockResolvedValue(mockResponse);
+      (api.post as Mock).mockResolvedValue(mockResponse);
 
       const result = await authService.login('testuser', 'password');
 
@@ -39,7 +40,7 @@ describe('authService', () => {
 
     it('should throw error on login failure', async () => {
       const mockError = new Error('Login failed');
-      (api.post as any).mockRejectedValue(mockError);
+      (api.post as Mock).mockRejectedValue(mockError);
 
       await expect(authService.login('testuser', 'wrongpassword')).rejects.toThrow('Login failed');
     });
@@ -56,7 +57,7 @@ describe('authService', () => {
           token: 'mock-token',
         },
       };
-      (api.post as any).mockResolvedValue(mockResponse);
+      (api.post as Mock).mockResolvedValue(mockResponse);
 
       const result = await authService.register('newuser', 'new@example.com', 'password');
 
@@ -70,7 +71,7 @@ describe('authService', () => {
 
     it('should throw error on register failure', async () => {
       const mockError = new Error('Registration failed');
-      (api.post as any).mockRejectedValue(mockError);
+      (api.post as Mock).mockRejectedValue(mockError);
 
       await expect(authService.register('newuser', 'new@example.com', 'password')).rejects.toThrow('Registration failed');
     });
@@ -87,7 +88,7 @@ describe('authService', () => {
           token: 'mock-token',
         },
       };
-      (api.get as any).mockResolvedValue(mockResponse);
+      (api.get as Mock).mockResolvedValue(mockResponse);
 
       const result = await authService.getCurrentUser();
 
@@ -97,7 +98,7 @@ describe('authService', () => {
 
     it('should throw error on fetch failure', async () => {
       const mockError = new Error('Fetch failed');
-      (api.get as any).mockRejectedValue(mockError);
+      (api.get as Mock).mockRejectedValue(mockError);
 
       await expect(authService.getCurrentUser()).rejects.toThrow('Fetch failed');
     });
