@@ -4,6 +4,17 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { AuthProvider } from '../contexts/AuthProvider';
 import InvestigationPage from '../components/InvestigationPage';
 
+// Mock useNavigate
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom');
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+    useParams: () => ({ id: '1' }),
+  };
+});
+
 // Mock the API
 vi.mock('../api/api', () => ({
   default: {
@@ -43,17 +54,6 @@ vi.mock('@monaco-editor/react', () => ({
     />
   )
 }));
-
-// Mock useNavigate
-const mockNavigate = vi.fn();
-vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual('react-router-dom');
-  return {
-    ...actual,
-    useNavigate: () => mockNavigate,
-    useParams: () => ({ id: '1' })
-  };
-});
 
 const renderWithProviders = (component: React.ReactElement) => {
   return render(

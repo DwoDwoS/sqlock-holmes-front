@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { getInvestigationDetails, executeSQL, getHints } from '../services/investigationService';
-import { InvestigationHeader, SQLEditor, ResultsDisplay, HintsModal, Actions } from './investigation';
+import { InvestigationHeader, SQLEditor, ResultsDisplay, HintsModal, Actions, SubmitSolutionModal } from './investigation';
+import { useInvestigationSubmission } from '../hooks/useInvestigationSubmission';
 import './InvestigationPage.css';
 
 interface Investigation {
@@ -78,6 +79,18 @@ const InvestigationPage: React.FC = () => {
   const [hints, setHints] = useState<Hint[]>([]);
   const [showHints, setShowHints] = useState(false);
 
+  const {
+    culprit,
+    setCulprit,
+    motive,
+    setMotive,
+    showSubmitModal,
+    loading: submitLoading,
+    handleSubmit,
+    openSubmitModal,
+    closeSubmitModal,
+  } = useInvestigationSubmission(id);
+
   useEffect(() => {
     const loadInvestigation = async () => {
       if (!id) return;
@@ -141,6 +154,7 @@ const InvestigationPage: React.FC = () => {
           onChange={(value) => setSqlCode(value || '')}
           onExecute={handleExecuteSQL}
           onShowHints={handleShowHints}
+          onSubmit={openSubmitModal}
           loading={loading}
         />
 
@@ -150,6 +164,18 @@ const InvestigationPage: React.FC = () => {
           hints={hints}
           show={showHints}
           onClose={() => setShowHints(false)}
+        />
+
+        <SubmitSolutionModal
+          show={showSubmitModal}
+          onClose={closeSubmitModal}
+          culprit={culprit}
+          setCulprit={setCulprit}
+          motive={motive}
+          setMotive={setMotive}
+          sqlCode={sqlCode}
+          loading={submitLoading}
+          onSubmit={() => handleSubmit(sqlCode)}
         />
 
         <Actions onBack={() => navigate('/investigations')} />

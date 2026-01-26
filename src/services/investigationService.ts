@@ -93,3 +93,16 @@ export async function getInvestigationDetails(id: number): Promise<Investigation
 export async function startInvestigation(id: number): Promise<void> {
   await api.post(`/investigations/${id}/start`);
 }
+
+export interface SubmitSolutionResponse {
+  success: boolean;
+  message?: string;
+  error?: string;
+}
+
+export async function submitSolution(investigationId: number, culprit: string, motive: string): Promise<SubmitSolutionResponse> {
+  const payload = { culprit, motive };
+  console.log(`Soumission de solution pour enquête ${investigationId}:`, payload);
+  const res = await api.post(`/investigations/${investigationId}/submit-solution`, payload);
+  return res.data;
+}
