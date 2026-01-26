@@ -9,25 +9,23 @@
   position: relative;
 }
 
+.investigation-overlay {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px 0;
+}
+
+.investigation-page.has-image .investigation-overlay {
+  background: transparent;
+}
+
 .investigation-overlay h1 {
   color: #ffffff;
   text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
   font-size: 2.5em;
   margin-bottom: 20px;
   text-align: center;
-}
-
-/* Styles spécifiques pour chaque enquête */
-.investigation-1 {
-  background-image: url('/museum-heist.png');
-}
-
-.investigation-2 {
-  background-image: url('/corporate-fraud.png');
-}
-
-.investigation-3 {
-  background-image: url('/manor-murder.png');
 }
 
 /* Fallback pour les enquêtes sans image */

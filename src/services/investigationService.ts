@@ -10,6 +10,7 @@ export interface Investigation {
   difficulty: 'Facile' | 'Moyen' | 'Difficile';
   status: 'Disponible' | 'En cours' | 'Terminée';
   databaseId: string;
+  image?: string;
 }
 
 const mapDifficulty = (d: ApiDifficulty | undefined): Investigation['difficulty'] => {
@@ -46,7 +47,8 @@ const mapInvestigation = (apiItem: Record<string, unknown>): Investigation => ({
   description: (apiItem?.description as string) ?? '',
   difficulty: mapDifficulty(apiItem?.difficulty as ApiDifficulty),
   status: mapStatus(apiItem?.statut as ApiStatus),
-  databaseId: (apiItem?.databaseId as string) ?? (apiItem?.dbId as string) ?? (apiItem?.database_id as string) ?? ''
+  databaseId: (apiItem?.databaseId as string) ?? (apiItem?.dbId as string) ?? (apiItem?.database_id as string) ?? '',
+  image: (apiItem?.image as string) ?? undefined
 });
 
 export async function getInvestigations(): Promise<Investigation[]> {
