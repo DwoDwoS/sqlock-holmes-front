@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
-import Editor from '@monaco-editor/react';
 import { getInvestigationDetails, executeSQL, getHints } from '../services/investigationService';
+import { InvestigationHeader, SQLEditor, ResultsDisplay, HintsModal, Actions, SubmitSolutionModal } from './investigation';
+import { useInvestigationSubmission } from '../hooks/useInvestigationSubmission';
 import './InvestigationPage.css';
 
 interface Investigation {
@@ -78,6 +79,18 @@ const InvestigationPage: React.FC = () => {
   const [hints, setHints] = useState<Hint[]>([]);
   const [showHints, setShowHints] = useState(false);
 
+  const {
+    culprit,
+    setCulprit,
+    motive,
+    setMotive,
+    showSubmitModal,
+    loading: submitLoading,
+    handleSubmit,
+    openSubmitModal,
+    closeSubmitModal,
+  } = useInvestigationSubmission(id);
+
   useEffect(() => {
     const loadInvestigation = async () => {
       if (!id) return;
@@ -85,14 +98,7 @@ const InvestigationPage: React.FC = () => {
       setInvestigation(mockData);
             try {
         const data = await getInvestigationDetails(parseInt(id));
-        setInvestigation(data);
-        // if (data.status === 'Disponible') {
-        //   try {
-        //     await startInvestigation(parseInt(id));
-        //   } catch (startError) {
-        //     console.warn('Impossible de démarrer l\'investigation côté serveur:', startError);
-        //   }
-        // }
+        setInvestigation({ ...mockData, ...data, image: data.image || mockData.image });
       } catch {
         console.log('Back-end non disponible, utilisation des données mockées');
       }
@@ -136,60 +142,43 @@ const InvestigationPage: React.FC = () => {
     return <div>Chargement...</div>;
   }
 
+  const style = investigation.image ? { backgroundImage: `url(${investigation.image})` } : undefined;
+
   return (
-    <div className={`investigation-page investigation-${investigation.id}`} style={investigation.image ? { backgroundImage: `url(${investigation.image})` } : undefined}>
+    <div className={`investigation-page investigation-${investigation.id} ${investigation.image ? 'has-image' : ''}`} style={style}>
       <div className="investigation-overlay">
-        <h1>{investigation.title}</h1>
-        <p className="investigation-plot">{investigation.description}</p>
+        <InvestigationHeader investigation={investigation} />
 
-        <div className="editor-container">
-          <div className="editor-header">
-            <button className="hints-button" onClick={handleShowHints}>
-              Indices
-            </button>
-          </div>
-          <Editor
-            height="400px"
-            language="sql"
-            value={sqlCode}
-            onChange={(value) => setSqlCode(value || '')}
-            theme="vs-dark"
-            options={{
-              minimap: { enabled: false },
-              fontSize: 14,
-            }}
-          />
-          <button className="execute-button" onClick={handleExecuteSQL} disabled={loading}>
-            {loading ? 'Exécution...' : 'Exécuter'}
-          </button>
-        </div>
+        <SQLEditor
+          sqlCode={sqlCode}
+          onChange={(value) => setSqlCode(value || '')}
+          onExecute={handleExecuteSQL}
+          onShowHints={handleShowHints}
+          onSubmit={openSubmitModal}
+          loading={loading}
+        />
 
-        {results && (
-          <div className="results-container">
-            <h3>Résultats</h3>
-            <pre>{JSON.stringify(results, null, 2)}</pre>
-          </div>
-        )}
+        <ResultsDisplay results={results} />
 
-        {showHints && (
-          <div className="hints-modal">
-            <div className="hints-content">
-              <h3>Indices</h3>
-              <ul>
-                {hints.map((hint, index) => (
-                  <li key={index}>{hint.content}</li>
-                ))}
-              </ul>
-              <button onClick={() => setShowHints(false)}>Fermer</button>
-            </div>
-          </div>
-        )}
+        <HintsModal
+          hints={hints}
+          show={showHints}
+          onClose={() => setShowHints(false)}
+        />
 
-        <div className="actions">
-          <button className="secondary-button" onClick={() => navigate('/investigations')}>
-            Retour aux enquêtes
-          </button>
-        </div>
+        <SubmitSolutionModal
+          show={showSubmitModal}
+          onClose={closeSubmitModal}
+          culprit={culprit}
+          setCulprit={setCulprit}
+          motive={motive}
+          setMotive={setMotive}
+          sqlCode={sqlCode}
+          loading={submitLoading}
+          onSubmit={() => handleSubmit(sqlCode)}
+        />
+
+        <Actions onBack={() => navigate('/investigations')} />
       </div>
     </div>
   );

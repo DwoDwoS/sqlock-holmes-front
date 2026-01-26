@@ -9,25 +9,23 @@
   position: relative;
 }
 
+.investigation-overlay {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px 0;
+}
+
+.investigation-page.has-image .investigation-overlay {
+  background: transparent;
+}
+
 .investigation-overlay h1 {
   color: #ffffff;
   text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
   font-size: 2.5em;
   margin-bottom: 20px;
   text-align: center;
-}
-
-/* Styles spécifiques pour chaque enquête */
-.investigation-1 {
-  background-image: url('/museum-heist.png');
-}
-
-.investigation-2 {
-  background-image: url('/corporate-fraud.png');
-}
-
-.investigation-3 {
-  background-image: url('/manor-murder.png');
 }
 
 /* Fallback pour les enquêtes sans image */
@@ -97,6 +95,29 @@
   cursor: not-allowed;
 }
 
+.submit-button {
+  margin-top: 10px;
+  margin-left: 10px;
+  background-color: rgba(51, 51, 51, 0.9);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  backdrop-filter: blur(10px);
+}
+
+.submit-button:hover {
+  background-color: rgba(0, 86, 179, 0.9);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.submit-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
 .results-container {
   margin-top: 20px;
   padding: 15px;
@@ -161,6 +182,135 @@
 
 .hints-content button:hover {
   background-color: #5a6268;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #ad8762;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.submission-options {
+  margin: 20px 0;
+}
+
+.option-section {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  background-color: #f8f9fa;
+}
+
+.option-section h4 {
+  margin-top: 0;
+  color: #495057;
+}
+
+.option-section label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.option-section p {
+  color: #333;
+  margin: 10px 0;
+}
+
+.option-section input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #53514e;
+  box-sizing: border-box;
+}
+
+.option-section input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.option-section input::placeholder {
+  color: rgb(228, 224, 224);
+}
+
+.sql-preview {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+  white-space: pre-wrap;
+  font-family: monospace;
+  font-size: 14px;
+  color: #333;
+  overflow-x: auto;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.modal-actions button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.modal-actions button:first-child {
+  background-color: #6c757d;
+  color: white;
+}
+
+.modal-actions button:first-child:hover {
+  background-color: #5a6268;
+}
+
+.modal-actions button:last-child {
+  background-color: #333;
+  color: white;
+}
+
+.modal-actions button:last-child:hover {
+  background-color: #0056b3;
+}
+
+.modal-actions button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .actions {
