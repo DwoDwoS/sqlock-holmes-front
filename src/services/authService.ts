@@ -19,6 +19,12 @@ export interface AuthResponse {
   token: string;
 }
 
+export interface UpdateUserRequest {
+  username?: string;
+  email?: string;
+  password?: string;
+}
+
 export const authService = {
   login: async (username: string, password: string): Promise<AuthResponse> => {
     const response = await api.post('/auth/login', { username, password });
@@ -33,5 +39,14 @@ export const authService = {
   getCurrentUser: async (): Promise<AuthResponse> => {
     const response = await api.get('/users/me');
     return response.data;
+  },
+
+  updateUser: async (updates: UpdateUserRequest): Promise<AuthResponse> => {
+    const response = await api.put('/users/profile', updates);
+    return response.data;
+  },
+
+  deleteUser: async (): Promise<void> => {
+    await api.delete('/users/profile');
   },
 };
