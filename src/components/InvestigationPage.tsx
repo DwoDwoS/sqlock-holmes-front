@@ -69,11 +69,21 @@ const getMockInvestigationData = (id: number): Investigation => {
   };
 };
 
+const getDefaultQuery = (investigationId: number): string => {
+  const queries: Record<number, string> = {
+    1: 'SELECT * FROM museum_employees LIMIT 5;',
+    2: 'SELECT * FROM company_employees LIMIT 5;',
+    3: 'SELECT * FROM mansion_guests LIMIT 5;',
+  };
+  return queries[investigationId] || 'SELECT \'Utilisez les indices pour découvrir les tables disponibles\' as hint;';
+};
+
 const InvestigationPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const investigationId = id ? parseInt(id) : 1;
   const [investigation, setInvestigation] = useState<Investigation | null>(null);
-  const [sqlCode, setSqlCode] = useState<string>('SELECT * FROM table_name;');
+  const [sqlCode, setSqlCode] = useState<string>(getDefaultQuery(investigationId));
   const [results, setResults] = useState<SQLResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [hints, setHints] = useState<Hint[]>([]);
@@ -96,6 +106,7 @@ const InvestigationPage: React.FC = () => {
       if (!id) return;
             const mockData = getMockInvestigationData(parseInt(id));
       setInvestigation(mockData);
+      setSqlCode(getDefaultQuery(parseInt(id)));
             try {
         const data = await getInvestigationDetails(parseInt(id));
         setInvestigation({ ...mockData, ...data, image: data.image || mockData.image });

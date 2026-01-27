@@ -99,7 +99,7 @@ describe('InvestigationPage', () => {
     fireEvent.click(executeButton);
 
     await waitFor(() => {
-      expect(executeSQL).toHaveBeenCalledWith({ investigationId: 1, sql: 'SELECT * FROM table_name;' });
+      expect(executeSQL).toHaveBeenCalledWith({ investigationId: 1, sql: 'SELECT * FROM museum_employees LIMIT 5;' });
     });
   });
 

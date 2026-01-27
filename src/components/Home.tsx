@@ -6,7 +6,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <>
+    <div className="home-container">
       <section className="hero-section">
         <div className="hero-content">
         <img src="sqlock-holmes-logo-removebg-preview.png" alt="Logo SQLock Holmes" className="navbar-logo" />
@@ -44,7 +44,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

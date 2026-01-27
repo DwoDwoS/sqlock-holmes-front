@@ -1,8 +1,8 @@
 .investigation-page {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
   padding: 20px;
-  min-height: 100vh;
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -10,10 +10,13 @@
 }
 
 .investigation-overlay {
-  background: rgba(0, 0, 0, 0.5);
-  padding: 20px;
-  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 40px;
+  border-radius: 15px;
   margin: 20px 0;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .investigation-page.has-image .investigation-overlay {
@@ -34,7 +37,7 @@
 }
 
 .investigation-page:not([style*="background-image"]) .investigation-overlay {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .investigation-plot {
