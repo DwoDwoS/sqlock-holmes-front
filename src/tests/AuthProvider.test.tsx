@@ -24,11 +24,13 @@ vi.mock('axios', () => ({
 const mockLogin = vi.fn().mockResolvedValue({ success: true });
 const mockRegister = vi.fn().mockResolvedValue({ success: true });
 const mockLogout = vi.fn();
+const mockUpdateUser = vi.fn().mockResolvedValue({ success: true });
 
 vi.mock('../hooks/useAuth', () => ({
   useAuth: () => ({
     login: mockLogin,
     register: mockRegister,
+    updateUser: mockUpdateUser,
     logout: mockLogout
   })
 }));

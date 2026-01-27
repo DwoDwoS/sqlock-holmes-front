@@ -1,31 +1,34 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
+import { AuthProvider } from '../contexts/AuthProvider';
 import Navbar from '../components/Navbar';
 
-const renderWithRouter = (component: React.ReactElement) => {
+const renderWithProviders = (component: React.ReactElement) => {
   return render(
-    <BrowserRouter>
-      {component}
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        {component}
+      </BrowserRouter>
+    </AuthProvider>
   );
 };
 
 describe('Navbar', () => {
   it('renders navbar with hamburger menu', () => {
-    renderWithRouter(<Navbar />);
+    renderWithProviders(<Navbar />);
     const hamburgerButton = screen.getByRole('button', { name: /ouvrir le menu/i });
     expect(hamburgerButton).toBeInTheDocument();
   });
 
   it('renders mobile navbar', () => {
-    renderWithRouter(<Navbar />);
+    renderWithProviders(<Navbar />);
     const mobileNav = screen.getByRole('navigation', { name: /navigation mobile/i });
     expect(mobileNav).toBeInTheDocument();
   });
 
   it('toggles menu when hamburger is clicked', () => {
-    renderWithRouter(<Navbar />);
+    renderWithProviders(<Navbar />);
     const hamburgerButton = screen.getByRole('button', { name: /ouvrir le menu/i });
 
     // Menu should be closed initially
@@ -41,7 +44,7 @@ describe('Navbar', () => {
   });
 
   it('renders navigation links', () => {
-    renderWithRouter(<Navbar />);
+    renderWithProviders(<Navbar />);
     // Check that links exist (may be duplicated between desktop and mobile nav)
     const accueilLinks = screen.getAllByRole('link', { name: /accueil/i });
     const accountLinks = screen.getAllByRole('link', { name: /mon compte/i });
@@ -55,7 +58,7 @@ describe('Navbar', () => {
   });
 
   it('renders mobile navigation icons', () => {
-    renderWithRouter(<Navbar />);
+    renderWithProviders(<Navbar />);
     // Check that mobile navigation links exist by aria-label
     const homeLinks = screen.getAllByRole('link', { name: 'Accueil' });
     const accountLinks = screen.getAllByRole('link', { name: 'Mon compte' });

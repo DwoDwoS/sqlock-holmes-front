@@ -71,7 +71,7 @@ const Investigations: React.FC = () => {
   return (
     <div className="investigations-container">
       <h1>Sélection des Enquêtes</h1>
-      <p>Choisissez une enquête à résoudre en utilisant vos compétences SQL. Survolez les enquêtes avec votre souris pour en connaître l'intrigue.</p>
+      <p>Choisissez une enquête à résoudre en utilisant vos compétences SQL. Survolez les enquêtes pour en connaître l'intrigue.</p>
 
       {loading && <p>Chargement des données depuis le serveur...</p>}
 
@@ -127,7 +127,7 @@ const Investigations: React.FC = () => {
       </div>
 
       <div className="investigations-actions">
-        <button className="secondary-button" onClick={() => navigate('/')}>
+        <button className="primary-button" onClick={() => navigate('/')}>
           Retour à l'accueil
         </button>
       </div>
