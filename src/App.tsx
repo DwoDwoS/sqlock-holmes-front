@@ -12,10 +12,10 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import './App.css';
 
-const Layout: React.FC<{ children: React.ReactNode; isInvestigationsPage: boolean }> = ({ children, isInvestigationsPage }) => (
-  <div className={`layout ${isInvestigationsPage ? 'investigations-background' : ''}`}>
+const Layout: React.FC<{ children: React.ReactNode; isInvestigationsPage: boolean; isHomePage: boolean }> = ({ children, isInvestigationsPage, isHomePage }) => (
+  <div className={`layout ${isHomePage ? 'home-background' : ''} ${isInvestigationsPage ? 'investigations-background' : ''}`}>
     <Navbar />
-    <main style={{ paddingTop: '90px', paddingBottom: '100px', flex: 1 }}>
+    <main style={{ paddingTop: isHomePage ? '0' : '90px', paddingBottom: isHomePage ? '0' : '100px', flex: 1 }}>
       {children}
     </main>
     <Footer />
@@ -35,6 +35,7 @@ function App() {
 const AppContent: React.FC = () => {
   const location = useLocation();
   const isInvestigationsPage = location.pathname === '/investigations';
+  const isHomePage = location.pathname === '/';
 
   return (
     <div className="App">
@@ -45,7 +46,7 @@ const AppContent: React.FC = () => {
           path="/"
           element={
             <ProtectedRoute>
-              <Layout isInvestigationsPage={false}>
+              <Layout isInvestigationsPage={false} isHomePage={isHomePage}>
                 <Home />
               </Layout>
             </ProtectedRoute>
@@ -55,7 +56,7 @@ const AppContent: React.FC = () => {
           path="/investigations"
           element={
             <ProtectedRoute>
-              <Layout isInvestigationsPage={isInvestigationsPage}>
+              <Layout isInvestigationsPage={isInvestigationsPage} isHomePage={false}>
                 <Investigations />
               </Layout>
             </ProtectedRoute>
@@ -65,7 +66,7 @@ const AppContent: React.FC = () => {
           path="/profile"
           element={
             <ProtectedRoute>
-              <Layout isInvestigationsPage={false}>
+              <Layout isInvestigationsPage={false} isHomePage={false}>
                 <Profile />
               </Layout>
             </ProtectedRoute>
@@ -75,7 +76,7 @@ const AppContent: React.FC = () => {
           path="/investigation/:id"
           element={
             <ProtectedRoute>
-              <Layout isInvestigationsPage={false}>
+              <Layout isInvestigationsPage={false} isHomePage={false}>
                 <InvestigationPage />
               </Layout>
             </ProtectedRoute>

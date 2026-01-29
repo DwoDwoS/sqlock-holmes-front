@@ -90,7 +90,14 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="auth-container">
+    <div>
+      <section className="hero-section">
+        <div className="hero-content">
+        <img src="sqlock-holmes-logo-removebg-preview.png" alt="Logo SQLock Holmes" className="navbar-logo" />
+          <p className="hero-subtitle">Outil de résolution d'enquêtes en exécutant des requêtes SQL</p>
+        </div>
+      </section>
+      <div className="auth-container">
       <h2>Inscrivez-vous !</h2>
       <form onSubmit={handleSubmit}>
         <div>
@@ -147,6 +154,7 @@ const Register: React.FC = () => {
       <p>
        Vous avez déjà un compte ? <a href="/login">Connexion</a>
       </p>
+    </div>
     </div>
   );
 };
