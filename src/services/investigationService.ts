@@ -77,11 +77,28 @@ export async function executeSQL(payload: ExecuteSQLRequest): Promise<ExecuteSQL
 
 export interface Hint {
   id: number;
-  text: string;
+  content?: string;
+  text?: string;
 }
 
 export async function getHints(investigationId: number): Promise<Hint[]> {
   const res = await api.get(`/investigations/${investigationId}/hints`);
+  return res.data;
+}
+
+export async function unlockNextHint(investigationId: number): Promise<Hint> {
+  const res = await api.post(`/investigations/${investigationId}/hints/unlock`);
+  return res.data;
+}
+
+export interface HintCount {
+  unlocked: number;
+  total: number;
+  remaining: number;
+}
+
+export async function getHintCount(investigationId: number): Promise<HintCount> {
+  const res = await api.get(`/investigations/${investigationId}/hints/count`);
   return res.data;
 }
 

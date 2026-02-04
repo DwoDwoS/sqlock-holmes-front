@@ -122,10 +122,13 @@
 }
 
 .layout.investigations-background {
-  background-image: url('/investigations-board.png');
+  background: url('/investigations-board.png') no-repeat center center;
   background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+}
+
+.layout.home-background {
+  background: url('/landing-page-bg.png') no-repeat center center;
+  background-size: cover;
 }
 
 .layout main {
@@ -177,31 +180,24 @@
 .welcome-section {
   flex: 1;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 0;
+  margin: 0;
   width: 100%;
 }
 
 .welcome-card {
-  background: rgba(255, 255, 255, 0.05) url('/landing-page-bg.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-blend-mode: overlay;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 2.5rem;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: none;
+  border-radius: 0;
+  padding: 4rem 2rem 2rem;
+  backdrop-filter: none;
+  box-shadow: none;
   width: 100%;
-  max-width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .welcome-card h2 {
@@ -230,7 +226,7 @@
 }
 
 .feature-item {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   padding: 1.5rem;

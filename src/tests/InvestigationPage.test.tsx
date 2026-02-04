@@ -33,6 +33,9 @@ vi.mock('../api/api', () => ({
       if (url === '/investigations/1/start') {
         return Promise.resolve();
       }
+      if (url.includes('/submit-solution')) {
+        return Promise.reject({ response: { status: 404 } });
+      }
     })
   }
 }));
@@ -41,7 +44,10 @@ vi.mock('../api/api', () => ({
 vi.mock('../services/investigationService', () => ({
   executeSQL: vi.fn(() => Promise.reject({ response: { status: 404 } })),
   getHints: vi.fn(() => Promise.reject({ response: { status: 404 } })),
-  getInvestigationDetails: vi.fn(() => Promise.reject({ response: { status: 404 } }))
+  getHintCount: vi.fn(() => Promise.reject({ response: { status: 404 } })),
+  unlockNextHint: vi.fn(() => Promise.reject({ response: { status: 404 } })),
+  getInvestigationDetails: vi.fn(() => Promise.reject({ response: { status: 404 } })),
+  submitSolution: vi.fn(() => Promise.reject({ response: { status: 404 } }))
 }));
 
 // Mock Monaco Editor
@@ -103,7 +109,7 @@ describe('InvestigationPage', () => {
     });
   });
 
-  it('should handle hints error gracefully', async () => {
+  it('should handle hints gracefully when not authenticated', async () => {
     const { getHints } = await import('../services/investigationService');
     renderWithProviders(<InvestigationPage />);
 
@@ -114,12 +120,15 @@ describe('InvestigationPage', () => {
     const hintsButton = screen.getByText('Indices');
     fireEvent.click(hintsButton);
 
-    // Avec l'erreur 404, rien ne devrait s'afficher
+    // Sans token, devrait utiliser les mocks directement sans appeler getHints
     await waitFor(() => {
-      expect(getHints).toHaveBeenCalledWith(1);
+      expect(getHints).not.toHaveBeenCalled();
     });
-    // La modale ne devrait pas s'ouvrir
-    expect(screen.queryByText('Indice 1')).not.toBeInTheDocument();
+    
+    // La modal devrait s'ouvrir avec les indices mockés
+    await waitFor(() => {
+      expect(screen.getByText('Les caméras de sécurité ont enregistré les entrées et sorties du musée.')).toBeInTheDocument();
+    });
   });
 
   it('should navigate back to investigations', async () => {
