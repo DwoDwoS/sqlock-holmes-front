@@ -390,10 +390,13 @@
   color: white;
 }
 
-.investigation-museum .investigation-header h2,
-.investigation-museum .investigation-description {
+.investigation-museum .investigation-header h2 {
   color: white;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  text-shadow: none;
+}
+
+.investigation-museum .investigation-description {
+  background: #f8f5ee;
 }
 
 .investigation-museum .badge {
@@ -410,10 +413,13 @@
   color: white;
 }
 
-.investigation-corporate .investigation-header h2,
-.investigation-corporate .investigation-description {
+.investigation-corporate .investigation-header h2 {
   color: white;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  text-shadow: none;
+}
+
+.investigation-corporate .investigation-description {
+  background: #f8f5ee;
 }
 
 .investigation-corporate .badge {
@@ -430,10 +436,13 @@
   color: white;
 }
 
-.investigation-manor .investigation-header h2,
-.investigation-manor .investigation-description {
+.investigation-manor .investigation-header h2 {
   color: white;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  text-shadow: none;
+}
+
+.investigation-manor .investigation-description {
+  background: #f8f5ee;
 }
 
 .investigation-manor .badge {
@@ -585,13 +594,50 @@
   opacity: 0;
   max-height: 0;
   overflow: hidden;
-  transition: opacity 0.3s ease, max-height 0.3s ease;
+  transition: opacity 0.3s ease, max-height 0.3s ease, transform 0.3s ease;
+  background: #f8f5ee;
+  background-image: 
+    linear-gradient(90deg, rgba(139, 119, 101, 0.1) 1px, transparent 1px),
+    linear-gradient(rgba(139, 119, 101, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    inset 0 0 40px rgba(139, 119, 101, 0.05);
+  border: 1px solid rgba(139, 119, 101, 0.2);
+  position: relative;
+}
+
+.investigation-description::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.3) 0%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.02) 100%
+  );
+  pointer-events: none;
+  border-radius: 8px;
+}
+
+.investigation-description p {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  text-shadow: none;
 }
 
 .investigation-card:hover .investigation-description,
 .investigation-card:focus-within .investigation-description {
   opacity: 1;
-  max-height: 200px;
+  max-height: 300px;
+  transform: translateY(-4px);
 }
 
 .investigations-actions {
