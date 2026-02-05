@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getInvestigationDetails, submitSolution } from '../services/investigationService';
+import { getInvestigationDetails } from '../services/investigationService';
 import type { Investigation } from '../types/investigation';
 import { getMockInvestigationData } from '../utils/investigationUtils';
 
@@ -22,15 +22,6 @@ export const useInvestigationData = (id: string | undefined) => {
         setInvestigation({ ...mockData, ...data, image: data.image || mockData.image });
       } catch {
         setInvestigation(mockData);
-      }
-
-      const token = localStorage.getItem('token');
-      if (token) {
-        try {
-          await submitSolution(investigationId, 'auto_start', 'auto_start');
-        } catch {
-          // Silently fail if auto-start doesn't work
-        }
       }
 
       setLoading(false);

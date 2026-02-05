@@ -108,7 +108,15 @@ export async function getInvestigationDetails(id: number): Promise<Investigation
 }
 
 export async function startInvestigation(id: number): Promise<void> {
-  await api.post(`/investigations/${id}/start`);
+  try {
+    const response = await api.post(`/investigations/${id}/start`, {}, {
+      validateStatus: () => true, // Accepte tous les statuts, évite les erreurs
+    });
+    // Retourne silencieusement, peu importe le statut
+    return response.data;
+  } catch {
+    // Silently fail - investigation might already be started
+  }
 }
 
 export async function restartInvestigation(id: number): Promise<void> {
