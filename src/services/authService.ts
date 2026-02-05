@@ -37,7 +37,14 @@ export const authService = {
   },
 
   getCurrentUser: async (): Promise<AuthResponse> => {
-    const response = await api.get('/users/me');
+    const response = await api.get('/users/me', {
+      validateStatus: () => true, // Accepte tous les statuts pour éviter les logs d'erreur
+    });
+    
+    if (response.status !== 200) {
+      throw new Error('Unauthorized');
+    }
+    
     return response.data;
   },
 

@@ -46,15 +46,13 @@ export const useInvestigationSubmission = (investigationId: string | undefined) 
     setLoading(true);
     try {
       const data = await submitSolution(parseInt(investigationId), submissionData.culprit, submissionData.motive);
-      console.log('Réponse soumission:', data);
 
       if (data.success) {
-        console.log('Soumission réussie, redirection vers /investigations');
         setShowSubmitModal(false);
         setCulprit('');
         setMotive('');
         navigate('/investigations');
-        alert('Solution soumise avec succès ! Enquête terminée !');
+        alert(data.message || 'Solution soumise avec succès !');
       } else {
         alert(data.message || 'Erreur lors de la soumission.');
       }

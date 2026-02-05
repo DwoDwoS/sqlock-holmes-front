@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getInvestigations } from '../services/investigationService';
+import { getInvestigations, restartInvestigation } from '../services/investigationService';
 
 interface Investigation {
   id: number;
@@ -59,12 +59,40 @@ const Investigations: React.FC = () => {
     loadInvestigations();
   }, []);
 
+  useEffect(() => {
+    const handleVisibilityChange = async () => {
+      if (!document.hidden) {
+        try {
+          const data = await getInvestigations();
+          if (Array.isArray(data) && data.length > 0) {
+            setInvestigations(data);
+          }
+        } catch (error) {
+          console.error('Erreur lors du rafraîchissement:', error);
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
+
   const getDifficulteColor = (difficulte: string) => {
     switch (difficulte) {
       case 'Facile': return 'difficulty-easy';
       case 'Moyen': return 'difficulty-medium';
       case 'Difficile': return 'difficulty-hard';
       default: return '';
+    }
+  };
+
+  const handleRestart = async (investigationId: number) => {
+    try {
+      await restartInvestigation(investigationId);
+      navigate(`/investigation/${investigationId}`);
+    } catch (error) {
+      console.error('Erreur lors du redémarrage de l\'enquête:', error);
+      alert('Erreur lors du redémarrage de l\'enquête.');
     }
   };
 
@@ -83,10 +111,15 @@ const Investigations: React.FC = () => {
           else if (investigation.id === 3) backgroundClass = 'investigation-manor';
           
           return (
-            <div key={investigation.id} className={`investigation-card ${backgroundClass} ${investigation.status === 'Disponible' ? 'status-available' : 'status-unavailable'}`}>
+            <div key={investigation.id} className={`investigation-card ${backgroundClass} ${investigation.status === 'Disponible' ? 'status-available' : 'status-unavailable'} ${investigation.status === 'Terminée' ? 'status-completed' : ''}`}>
               <div className="investigation-header">
                 <h2>{investigation.title || 'Sans titre'}</h2>
                 <div className="investigation-badges">
+                  {investigation.status === 'Terminée' && (
+                    <span className="badge badge-resolved">
+                      ✓ Résolue
+                    </span>
+                  )}
                   <span className={`badge difficulte ${getDifficulteColor(investigation.difficulty)}`}>
                     {investigation.difficulty || '—'}
                   </span>
@@ -109,18 +142,32 @@ const Investigations: React.FC = () => {
               <div className="investigation-description">
                 <p>{investigation.description}</p>
               </div>
-              <Link
-                to={`/investigation/${investigation.id}`}
-                className={`primary-button ${investigation.status !== 'Disponible' ? 'disabled' : ''}`}
-                onClick={(e) => {
-                  if (investigation.status !== 'Disponible') {
-                    e.preventDefault();
-                  }
-                }}
-              >
-                {investigation.status === 'Disponible' ? 'Commencer l\'enquête' :
-                 investigation.status === 'En cours' ? 'Continuer' : 'Revoir'}
-              </Link>
+              {investigation.status === 'Terminée' ? (
+                <button
+                  className="primary-button"
+                  onClick={() => handleRestart(investigation.id)}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: 'middle', marginRight: '0.5rem' }}>
+                    <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+                    <path d="M21 3v5h-5"/>
+                    <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+                    <path d="M3 21v-5h5"/>
+                  </svg>
+                  Rejouer l'enquête
+                </button>
+              ) : (
+                <Link
+                  to={`/investigation/${investigation.id}`}
+                  className={`primary-button ${investigation.status !== 'Disponible' && investigation.status !== 'En cours' ? 'disabled' : ''}`}
+                  onClick={(e) => {
+                    if (investigation.status !== 'Disponible' && investigation.status !== 'En cours') {
+                      e.preventDefault();
+                    }
+                  }}
+                >
+                  {investigation.status === 'Disponible' ? 'Commencer l\'enquête' : 'Continuer'}
+                </Link>
+              )}
             </div>
           );
         })}

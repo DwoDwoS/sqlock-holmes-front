@@ -21,6 +21,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           localStorage.removeItem('user');
           setUser(null);
         }
+      } else {
+        // Pas de token = pas connecté, inutile d'appeler l'API
+        setUser(null);
       }
       setIsLoading(false);
     };
