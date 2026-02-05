@@ -405,6 +405,11 @@
   text-shadow: none;
 }
 
+.investigation-museum .badge-resolved {
+  background-color: #28a745;
+  color: white;
+}
+
 .investigation-corporate {
   background-image: url('/corporate-fraud.png');
   background-size: cover;
@@ -428,6 +433,11 @@
   text-shadow: none;
 }
 
+.investigation-corporate .badge-resolved {
+  background-color: #28a745;
+  color: white;
+}
+
 .investigation-manor {
   background-image: url('/manor-murder.png');
   background-size: cover;
@@ -449,6 +459,11 @@
   background-color: rgba(255, 255, 255, 0.9);
   color: #2c3e50;
   text-shadow: none;
+}
+
+.investigation-manor .badge-resolved {
+  background-color: #28a745;
+  color: white;
 }
 
 .investigation-header {
@@ -494,6 +509,16 @@
   color: #721c24;
 }
 
+.badge-resolved {
+  background-color: #28a745;
+  color: white;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+}
+
 .status-available {
   background-color: #d1ecf1;
   color: #0c5460;
@@ -507,6 +532,23 @@
 .status-completed {
   background-color: #d6d8db;
   color: #383d41;
+}
+
+.investigation-card.status-completed {
+  border: 2px solid #28a745;
+  position: relative;
+}
+
+.investigation-card.status-completed::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 12px;
+  box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.1);
+  pointer-events: none;
 }
 
 .status-icon {
@@ -550,6 +592,20 @@
   transition: all 0.3s ease;
   margin-top: 1rem;
   box-sizing: border-box;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.investigation-card.status-completed .primary-button {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.investigation-card.status-completed:hover .primary-button {
+  background-color: #218838;
+  border-color: #1e7e34;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
 }
 
 .investigation-card:hover .primary-button {

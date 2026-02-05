@@ -54,7 +54,7 @@ export const useInvestigationSubmission = (investigationId: string | undefined) 
         setCulprit('');
         setMotive('');
         navigate('/investigations');
-        alert('Solution soumise avec succès ! Enquête terminée !');
+        alert(data.message || 'Solution soumise avec succès !');
       } else {
         alert(data.message || 'Erreur lors de la soumission.');
       }

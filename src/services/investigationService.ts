@@ -46,7 +46,7 @@ const mapInvestigation = (apiItem: Record<string, unknown>): Investigation => ({
   title: (apiItem?.title as string) ?? 'Sans titre',
   description: (apiItem?.description as string) ?? '',
   difficulty: mapDifficulty(apiItem?.difficulty as ApiDifficulty),
-  status: mapStatus(apiItem?.statut as ApiStatus),
+  status: mapStatus((apiItem?.status ?? apiItem?.statut) as ApiStatus),
   databaseId: (apiItem?.databaseId as string) ?? (apiItem?.dbId as string) ?? (apiItem?.database_id as string) ?? '',
   image: (apiItem?.image as string) ?? undefined
 });
@@ -109,6 +109,10 @@ export async function getInvestigationDetails(id: number): Promise<Investigation
 
 export async function startInvestigation(id: number): Promise<void> {
   await api.post(`/investigations/${id}/start`);
+}
+
+export async function restartInvestigation(id: number): Promise<void> {
+  await api.post(`/investigations/${id}/restart`);
 }
 
 export interface SubmitSolutionResponse {
