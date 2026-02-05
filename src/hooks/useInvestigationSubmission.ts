@@ -46,10 +46,8 @@ export const useInvestigationSubmission = (investigationId: string | undefined) 
     setLoading(true);
     try {
       const data = await submitSolution(parseInt(investigationId), submissionData.culprit, submissionData.motive);
-      console.log('Réponse soumission:', data);
 
       if (data.success) {
-        console.log('Soumission réussie, redirection vers /investigations');
         setShowSubmitModal(false);
         setCulprit('');
         setMotive('');

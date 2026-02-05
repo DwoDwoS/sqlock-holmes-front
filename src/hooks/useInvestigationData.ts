@@ -21,7 +21,6 @@ export const useInvestigationData = (id: string | undefined) => {
         const data = await getInvestigationDetails(investigationId);
         setInvestigation({ ...mockData, ...data, image: data.image || mockData.image });
       } catch {
-        console.log('Back-end non disponible, utilisation des données mockées');
         setInvestigation(mockData);
       }
 
@@ -29,9 +28,8 @@ export const useInvestigationData = (id: string | undefined) => {
       if (token) {
         try {
           await submitSolution(investigationId, 'auto_start', 'auto_start');
-          console.log('Enquête démarrée automatiquement');
-        } catch (error) {
-          console.log('Impossible de démarrer l\'enquête automatiquement:', error);
+        } catch {
+          // Silently fail if auto-start doesn't work
         }
       }
 

@@ -80,8 +80,9 @@ describe('authService', () => {
   describe('getCurrentUser', () => {
     it('should fetch current user data', async () => {
       const mockResponse = {
+        status: 200,
         data: {
-          id: '123',
+          id: '1',
           username: 'testuser',
           email: 'test@example.com',
           role: 'USER' as const,
@@ -92,7 +93,9 @@ describe('authService', () => {
 
       const result = await authService.getCurrentUser();
 
-      expect(api.get).toHaveBeenCalledWith('/users/me');
+      expect(api.get).toHaveBeenCalledWith('/users/me', {
+        validateStatus: expect.any(Function),
+      });
       expect(result).toEqual(mockResponse.data);
     });
 

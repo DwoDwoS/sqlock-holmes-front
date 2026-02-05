@@ -46,10 +46,6 @@ const Investigations: React.FC = () => {
       setLoading(true);
       try {
         const data = await getInvestigations();
-        console.log('Investigations chargées:', data);
-        data.forEach(inv => {
-          console.log(`Enquête ${inv.id} - ${inv.title}: status="${inv.status}"`);
-        });
         if (Array.isArray(data) && data.length > 0) {
           setInvestigations(data);
         }

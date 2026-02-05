@@ -123,7 +123,6 @@ export interface SubmitSolutionResponse {
 
 export async function submitSolution(investigationId: number, culprit: string, motive: string): Promise<SubmitSolutionResponse> {
   const payload = { culprit, motive };
-  console.log(`Soumission de solution pour enquête ${investigationId}:`, payload);
   const res = await api.post(`/investigations/${investigationId}/submit-solution`, payload);
   return res.data;
 }

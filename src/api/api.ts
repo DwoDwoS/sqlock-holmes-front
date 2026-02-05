@@ -29,7 +29,10 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    // Ne pas rediriger si c'est un appel à /users/me (vérification de l'auth)
+    const isAuthCheck = error.config?.url?.includes('/users/me');
+    
+    if (error.response?.status === 401 && !isAuthCheck) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       window.location.href = '/login';
