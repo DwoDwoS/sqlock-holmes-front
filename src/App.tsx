@@ -12,10 +12,10 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import './App.css';
 
-const Layout: React.FC<{ children: React.ReactNode; isInvestigationsPage: boolean; isHomePage: boolean }> = ({ children, isInvestigationsPage, isHomePage }) => (
+const Layout: React.FC<{ children: React.ReactNode; isInvestigationsPage: boolean; isHomePage: boolean; isInvestigationPage?: boolean }> = ({ children, isInvestigationsPage, isHomePage, isInvestigationPage = false }) => (
   <div className={`layout ${isHomePage ? 'home-background' : ''} ${isInvestigationsPage ? 'investigations-background' : ''}`}>
     <Navbar />
-    <main style={{ paddingTop: isHomePage ? '0' : '90px', paddingBottom: isHomePage ? '0' : '100px', flex: 1 }}>
+    <main style={{ paddingTop: isHomePage || isInvestigationPage ? '0' : '90px', paddingBottom: isHomePage || isInvestigationPage ? '0' : '100px', flex: 1 }}>
       {children}
     </main>
     <Footer />
@@ -36,6 +36,7 @@ const AppContent: React.FC = () => {
   const location = useLocation();
   const isInvestigationsPage = location.pathname === '/investigations';
   const isHomePage = location.pathname === '/';
+  const isInvestigationPage = location.pathname.startsWith('/investigation/');
 
   return (
     <div className="App">
@@ -76,7 +77,7 @@ const AppContent: React.FC = () => {
           path="/investigation/:id"
           element={
             <ProtectedRoute>
-              <Layout isInvestigationsPage={false} isHomePage={false}>
+              <Layout isInvestigationsPage={false} isHomePage={false} isInvestigationPage={isInvestigationPage}>
                 <InvestigationPage />
               </Layout>
             </ProtectedRoute>
