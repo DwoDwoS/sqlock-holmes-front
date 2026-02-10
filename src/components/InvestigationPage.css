@@ -50,15 +50,19 @@
 .editor-container {
   position: relative;
   margin-bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .editor-header {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 10px;
+  gap: 10px;
 }
 
-.hints-button {
+.hints-button,
+.history-button {
   background-color: rgba(51, 51, 51, 0.9);
   color: white;
   border: 2px solid rgba(255, 255, 255, 0.3);
@@ -67,11 +71,14 @@
   cursor: pointer;
   font-size: 14px;
   backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
 }
 
-.hints-button:hover {
+.hints-button:hover,
+.history-button:hover {
   background-color: rgba(0, 86, 179, 0.9);
   border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
 }
 
 .execute-button {
@@ -95,6 +102,101 @@
 .execute-button:disabled {
   background-color: #6c757d;
   cursor: not-allowed;
+}
+
+/* Editor wrapper and history panel */
+.editor-wrapper {
+  display: flex;
+  gap: 12px;
+  transition: all 0.3s ease;
+  width: 100%;
+  overflow: visible;
+  box-sizing: border-box;
+}
+
+.editor-main {
+  flex: 1;
+  transition: all 0.3s ease;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.editor-wrapper.with-history .editor-main {
+  flex: 1 1 58%;
+  min-width: 0;
+}
+
+.query-history-panel {
+  flex: 0 0 38%;
+  min-width: 280px;
+  max-width: 38%;
+  background-color: rgba(30, 30, 30, 0.95);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  padding: 15px;
+  backdrop-filter: blur(10px);
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  animation: slideIn 0.3s ease;
+  box-sizing: border-box;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.query-history-panel h4 {
+  margin: 0 0 15px 0;
+  color: #ffffff;
+  font-size: 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.history-entry {
+  background-color: rgba(51, 51, 51, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.history-entry:hover {
+  background-color: rgba(0, 86, 179, 0.8);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateX(-5px);
+  box-shadow: 0 2px 8px rgba(0, 86, 179, 0.4);
+}
+
+.history-timestamp {
+  color: #888;
+  font-size: 12px;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.history-query {
+  color: #e0e0e0;
+  font-size: 13px;
+  font-family: 'Courier New', monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.4;
 }
 
 .submit-button {
@@ -127,6 +229,7 @@
   border: 1px solid rgba(222, 226, 230, 0.3);
   border-radius: 5px;
   backdrop-filter: blur(10px);
+  scroll-margin-top: 20px;
 }
 
 .results-container h3 {
@@ -439,4 +542,94 @@
 
 .close-button:hover {
   background-color: #5a6268;
+}
+
+/* Force Monaco Editor to respect container width */
+.editor-main > div {
+  width: 100% !important;
+}
+
+.editor-main .monaco-editor {
+  width: 100% !important;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 1024px) {
+  .editor-wrapper.with-history {
+    flex-direction: column;
+  }
+  
+  .editor-wrapper.with-history .editor-main {
+    flex: 1 1 auto;
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  .query-history-panel {
+    flex: 0 0 auto;
+    max-width: 100%;
+    width: 100%;
+    max-height: 250px;
+    margin: 0;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 768px) {
+  .investigation-page {
+    padding: 90px 10px 100px 10px;
+  }
+  
+  .investigation-overlay {
+    padding: 15px;
+    margin: 10px auto;
+    border-radius: 10px;
+  }
+  
+  .editor-header {
+    flex-wrap: wrap;
+  }
+  
+  .hints-button,
+  .history-button {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+  
+  .query-history-panel {
+    min-width: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 12px;
+    box-sizing: border-box;
+  }
+  
+  .editor-container {
+    width: 100%;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .editor-wrapper {
+    width: 100%;
+    box-sizing: border-box;
+    gap: 10px;
+  }
+  
+  .editor-main {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .history-entry {
+    padding: 8px;
+  }
+  
+  .execute-button,
+  .submit-button {
+    width: 100%;
+    margin: 10px 0 0 0;
+  }
 }
