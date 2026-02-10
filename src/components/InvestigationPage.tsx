@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { executeSQL } from '../services/investigationService';
 import { InvestigationHeader, SQLEditor, ResultsDisplay, HintsModal, Actions, SubmitSolutionModal } from './investigation';
+import type { QueryHistoryEntry } from './investigation/SQLEditor';
 import { useInvestigationSubmission } from '../hooks/useInvestigationSubmission';
 import { useInvestigationData } from '../hooks/useInvestigationData';
 import { useHints } from '../hooks/useHints';
@@ -20,6 +21,9 @@ const InvestigationPage: React.FC = () => {
   const [results, setResults] = useState<SQLResult | null>(null);
   const [showHints, setShowHints] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [queryHistory, setQueryHistory] = useState<QueryHistoryEntry[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   const {
     culprit,
@@ -39,6 +43,10 @@ const InvestigationPage: React.FC = () => {
     try {
       const data = await executeSQL({ sql: sqlCode, investigationId: parseInt(id) });
       setResults(data);
+      setQueryHistory(prev => [...prev, { query: sqlCode, timestamp: new Date() }]);
+      setTimeout(() => {
+        resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
     } catch (error) {
       let errorMessage = 'Erreur lors de l\'exécution de la requête.';
       if (error instanceof AxiosError) {
@@ -49,6 +57,9 @@ const InvestigationPage: React.FC = () => {
         }
       }
       setResults({ error: errorMessage });
+      setTimeout(() => {
+        resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
     } finally {
       setLoading(false);
     }
@@ -59,6 +70,14 @@ const InvestigationPage: React.FC = () => {
     setShowHints(true);
   };
 
+
+  const handleToggleHistory = () => {
+    setShowHistory(prev => !prev);
+  };
+
+  const handleLoadQuery = (query: string) => {
+    setSqlCode(query);
+  };
   const handleCloseHints = () => {
     setShowHints(false);
   };
@@ -81,9 +100,13 @@ const InvestigationPage: React.FC = () => {
           onShowHints={handleShowHints}
           onSubmit={openSubmitModal}
           loading={loading}
+          queryHistory={queryHistory}
+          showHistory={showHistory}
+          onToggleHistory={handleToggleHistory}
+          onLoadQuery={handleLoadQuery}
         />
 
-        <ResultsDisplay results={results} />
+        <ResultsDisplay results={results} ref={resultsRef} />
 
         <HintsModal
           hints={hints}
