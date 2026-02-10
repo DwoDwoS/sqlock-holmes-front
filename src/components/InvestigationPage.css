@@ -339,6 +339,78 @@
   margin-bottom: 10px;
   font-weight: bold;
   color: #333;
+  position: relative;
+}
+
+/* Info tooltip styles */
+.info-tooltip {
+  position: relative;
+  display: inline-block;
+  margin-left: 8px;
+  cursor: help;
+}
+
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #333;
+  background-color: #fff;
+  color: #333;
+  font-size: 12px;
+  font-weight: bold;
+  font-style: italic;
+  font-family: serif;
+  vertical-align: middle;
+  user-select: none;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.info-tooltip:hover .info-icon {
+  background-color: rgb(125, 123, 125);
+  border-color: #000;
+  color: #fff;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: 260px;
+  background-color: rgba(51, 51, 51, 0.98);
+  color: #fff;
+  text-align: left;
+  border-radius: 8px;
+  padding: 12px 14px;
+  position: absolute;
+  z-index: 1050;
+  top: 50%;
+  left: calc(100% + 12px);
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 0.3s, visibility 0.3s;
+  font-size: 13px;
+  line-height: 1.5;
+  font-weight: normal;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  white-space: normal;
+}
+
+.tooltip-text::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-top: -6px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent rgba(51, 51, 51, 0.98) transparent transparent;
+}
+
+.info-tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
 }
 
 .option-section p {
@@ -631,5 +703,26 @@
   .submit-button {
     width: 100%;
     margin: 10px 0 0 0;
+  }
+  
+  /* Tooltip responsive on mobile */
+  .tooltip-text {
+    width: 200px;
+    font-size: 12px;
+    padding: 10px;
+    left: auto;
+    right: calc(100% + 8px);
+    transform: translateY(-50%);
+  }
+  
+  .tooltip-text::before {
+    right: auto;
+    left: 100%;
+    border-color: transparent transparent transparent rgba(51, 51, 51, 0.98);
+  }
+  
+  .modal-content {
+    width: 95%;
+    padding: 15px;
   }
 }

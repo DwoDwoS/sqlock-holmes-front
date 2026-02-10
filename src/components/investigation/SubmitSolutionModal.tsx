@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface SubmitSolutionModalProps {
   show: boolean;
   onClose: () => void;
@@ -12,7 +10,7 @@ interface SubmitSolutionModalProps {
   onSubmit: () => void;
 }
 
-const SubmitSolutionModal: React.FC<SubmitSolutionModalProps> = ({
+const SubmitSolutionModal = ({
   show,
   onClose,
   culprit,
@@ -22,7 +20,7 @@ const SubmitSolutionModal: React.FC<SubmitSolutionModalProps> = ({
   sqlCode,
   loading,
   onSubmit,
-}) => {
+}: SubmitSolutionModalProps) => {
   if (!show) return null;
 
   return (
@@ -45,6 +43,12 @@ const SubmitSolutionModal: React.FC<SubmitSolutionModalProps> = ({
             </label>
             <label>
               Motif :
+              <span className="info-tooltip">
+                <span className="info-icon">i</span>
+                <span className="tooltip-text">
+                  Indiquez des mots-clés ou une courte phrase expliquant la raison pour laquelle le ou la suspect(e) a commis ce crime (ex: jalousie, vengeance, financier, héritage, etc.)
+                </span>
+              </span>
               <input
                 type="text"
                 value={motive}
