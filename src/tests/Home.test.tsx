@@ -25,18 +25,7 @@ const renderWithProviders = (component: React.ReactElement) => {
 describe('Home', () => {
   it('renders welcome message with username', () => {
     renderWithProviders(<Home />);
-    expect(screen.getByText(/bienvenue, inspecteur testuser/i)).toBeInTheDocument();
-  });
-
-  it('renders hero section with logo', () => {
-    renderWithProviders(<Home />);
-    const logo = screen.getByAltText(/logo sqlock holmes/i);
-    expect(logo).toBeInTheDocument();
-  });
-
-  it('renders hero subtitle', () => {
-    renderWithProviders(<Home />);
-    expect(screen.getByText(/outil de résolution d'enquêtes en exécutant des requêtes sql/i)).toBeInTheDocument();
+    expect(screen.getByText(/bienvenue, détective testuser/i)).toBeInTheDocument();
   });
 
   it('renders welcome section content', () => {

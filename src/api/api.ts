@@ -2,21 +2,46 @@ import axios from 'axios';
 
 const API_BASE_URL = import.meta.env.PROD
   ? import.meta.env.VITE_API_BASE_URL
-  : '/';
+  : '/api';
 
-axios.defaults.baseURL = API_BASE_URL;
-axios.defaults.headers.post['Content-Type'] = 'text/plain';
-axios.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem('token');
-      window.location.href = '/login';
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
+    
+    return config;
+  },
+  (error) => {
     return Promise.reject(error);
   }
 );
 
-export default axios;
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // Ne pas rediriger ni logger si c'est un appel de vérification silencieux
+    const isAuthCheck = error.config?.url?.includes('/users/me');
+    const isStartInvestigation = error.config?.url?.includes('/start');
+    const isSilentCall = isAuthCheck || isStartInvestigation;
+    
+    if (error.response?.status === 401 && !isSilentCall) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '/login';
+    }
 
-//Revoir pourquoi on a ce fichier api.ts il n'est appelé nul part dans le projet
+    return Promise.reject(error);
+  }
+);
+
+export default api;

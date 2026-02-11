@@ -1,21 +1,36 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import axios from '../api/api';
 import { AuthProvider } from '../contexts/AuthProvider';
+import { useAuth } from '../hooks/useAuth';
+import React from 'react';
 
 // Mock axios
-vi.mock('../api/api');
-const mockedAxios = vi.mocked(axios);
+vi.mock('axios', () => ({
+  default: {
+    create: vi.fn(() => ({
+      interceptors: {
+        request: { use: vi.fn() },
+        response: { use: vi.fn() }
+      },
+      get: vi.fn(),
+      post: vi.fn(),
+      put: vi.fn(),
+      delete: vi.fn()
+    }))
+  }
+}));
 
 // Mock useAuth hook
-const mockLogin = vi.fn();
-const mockRegister = vi.fn();
+const mockLogin = vi.fn().mockResolvedValue({ success: true });
+const mockRegister = vi.fn().mockResolvedValue({ success: true });
 const mockLogout = vi.fn();
+const mockUpdateUser = vi.fn().mockResolvedValue({ success: true });
 
 vi.mock('../hooks/useAuth', () => ({
   useAuth: () => ({
     login: mockLogin,
     register: mockRegister,
+    updateUser: mockUpdateUser,
     logout: mockLogout
   })
 }));
@@ -32,7 +47,6 @@ describe('AuthProvider', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     localStorage.clear();
-    delete mockedAxios.defaults.headers.common['Authorization'];
   });
 
   describe('Login functionality', () => {
@@ -129,7 +143,6 @@ describe('AuthProvider', () => {
     it('should clear token and user data on logout', () => {
       localStorage.setItem('token', 'some-token');
       localStorage.setItem('user', JSON.stringify({ id: 1, username: 'user' }));
-      mockedAxios.defaults.headers.common['Authorization'] = 'Bearer some-token';
 
       const TestComponent = () => {
         const { logout } = useAuth();
@@ -147,6 +160,3 @@ describe('AuthProvider', () => {
     });
   });
 });
-
-import React from 'react';
-import { useAuth } from '../hooks/useAuth';

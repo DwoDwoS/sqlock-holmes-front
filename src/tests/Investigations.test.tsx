@@ -1,8 +1,51 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { AuthProvider } from '../contexts/AuthProvider';
 import Investigations from '../components/Investigations';
+
+// Mock the API
+vi.mock('../api/api', () => ({
+  default: {
+    get: vi.fn((url) => {
+      if (url === '/investigations') {
+        return Promise.resolve({
+          data: [
+            {
+              id: 1,
+              title: 'Le vol du musée',
+              description: 'Un tableau de valeur inestimable a disparu du musée national. Les caméras de sécurité ont filmé plusieurs personnes suspectes. Analysez les données pour identifier le voleur.',
+              difficulty: 'Facile',
+              status: 'Disponible',
+              databaseId: 'museum_db'
+            },
+            {
+              id: 2,
+              title: 'Fraudes corporatives',
+              description: 'Des transactions suspectes ont été détectées dans les comptes de l\'entreprise TechCorp. Identifiez l\'employé responsable et découvrez comment il a détourné les fonds.',
+              difficulty: 'Moyen',
+              status: 'Disponible',
+              databaseId: 'corporate_db'
+            },
+            {
+              id: 3,
+              title: 'Meurtre au Manoir',
+              description: 'Lord Blackwood a été retrouvé mort dans sa bibliothèque. Six personnes étaient présentes ce soir-là. Qui est le meurtrier ? Et pourquoi ?',
+              difficulty: 'Difficile',
+              status: 'Disponible',
+              databaseId: 'manor_db'
+            }
+          ]
+        });
+      }
+    }),
+    post: vi.fn((url) => {
+      if (url.startsWith('/investigations/') && url.endsWith('/start')) {
+        return Promise.resolve();
+      }
+    })
+  }
+}));
 
 // Mock useNavigate
 const mockNavigate = vi.fn();
@@ -29,70 +72,91 @@ describe('Investigations', () => {
     mockNavigate.mockClear();
   });
 
-  it('renders the page title and description', () => {
+  it('renders the page title and description', async () => {
     renderWithProviders(<Investigations />);
-    expect(screen.getByText('Sélection des Enquêtes')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Sélection des Enquêtes')).toBeInTheDocument();
+    });
     expect(screen.getByText(/choisissez une enquête à résoudre/i)).toBeInTheDocument();
   });
 
-  it('renders all investigation cards', () => {
+  it('renders all investigation cards', async () => {
     renderWithProviders(<Investigations />);
-    expect(screen.getByText('Le vol du musée')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Le vol du musée')).toBeInTheDocument();
+    });
     expect(screen.getByText('Fraudes corporatives')).toBeInTheDocument();
     expect(screen.getByText('Meurtre au Manoir')).toBeInTheDocument();
   });
 
-  it('renders investigation descriptions', () => {
+  it('renders investigation descriptions', async () => {
     renderWithProviders(<Investigations />);
-    expect(screen.getByText(/un tableau de valeur inestimable/i)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText(/un tableau de valeur inestimable/i)).toBeInTheDocument();
+    });
     expect(screen.getByText(/des transactions suspectes/i)).toBeInTheDocument();
     expect(screen.getByText(/lord blackwood a été retrouvé mort/i)).toBeInTheDocument();
   });
 
-  it('renders difficulty badges', () => {
+  it('renders difficulty badges', async () => {
     renderWithProviders(<Investigations />);
-    expect(screen.getByText('Facile')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Facile')).toBeInTheDocument();
+    });
     expect(screen.getByText('Moyen')).toBeInTheDocument();
     expect(screen.getByText('Difficile')).toBeInTheDocument();
   });
 
-  it('renders status badges', () => {
+  it('renders status badges', async () => {
     renderWithProviders(<Investigations />);
-    const statusIcons = screen.getAllByLabelText('Disponible');
-    expect(statusIcons).toHaveLength(3);
+    await waitFor(() => {
+      const statusIcons = screen.getAllByLabelText('Disponible');
+      expect(statusIcons).toHaveLength(3);
+    });
   });
 
-  it('renders start buttons for available investigations', () => {
+  it('renders start buttons for available investigations', async () => {
     renderWithProviders(<Investigations />);
-    const startButtons = screen.getAllByRole('button', { name: /commencer l'enquête/i });
-    expect(startButtons).toHaveLength(3);
+    await waitFor(() => {
+      const startLinks = screen.getAllByRole('link', { name: /commencer l'enquête/i });
+      expect(startLinks).toHaveLength(3);
+    });
   });
 
-  it('navigates to investigation page when start button is clicked', () => {
+  it('navigates to investigation page when start link is clicked', async () => {
     renderWithProviders(<Investigations />);
-    const startButtons = screen.getAllByRole('button', { name: /commencer l'enquête/i });
-    fireEvent.click(startButtons[0]); // Click first investigation
-    expect(mockNavigate).toHaveBeenCalledWith('/investigation/1');
+    await waitFor(() => {
+      const startLinks = screen.getAllByRole('link', { name: /commencer l'enquête/i });
+      expect(startLinks).toHaveLength(3);
+    });
+    const startLinks = screen.getAllByRole('link', { name: /commencer l'enquête/i });
+    expect(startLinks[0]).toHaveAttribute('href', '/investigation/1');
   });
 
-  it('renders back to home button', () => {
+  it('renders back to home button', async () => {
     renderWithProviders(<Investigations />);
-    expect(screen.getByRole('button', { name: /retour à l'accueil/i })).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /retour à l'accueil/i })).toBeInTheDocument();
+    });
   });
 
-  it('navigates to home when back button is clicked', () => {
+  it('navigates to home when back button is clicked', async () => {
     renderWithProviders(<Investigations />);
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /retour à l'accueil/i })).toBeInTheDocument();
+    });
     const backButton = screen.getByRole('button', { name: /retour à l'accueil/i });
     fireEvent.click(backButton);
     expect(mockNavigate).toHaveBeenCalledWith('/');
   });
 
-  it('applies correct CSS classes for background images', () => {
+  it('applies correct CSS classes for background images', async () => {
     renderWithProviders(<Investigations />);
-    // Check that the museum investigation has the correct class
-    const museumCard = screen.getByText('Le vol du musée').closest('.investigation-card');
-    expect(museumCard).toHaveClass('investigation-museum');
-    expect(museumCard).toHaveClass('status-available');
+    await waitFor(() => {
+      const museumCard = screen.getByText('Le vol du musée').closest('.investigation-card');
+      expect(museumCard).toHaveClass('investigation-museum');
+      expect(museumCard).toHaveClass('status-available');
+    });
 
     // Check that the corporate investigation has the correct class
     const corporateCard = screen.getByText('Fraudes corporatives').closest('.investigation-card');
@@ -105,15 +169,17 @@ describe('Investigations', () => {
     expect(manorCard).toHaveClass('status-available');
   });
 
-  it('does not apply background classes to cards without specific IDs', () => {
+  it('does not apply background classes to cards without specific IDs', async () => {
     renderWithProviders(<Investigations />);
-    const cards = screen.getAllByText(/commencer l'enquête/i).map(button =>
-      button.closest('.investigation-card')
-    );
-    // All cards should have at least 3 classes (investigation-card + background class + status class)
-    cards.forEach(card => {
-      expect(card?.className.split(' ').length).toBeGreaterThanOrEqual(3);
-      expect(card).toHaveClass('status-available');
+    await waitFor(() => {
+      const cards = screen.getAllByText(/commencer l'enquête/i).map(button =>
+        button.closest('.investigation-card')
+      );
+      // All cards should have at least 3 classes (investigation-card + background class + status class)
+      cards.forEach(card => {
+        expect(card?.className.split(' ').length).toBeGreaterThanOrEqual(3);
+        expect(card).toHaveClass('status-available');
+      });
     });
   });
 });
