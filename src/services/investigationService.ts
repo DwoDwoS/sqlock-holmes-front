@@ -1,17 +1,8 @@
 import api from '../api/api';
+import type { Investigation } from '../types/investigation';
 
 type ApiDifficulty = 'EASY' | 'MEDIUM' | 'HARD' | 'Facile' | 'Moyen' | 'Difficile';
 type ApiStatus = 'AVAILABLE' | 'IN_PROGRESS' | 'COMPLETED' | 'Disponible' | 'En cours' | 'Terminée';
-
-export interface Investigation {
-  id: number;
-  title: string;
-  description: string;
-  difficulty: 'Facile' | 'Moyen' | 'Difficile';
-  status: 'Disponible' | 'En cours' | 'Terminée';
-  databaseId: string;
-  image?: string;
-}
 
 const mapDifficulty = (d: ApiDifficulty | undefined): Investigation['difficulty'] => {
   switch (d) {
@@ -58,50 +49,6 @@ export async function getInvestigations(): Promise<Investigation[]> {
   return list.map(mapInvestigation);
 }
 
-export interface ExecuteSQLRequest {
-  investigationId: number;
-  sql: string;
-}
-
-export interface ExecuteSQLResponse {
-  columns?: string[];
-  rows?: unknown[];
-  affectedRows?: number;
-  error?: string;
-}
-
-export async function executeSQL(payload: ExecuteSQLRequest): Promise<ExecuteSQLResponse> {
-  const res = await api.post('/sql/execute', payload);
-  return res.data;
-}
-
-export interface Hint {
-  id: number;
-  content?: string;
-  text?: string;
-}
-
-export async function getHints(investigationId: number): Promise<Hint[]> {
-  const res = await api.get(`/investigations/${investigationId}/hints`);
-  return res.data;
-}
-
-export async function unlockNextHint(investigationId: number): Promise<Hint> {
-  const res = await api.post(`/investigations/${investigationId}/hints/unlock`);
-  return res.data;
-}
-
-export interface HintCount {
-  unlocked: number;
-  total: number;
-  remaining: number;
-}
-
-export async function getHintCount(investigationId: number): Promise<HintCount> {
-  const res = await api.get(`/investigations/${investigationId}/hints/count`);
-  return res.data;
-}
-
 export async function getInvestigationDetails(id: number): Promise<Investigation> {
   const res = await api.get(`/investigations/${id}`);
   return mapInvestigation(res.data);
@@ -110,9 +57,8 @@ export async function getInvestigationDetails(id: number): Promise<Investigation
 export async function startInvestigation(id: number): Promise<void> {
   try {
     const response = await api.post(`/investigations/${id}/start`, {}, {
-      validateStatus: () => true, // Accepte tous les statuts, évite les erreurs
+      validateStatus: () => true,
     });
-    // Retourne silencieusement, peu importe le statut
     return response.data;
   } catch {
     // Silently fail - investigation might already be started
@@ -129,7 +75,11 @@ export interface SubmitSolutionResponse {
   error?: string;
 }
 
-export async function submitSolution(investigationId: number, culprit: string, motive: string): Promise<SubmitSolutionResponse> {
+export async function submitSolution(
+  investigationId: number, 
+  culprit: string, 
+  motive: string
+): Promise<SubmitSolutionResponse> {
   const payload = { culprit, motive };
   const res = await api.post(`/investigations/${investigationId}/submit-solution`, payload);
   return res.data;

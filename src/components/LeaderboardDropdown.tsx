@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { LeaderboardService } from '../services/leaderboardService';
-import type { LeaderboardEntry, GlobalLeaderboardEntry } from '../types/leaderboard';
+import React, { useState } from 'react';
+import { useLeaderboard } from '../hooks/useLeaderboard';
+import { formatTime } from '../utils/formatters';
 import './LeaderboardDropdown.css';
 
 interface LeaderboardDropdownProps {
@@ -9,39 +9,18 @@ interface LeaderboardDropdownProps {
 
 export const LeaderboardDropdown: React.FC<LeaderboardDropdownProps> = ({ investigationId }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [investigationLeaderboard, setInvestigationLeaderboard] = useState<LeaderboardEntry[]>([]);
-  const [globalLeaderboard, setGlobalLeaderboard] = useState<GlobalLeaderboardEntry[]>([]);
-  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'investigation' | 'global'>('global');
 
-  useEffect(() => {
-    if (isOpen) {
-      loadLeaderboards();
-    }
-  }, [isOpen, investigationId]);
+  const { 
+    globalLeaderboard, 
+    investigationLeaderboards, 
+    loading 
+  } = useLeaderboard({ 
+    enabled: isOpen, 
+    investigationId 
+  });
 
-  const loadLeaderboards = async () => {
-    setLoading(true);
-    try {
-      if (investigationId) {
-        const invData = await LeaderboardService.getInvestigationLeaderboard(investigationId);
-        setInvestigationLeaderboard(invData);
-      }
-      const globalData = await LeaderboardService.getGlobalLeaderboard();
-      setGlobalLeaderboard(globalData);
-    } catch (error) {
-      console.error('Erreur lors du chargement du leaderboard:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const formatTime = (seconds: number): string => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
+  const investigationLeaderboard = investigationId ? investigationLeaderboards[investigationId] || [] : [];
 
   const renderInvestigationLeaderboard = () => (
     <div className="leaderboard-table">

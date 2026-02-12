@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/api';
-import type { LeaderboardEntry, GlobalLeaderboardEntry } from '../types/leaderboard';
+import { useLeaderboard } from '../hooks/useLeaderboard';
+import { formatTime, formatDate, getRankClass } from '../utils/formatters';
 import './LeaderboardModal.css';
 
 interface LeaderboardProps {
@@ -10,65 +11,34 @@ interface LeaderboardProps {
 
 const Leaderboard: React.FC<LeaderboardProps> = ({ isOpen, onClose }) => {
   const [activeTab, setActiveTab] = useState<'global' | number>('global');
-  const [globalLeaderboard, setGlobalLeaderboard] = useState<GlobalLeaderboardEntry[]>([]);
-  const [investigationLeaderboards, setInvestigationLeaderboards] = useState<{[key: number]: LeaderboardEntry[]}>({});
   const [investigations, setInvestigations] = useState<{id: number, title: string}[]>([]);
-  const [loading, setLoading] = useState(false);
+  
+  const { 
+    globalLeaderboard, 
+    investigationLeaderboards, 
+    loading, 
+    loadInvestigationLeaderboard 
+  } = useLeaderboard({ enabled: isOpen });
 
   useEffect(() => {
-    if (isOpen) {
-      loadInvestigations();
-      loadGlobalLeaderboard();
-    }
+    if (!isOpen) return;
+
+    const loadInvestigations = async () => {
+      try {
+        const response = await api.get('/investigations');
+        interface InvestigationData { id: number; title: string; }
+        setInvestigations(response.data.map((inv: InvestigationData) => ({ id: inv.id, title: inv.title })));
+      } catch (error) {
+        console.error('Erreur lors du chargement des enquêtes:', error);
+      }
+    };
+
+    loadInvestigations();
   }, [isOpen]);
 
-  const loadInvestigations = async () => {
-    try {
-      const response = await api.get('/investigations');
-      setInvestigations(response.data.map((inv: any) => ({ id: inv.id, title: inv.title })));
-    } catch (error) {
-      console.error('Erreur lors du chargement des enquêtes:', error);
-    }
-  };
-
-  const loadGlobalLeaderboard = async () => {
-    setLoading(true);
-    try {
-      const response = await api.get('/leaderboard/global?limit=20');
-      setGlobalLeaderboard(response.data);
-    } catch (error) {
-      console.error('Erreur lors du chargement du leaderboard global:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const loadInvestigationLeaderboard = async (investigationId: number) => {
-    if (investigationLeaderboards[investigationId]) return;
-
-    setLoading(true);
-    try {
-      const response = await api.get(`/leaderboard/investigation/${investigationId}?limit=20`);
-      setInvestigationLeaderboards(prev => ({
-        ...prev,
-        [investigationId]: response.data
-      }));
-    } catch (error) {
-      console.error('Erreur lors du chargement du leaderboard de l\'enquête:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const formatTime = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('fr-FR');
+  const handleInvestigationTabClick = (investigationId: number) => {
+    setActiveTab(investigationId);
+    loadInvestigationLeaderboard(investigationId);
   };
 
   if (!isOpen) return null;
@@ -90,26 +60,15 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ isOpen, onClose }) => {
           <div className="leaderboard-tabs-container">
             <button
               onClick={() => setActiveTab('global')}
-              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-                activeTab === 'global'
-                  ? 'bg-white text-gray-900 shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
-              }`}
+              className={`leaderboard-tab ${activeTab === 'global' ? 'active' : ''}`}
             >
               Classement Global
             </button>
             {investigations.map(inv => (
               <button
                 key={inv.id}
-                onClick={() => {
-                  setActiveTab(inv.id);
-                  loadInvestigationLeaderboard(inv.id);
-                }}
-                className={`py-2 px-4 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
-                  activeTab === inv.id
-                    ? 'bg-white text-gray-900 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
+                onClick={() => handleInvestigationTabClick(inv.id)}
+                className={`leaderboard-tab ${activeTab === inv.id ? 'active' : ''}`}
               >
                 {inv.title}
               </button>
@@ -132,7 +91,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ isOpen, onClose }) => {
                         className={`leaderboard-entry ${index < 3 ? 'top-three' : ''}`}
                       >
                         <div className="leaderboard-entry-left">
-                          <div className={`leaderboard-rank-badge rank-${index === 0 ? '1' : index === 1 ? '2' : index === 2 ? '3' : 'other'}`}>
+                          <div className={`leaderboard-rank-badge ${getRankClass(index + 1)}`}>
                             {index + 1}
                           </div>
                           <div className="leaderboard-entry-info">
@@ -161,7 +120,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ isOpen, onClose }) => {
                         className={`leaderboard-entry ${index < 3 ? 'top-three' : ''}`}
                       >
                         <div className="leaderboard-entry-left">
-                          <div className={`leaderboard-rank-badge rank-${index === 0 ? '1' : index === 1 ? '2' : index === 2 ? '3' : 'other'}`}>
+                          <div className={`leaderboard-rank-badge ${getRankClass(index + 1)}`}>
                             {index + 1}
                           </div>
                           <div className="leaderboard-entry-info">

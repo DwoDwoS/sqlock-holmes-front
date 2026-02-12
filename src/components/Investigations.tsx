@@ -1,15 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getInvestigations, restartInvestigation } from '../services/investigationService';
-
-interface Investigation {
-  id: number;
-  title: string;
-  description: string;
-  difficulty: 'Facile' | 'Moyen' | 'Difficile';
-  status: 'Disponible' | 'En cours' | 'Terminée';
-  databaseId: string;
-}
+import { getDifficultyClass } from '../utils/formatters';
+import type { Investigation } from '../types/investigation';
 
 const Investigations: React.FC = () => {
   const navigate = useNavigate();
@@ -77,15 +70,6 @@ const Investigations: React.FC = () => {
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, []);
 
-  const getDifficulteColor = (difficulte: string) => {
-    switch (difficulte) {
-      case 'Facile': return 'difficulty-easy';
-      case 'Moyen': return 'difficulty-medium';
-      case 'Difficile': return 'difficulty-hard';
-      default: return '';
-    }
-  };
-
   const handleRestart = async (investigationId: number) => {
     try {
       await restartInvestigation(investigationId);
@@ -120,7 +104,7 @@ const Investigations: React.FC = () => {
                       ✓ Résolue
                     </span>
                   )}
-                  <span className={`badge difficulte ${getDifficulteColor(investigation.difficulty)}`}>
+                  <span className={`badge difficulte ${getDifficultyClass(investigation.difficulty)}`}>
                     {investigation.difficulty || '—'}
                   </span>
                   <div className="status-icon" aria-label={investigation.status}>
