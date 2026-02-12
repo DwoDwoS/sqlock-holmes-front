@@ -164,7 +164,6 @@
   white-space: nowrap;
 }
 
-/* Scrollbar styling */
 .leaderboard-list::-webkit-scrollbar {
   width: 6px;
 }
@@ -183,25 +182,45 @@
   background: rgba(102, 126, 234, 0.7);
 }
 
-/* Responsive pour mobile */
 @media (max-width: 768px) {
-  .leaderboard-dropdown {
-    min-width: 280px;
-    max-width: 90vw;
-    right: -10px;
+  .leaderboard-button {
+    padding: 8px 12px;
+    font-size: 13px;
+    border-radius: 6px;
+    gap: 6px;
+  }
+
+  .leaderboard-button svg {
+    width: 18px;
+    height: 18px;
   }
 
   .leaderboard-text {
     display: none;
   }
 
-  .leaderboard-button {
+  .leaderboard-dropdown {
+    min-width: 300px;
+    max-width: 90vw;
+    right: -10px;
+  }
+
+  .leaderboard-header {
+    padding: 12px;
+  }
+
+  .leaderboard-header h3 {
+    font-size: 16px;
+  }
+
+  .leaderboard-list {
     padding: 10px;
+    max-height: 400px;
   }
 
   .leaderboard-item {
     padding: 10px;
-    gap: 8px;
+    gap: 10px;
   }
 
   .leaderboard-rank {
@@ -213,7 +232,85 @@
     font-size: 14px;
   }
 
+  .leaderboard-stats {
+    font-size: 11px;
+  }
+
   .leaderboard-score {
     font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .leaderboard-button {
+    padding: 8px 10px;
+  }
+
+  .leaderboard-button svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .leaderboard-dropdown {
+    min-width: 280px;
+    right: -5px;
+    border-radius: 10px;
+  }
+
+  .leaderboard-header {
+    padding: 10px;
+  }
+
+  .leaderboard-header h3 {
+    font-size: 15px;
+  }
+
+  .leaderboard-list {
+    padding: 8px;
+    max-height: 350px;
+  }
+
+  .leaderboard-item {
+    padding: 8px;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .leaderboard-rank {
+    font-size: 18px;
+    min-width: 30px;
+  }
+
+  .leaderboard-username {
+    font-size: 13px;
+  }
+
+  .leaderboard-stats {
+    font-size: 10px;
+  }
+
+  .leaderboard-score {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) and (orientation: landscape) {
+  .leaderboard-dropdown {
+    max-height: 85vh;
+  }
+
+  .leaderboard-list {
+    max-height: calc(85vh - 60px);
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .leaderboard-button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .leaderboard-item {
+    min-height: 44px;
   }
 }
