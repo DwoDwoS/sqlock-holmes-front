@@ -20,20 +20,20 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ isOpen, onClose }) => {
     loadInvestigationLeaderboard 
   } = useLeaderboard({ enabled: isOpen });
 
+  const loadInvestigations = async () => {
+    try {
+      const response = await api.get('/investigations');
+      interface InvestigationData { id: number; title: string; }
+      setInvestigations(response.data.map((inv: InvestigationData) => ({ id: inv.id, title: inv.title })));
+    } catch (error) {
+      console.error('Erreur lors du chargement des enquêtes:', error);
+    }
+  };
+
   useEffect(() => {
-    if (!isOpen) return;
-
-    const loadInvestigations = async () => {
-      try {
-        const response = await api.get('/investigations');
-        interface InvestigationData { id: number; title: string; }
-        setInvestigations(response.data.map((inv: InvestigationData) => ({ id: inv.id, title: inv.title })));
-      } catch (error) {
-        console.error('Erreur lors du chargement des enquêtes:', error);
-      }
-    };
-
-    loadInvestigations();
+    if (isOpen) {
+      loadInvestigations();
+    }
   }, [isOpen]);
 
   const handleInvestigationTabClick = (investigationId: number) => {
