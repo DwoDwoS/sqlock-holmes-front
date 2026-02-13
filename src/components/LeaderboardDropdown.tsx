@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLeaderboard } from '../hooks/useLeaderboard';
 import { formatTime } from '../utils/formatters';
+import type { LeaderboardEntry, GlobalLeaderboardEntry } from '../types/leaderboard';
 import './LeaderboardDropdown.css';
 
 interface LeaderboardDropdownProps {
@@ -12,75 +13,78 @@ export const LeaderboardDropdown: React.FC<LeaderboardDropdownProps> = ({ invest
   const [activeTab, setActiveTab] = useState<'investigation' | 'global'>('global');
 
   const { 
-    globalLeaderboard, 
-    investigationLeaderboards, 
+    data, 
     loading 
   } = useLeaderboard({ 
-    enabled: isOpen, 
-    investigationId 
+    type: activeTab,
+    investigationId: activeTab === 'investigation' ? investigationId : undefined
   });
 
-  const investigationLeaderboard = investigationId ? investigationLeaderboards[investigationId] || [] : [];
-
-  const renderInvestigationLeaderboard = () => (
-    <div className="leaderboard-table">
-      <h4>Classement de l'enquête</h4>
-      <table>
-        <thead>
-          <tr>
-            <th>Rang</th>
-            <th>Utilisateur</th>
-            <th>Score</th>
-            <th>Temps</th>
-            <th>Requêtes</th>
-            <th>Indices</th>
-          </tr>
-        </thead>
-        <tbody>
-          {investigationLeaderboard.map((entry) => (
-            <tr key={entry.username}>
-              <td>{entry.rank}</td>
-              <td>{entry.username}</td>
-              <td>{entry.score}</td>
-              <td>{formatTime(entry.timeSpentSeconds)}</td>
-              <td>{entry.queriesCount}</td>
-              <td>{entry.hintsUsed}</td>
+  const renderInvestigationLeaderboard = () => {
+    const investigationData = data as LeaderboardEntry[];
+    return (
+      <div className="leaderboard-table">
+        <h4>Classement de l'enquête</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Rang</th>
+              <th>Utilisateur</th>
+              <th>Score</th>
+              <th>Temps</th>
+              <th>Requêtes</th>
+              <th>Indices</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
+          </thead>
+          <tbody>
+            {investigationData.map((entry) => (
+              <tr key={entry.username}>
+                <td>{entry.rank}</td>
+                <td>{entry.username}</td>
+                <td>{entry.score}</td>
+                <td>{formatTime(entry.timeSpentSeconds)}</td>
+                <td>{entry.queriesCount}</td>
+                <td>{entry.hintsUsed}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
 
-  const renderGlobalLeaderboard = () => (
-    <div className="leaderboard-table">
-      <h4>Classement global</h4>
-      <table>
-        <thead>
-          <tr>
-            <th>Rang</th>
-            <th>Utilisateur</th>
-            <th>Enquêtes</th>
-            <th>Score total</th>
-            <th>Score moyen</th>
-            <th>Temps total</th>
-          </tr>
-        </thead>
-        <tbody>
-          {globalLeaderboard.map((entry) => (
-            <tr key={entry.username}>
-              <td>{entry.rank}</td>
-              <td>{entry.username}</td>
-              <td>{entry.totalInvestigationsCompleted}</td>
-              <td>{entry.totalScore}</td>
-              <td>{entry.averageScore}</td>
-              <td>{formatTime(entry.totalTimeSpentSeconds)}</td>
+  const renderGlobalLeaderboard = () => {
+    const globalData = data as GlobalLeaderboardEntry[];
+    return (
+      <div className="leaderboard-table">
+        <h4>Classement global</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Rang</th>
+              <th>Utilisateur</th>
+              <th>Enquêtes</th>
+              <th>Score total</th>
+              <th>Score moyen</th>
+              <th>Temps total</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
+          </thead>
+          <tbody>
+            {globalData.map((entry) => (
+              <tr key={entry.username}>
+                <td>{entry.rank}</td>
+                <td>{entry.username}</td>
+                <td>{entry.totalInvestigationsCompleted}</td>
+                <td>{entry.totalScore}</td>
+                <td>{entry.averageScore}</td>
+                <td>{formatTime(entry.totalTimeSpentSeconds)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
 
   return (
     <div className="leaderboard-dropdown">

@@ -1,68 +1,61 @@
-import { useState, useEffect, useCallback } from 'react';
-import { LeaderboardService } from '../services/leaderboardService';
-import type { LeaderboardEntry, GlobalLeaderboardEntry } from '../types/leaderboard';
+import { useState, useEffect } from 'react';
+import { leaderboardService } from '../services/leaderboardService';
+import type { LeaderboardEntry, GlobalLeaderboardEntry, LeaderboardType } from '../types/leaderboard';
 
-interface UseLeaderboardOptions {
-  enabled?: boolean;
+interface UseLeaderboardProps {
+  type: LeaderboardType;
   investigationId?: number;
+  limit?: number;
 }
 
-export const useLeaderboard = ({ enabled = true, investigationId }: UseLeaderboardOptions = {}) => {
-  const [globalLeaderboard, setGlobalLeaderboard] = useState<GlobalLeaderboardEntry[]>([]);
-  const [investigationLeaderboards, setInvestigationLeaderboards] = useState<{[key: number]: LeaderboardEntry[]}>({});
+interface UseLeaderboardReturn {
+  data: LeaderboardEntry[] | GlobalLeaderboardEntry[];
+  loading: boolean;
+  error: string | null;
+  refetch: () => void;
+}
+
+export const useLeaderboard = ({ type, investigationId, limit = 10 }: UseLeaderboardProps): UseLeaderboardReturn => {
+  const [data, setData] = useState<LeaderboardEntry[] | GlobalLeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const loadGlobalLeaderboard = useCallback(async () => {
+  const fetchData = async () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await LeaderboardService.getGlobalLeaderboard(20);
-      setGlobalLeaderboard(data);
+      let result;
+      switch (type) {
+        case 'global':
+          result = await leaderboardService.getGlobalLeaderboard(limit);
+          break;
+        case 'investigation':
+          if (!investigationId) throw new Error('Investigation ID required');
+          result = await leaderboardService.getInvestigationLeaderboard(investigationId, limit);
+          break;
+        case 'personal':
+          if (!investigationId) throw new Error('Investigation ID required');
+          result = await leaderboardService.getPersonalInvestigationLeaderboard(investigationId, limit);
+          break;
+        default:
+          throw new Error('Invalid leaderboard type');
+      }
+      setData(result);
     } catch (err) {
-      const errorMessage = 'Erreur lors du chargement du leaderboard global';
-      console.error(errorMessage, err);
-      setError(errorMessage);
+      setError(err instanceof Error ? err.message : 'Erreur inconnue');
     } finally {
       setLoading(false);
     }
-  }, []);
-
-  const loadInvestigationLeaderboard = useCallback(async (invId: number) => {
-    if (investigationLeaderboards[invId]) return;
-
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await LeaderboardService.getInvestigationLeaderboard(invId, 20);
-      setInvestigationLeaderboards(prev => ({
-        ...prev,
-        [invId]: data
-      }));
-    } catch (err) {
-      const errorMessage = 'Erreur lors du chargement du leaderboard de l\'enquête';
-      console.error(errorMessage, err);
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  }, [investigationLeaderboards]);
+  };
 
   useEffect(() => {
-    if (enabled) {
-      loadGlobalLeaderboard();
-      if (investigationId) {
-        loadInvestigationLeaderboard(investigationId);
-      }
-    }
-  }, [enabled, investigationId, loadGlobalLeaderboard, loadInvestigationLeaderboard]);
+    fetchData();
+  }, [type, investigationId, limit]);
 
   return {
-    globalLeaderboard,
-    investigationLeaderboards,
+    data,
     loading,
     error,
-    loadGlobalLeaderboard,
-    loadInvestigationLeaderboard,
+    refetch: fetchData,
   };
 };
