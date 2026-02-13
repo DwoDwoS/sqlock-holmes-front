@@ -23,3 +23,5 @@ export interface LeaderboardResponse {
   leaderboard: LeaderboardEntry[];
   totalUsers: number;
 }
+
+export type LeaderboardType = 'global' | 'investigation' | 'personal';

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import Leaderboard from './Leaderboard';
+import LeaderboardModal from './LeaderboardModal';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -81,7 +81,7 @@ const Navbar = () => {
         </ul>
       </nav>
 
-      <Leaderboard isOpen={isLeaderboardOpen} onClose={() => setIsLeaderboardOpen(false)} />
+      <LeaderboardModal isOpen={isLeaderboardOpen} onClose={() => setIsLeaderboardOpen(false)} />
     </>
   );
 };

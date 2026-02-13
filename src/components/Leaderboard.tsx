@@ -1,148 +1,164 @@
-import React, { useState, useEffect } from 'react';
-import api from '../api/api';
+import React, { useState } from 'react';
 import { useLeaderboard } from '../hooks/useLeaderboard';
-import { formatTime, formatDate, getRankClass } from '../utils/formatters';
-import './LeaderboardModal.css';
+import type { LeaderboardEntry, GlobalLeaderboardEntry, LeaderboardType } from '../types/leaderboard';
+import './Leaderboard.css';
 
 interface LeaderboardProps {
-  isOpen: boolean;
-  onClose: () => void;
+  investigationId?: number;
 }
 
-const Leaderboard: React.FC<LeaderboardProps> = ({ isOpen, onClose }) => {
-  const [activeTab, setActiveTab] = useState<'global' | number>('global');
-  const [investigations, setInvestigations] = useState<{id: number, title: string}[]>([]);
-  
-  const { 
-    globalLeaderboard, 
-    investigationLeaderboards, 
-    loading, 
-    loadInvestigationLeaderboard 
-  } = useLeaderboard({ enabled: isOpen });
+const Leaderboard: React.FC<LeaderboardProps> = ({ investigationId }) => {
+  const [leaderboardType, setLeaderboardType] = useState<LeaderboardType>('global');
+  const { data, loading, error, refetch } = useLeaderboard({
+    type: leaderboardType,
+    investigationId: leaderboardType !== 'global' ? investigationId : undefined,
+  });
 
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const loadInvestigations = async () => {
-      try {
-        const response = await api.get('/investigations');
-        interface InvestigationData { id: number; title: string; }
-        setInvestigations(response.data.map((inv: InvestigationData) => ({ id: inv.id, title: inv.title })));
-      } catch (error) {
-        console.error('Erreur lors du chargement des enquêtes:', error);
-      }
-    };
-
-    loadInvestigations();
-  }, [isOpen]);
-
-  const handleInvestigationTabClick = (investigationId: number) => {
-    setActiveTab(investigationId);
-    loadInvestigationLeaderboard(investigationId);
+  const formatTime = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  if (!isOpen) return null;
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('fr-FR');
+  };
+
+  const renderGlobalLeaderboard = () => {
+    const globalData = data as GlobalLeaderboardEntry[];
+    return (
+      <div className="leaderboard-table">
+        <h3>Classement Global</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Rang</th>
+              <th>Utilisateur</th>
+              <th>Enquêtes Complétées</th>
+              <th>Score Total</th>
+              <th>Score Moyen</th>
+              <th>Temps Total</th>
+              <th>Requêtes Totales</th>
+              <th>Indices Utilisés</th>
+            </tr>
+          </thead>
+          <tbody>
+            {globalData.map((entry) => (
+              <tr key={entry.rank}>
+                <td>{entry.rank}</td>
+                <td>{entry.username}</td>
+                <td>{entry.totalInvestigationsCompleted}</td>
+                <td>{entry.totalScore}</td>
+                <td>{entry.averageScore}</td>
+                <td>{formatTime(entry.totalTimeSpentSeconds)}</td>
+                <td>{entry.totalQueriesCount}</td>
+                <td>{entry.totalHintsUsed}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
+  const renderInvestigationLeaderboard = () => {
+    const invData = data as LeaderboardEntry[];
+    return (
+      <div className="leaderboard-table">
+        <h3>Classement de l'Enquête {investigationId}</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Rang</th>
+              <th>Utilisateur</th>
+              <th>Score</th>
+              <th>Temps</th>
+              <th>Requêtes</th>
+              <th>Indices</th>
+              <th>Date de Complétion</th>
+            </tr>
+          </thead>
+          <tbody>
+            {invData.map((entry) => (
+              <tr key={entry.rank}>
+                <td>{entry.rank}</td>
+                <td>{entry.username}</td>
+                <td>{entry.score}</td>
+                <td>{formatTime(entry.timeSpentSeconds)}</td>
+                <td>{entry.queriesCount}</td>
+                <td>{entry.hintsUsed}</td>
+                <td>{formatDate(entry.completedAt)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
+  const renderPersonalLeaderboard = () => {
+    const personalData = data as LeaderboardEntry[];
+    return (
+      <div className="leaderboard-table">
+        <h3>Vos Meilleurs Scores - Enquête {investigationId}</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Rang</th>
+              <th>Score</th>
+              <th>Temps</th>
+              <th>Requêtes</th>
+              <th>Indices</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {personalData.map((entry) => (
+              <tr key={entry.rank}>
+                <td>{entry.rank}</td>
+                <td>{entry.score}</td>
+                <td>{formatTime(entry.timeSpentSeconds)}</td>
+                <td>{entry.queriesCount}</td>
+                <td>{entry.hintsUsed}</td>
+                <td>{formatDate(entry.completedAt)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
 
   return (
-    <div className="leaderboard-modal-overlay">
-      <div className="leaderboard-modal">
-        <div className="leaderboard-modal-header">
-          <h2 className="leaderboard-modal-title">🏆 Classement</h2>
-          <button
-            onClick={onClose}
-            className="leaderboard-modal-close"
-          >
-            ×
-          </button>
-        </div>
+    <div className="leaderboard-container">
+      <h2>Classements</h2>
 
-        <div className="leaderboard-modal-content">
-          <div className="leaderboard-tabs-container">
-            <button
-              onClick={() => setActiveTab('global')}
-              className={`leaderboard-tab ${activeTab === 'global' ? 'active' : ''}`}
-            >
-              Classement Global
-            </button>
-            {investigations.map(inv => (
-              <button
-                key={inv.id}
-                onClick={() => handleInvestigationTabClick(inv.id)}
-                className={`leaderboard-tab ${activeTab === inv.id ? 'active' : ''}`}
-              >
-                {inv.title}
-              </button>
-            ))}
-          </div>
-          {loading ? (
-            <div className="leaderboard-loading">
-              <div className="leaderboard-spinner"></div>
-            </div>
-          ) : (
-            <div className="leaderboard-list-container">
-              {activeTab === 'global' ? (
-                <div className="leaderboard-entries">
-                  {globalLeaderboard.length === 0 ? (
-                    <p className="leaderboard-empty">Aucun résultat disponible</p>
-                  ) : (
-                    globalLeaderboard.map((entry, index) => (
-                      <div
-                        key={entry.username}
-                        className={`leaderboard-entry ${index < 3 ? 'top-three' : ''}`}
-                      >
-                        <div className="leaderboard-entry-left">
-                          <div className={`leaderboard-rank-badge ${getRankClass(index + 1)}`}>
-                            {index + 1}
-                          </div>
-                          <div className="leaderboard-entry-info">
-                            <p className="leaderboard-username">{entry.username}</p>
-                            <p className="leaderboard-stats">
-                              {entry.totalInvestigationsCompleted} enquête{entry.totalInvestigationsCompleted > 1 ? 's' : ''} résolue{entry.totalInvestigationsCompleted > 1 ? 's' : ''}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="leaderboard-entry-right">
-                          <p className="leaderboard-score global">{entry.totalScore} pts</p>
-                          <p className="leaderboard-date">Moyenne: {entry.averageScore} pts</p>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
-              ) : (
-                <div className="leaderboard-entries">
-                  {investigationLeaderboards[activeTab]?.length === 0 ? (
-                    <p className="leaderboard-empty">Aucun résultat disponible pour cette enquête</p>
-                  ) : (
-                    investigationLeaderboards[activeTab]?.map((entry, index) => (
-                      <div
-                        key={entry.username}
-                        className={`leaderboard-entry ${index < 3 ? 'top-three' : ''}`}
-                      >
-                        <div className="leaderboard-entry-left">
-                          <div className={`leaderboard-rank-badge ${getRankClass(index + 1)}`}>
-                            {index + 1}
-                          </div>
-                          <div className="leaderboard-entry-info">
-                            <p className="leaderboard-username">{entry.username}</p>
-                            <p className="leaderboard-stats">
-                              Temps: {formatTime(entry.timeSpentSeconds)} | Requêtes: {entry.queriesCount} | Indices: {entry.hintsUsed}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="leaderboard-entry-right">
-                          <p className="leaderboard-score investigation">{entry.score} pts</p>
-                          <p className="leaderboard-date">{formatDate(entry.completedAt)}</p>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
+      <div className="leaderboard-controls">
+        <select
+          value={leaderboardType}
+          onChange={(e) => setLeaderboardType(e.target.value as LeaderboardType)}
+        >
+          <option value="global">Classement Global</option>
+          {investigationId && <option value="investigation">Classement de l'Enquête</option>}
+          {investigationId && <option value="personal">Mes Scores Personnels</option>}
+        </select>
+        <button onClick={refetch} disabled={loading}>
+          {loading ? 'Chargement...' : 'Actualiser'}
+        </button>
       </div>
+
+      {error && <div className="error-message">{error}</div>}
+
+      {loading ? (
+        <div className="loading">Chargement du classement...</div>
+      ) : (
+        <>
+          {leaderboardType === 'global' && renderGlobalLeaderboard()}
+          {leaderboardType === 'investigation' && renderInvestigationLeaderboard()}
+          {leaderboardType === 'personal' && renderPersonalLeaderboard()}
+        </>
+      )}
     </div>
   );
 };
