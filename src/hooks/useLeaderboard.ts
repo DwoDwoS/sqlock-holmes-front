@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { leaderboardService } from '../services/leaderboardService';
 import type { LeaderboardEntry, GlobalLeaderboardEntry, LeaderboardType } from '../types/leaderboard';
 
@@ -20,7 +20,7 @@ export const useLeaderboard = ({ type, investigationId, limit = 10 }: UseLeaderb
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -46,11 +46,11 @@ export const useLeaderboard = ({ type, investigationId, limit = 10 }: UseLeaderb
     } finally {
       setLoading(false);
     }
-  };
+  }, [type, investigationId, limit]);
 
   useEffect(() => {
     fetchData();
-  }, [type, investigationId, limit]);
+  }, [fetchData]);
 
   return {
     data,

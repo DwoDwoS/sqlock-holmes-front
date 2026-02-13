@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import api from '../api/api';
 import { useLeaderboard } from '../hooks/useLeaderboard';
 import { formatTime, formatDate, getRankClass } from '../utils/formatters';
@@ -13,31 +13,32 @@ const LeaderboardModal: React.FC<LeaderboardModalProps> = ({ isOpen, onClose }) 
   const [viewMode, setViewMode] = useState<'global' | 'personal'>('global');
   const [selectedInvestigation, setSelectedInvestigation] = useState<number | null>(null);
   const [investigations, setInvestigations] = useState<{id: number, title: string}[]>([]);
+  const hasInitializedRef = useRef(false);
   
   const { data, loading } = useLeaderboard({ 
     type: viewMode === 'global' ? 'global' : 'personal',
     investigationId: viewMode === 'personal' ? selectedInvestigation ?? undefined : undefined,
   });
 
-  const loadInvestigations = async () => {
-    try {
-      const response = await api.get('/investigations');
-      interface InvestigationData { id: number; title: string; }
-      const invs = response.data.map((inv: InvestigationData) => ({ id: inv.id, title: inv.title }));
-      setInvestigations(invs);
-      if (invs.length > 0 && !selectedInvestigation) {
-        setSelectedInvestigation(invs[0].id);
-      }
-    } catch (error) {
-      console.error('Erreur lors du chargement des enquêtes:', error);
-    }
-  };
-
   useEffect(() => {
-    if (isOpen) {
-      loadInvestigations();
-    }
-  }, [isOpen]);
+    const loadInvestigations = async () => {
+      try {
+        const response = await api.get('/investigations');
+        interface InvestigationData { id: number; title: string; }
+        const invs = response.data.map((inv: InvestigationData) => ({ id: inv.id, title: inv.title }));
+        setInvestigations(invs);
+        
+        if (invs.length > 0 && !hasInitializedRef.current) {
+          setSelectedInvestigation(invs[0].id);
+          hasInitializedRef.current = true;
+        }
+      } catch (error) {
+        console.error('Erreur lors du chargement des enquêtes:', error);
+      }
+    };
+
+    loadInvestigations();
+  }, []);
 
   if (!isOpen) return null;
 
