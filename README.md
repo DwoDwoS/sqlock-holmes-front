@@ -29,12 +29,11 @@ SQLock-Holmes est un jeu éducatif qui transforme l'apprentissage du SQL en aven
 ## Stack Technique
 
 **Frontend :**
-- React 18.3 + TypeScript
-- Vite 5.x (bundler)
-- React Router 6 (navigation)
-- Zustand (gestion d'état)
-- React Query (cache API)
+- React 19.2 + TypeScript
+- Vite 7.x (bundler)
+- React Router 7 (navigation)
 - Axios (HTTP client)
+- Monaco Editor (éditeur SQL)
 
 **Backend :**
 - Java 17 + Spring Boot
@@ -64,15 +63,11 @@ cd SQLock-Holmes-front
 # Installer les dépendances
 npm install
 
-# Configurer l'environnement
-cp .env.example .env
-# Éditer . env avec l'URL de ton backend
-
 # Lancer en mode développement
 npm run dev
 ```
 
-L'application sera accessible sur **http://localhost:3000**
+L'application sera accessible sur **http://localhost:5173**
 
 ## Commandes
 
@@ -90,7 +85,7 @@ npm run type-check       # Vérifier les types TypeScript
 
 # Tests
 npm run test             # Lancer les tests
-npm run test: ui          # UI interactive des tests
+npm run test: ui         # UI interactive des tests
 npm run test:coverage    # Coverage des tests
 ```
 
@@ -98,18 +93,50 @@ npm run test:coverage    # Coverage des tests
 
 ```
 src/
-├── features/
-│   ├── investigation/   # Enquêtes et résolution
-│   ├── dashboard/       # Tableau de bord joueur
-│   ├── leaderboard/     # Classements
-│   └── profile/         # Profil utilisateur
-├── shared/              # Composants réutilisables
-│   ├── components/      # UI (boutons, cartes, modals)
-│   ├── hooks/           # Custom hooks
-│   └── utils/           # Fonctions utilitaires
-├── api/                 # Client API et endpoints
-├── router/              # Configuration routes
-└── assets/              # Images, styles
+├── components/          # Composants React
+│   ├── Footer.tsx       # Pied de page
+│   ├── Home.tsx         # Page d'accueil
+│   ├── InvestigationPage.tsx  # Page d'enquête
+│   ├── Investigations.tsx     # Liste des enquêtes
+│   ├── Leaderboard.tsx        # Classement
+│   ├── Login.tsx              # Connexion
+│   ├── Navbar.tsx             # Barre de navigation
+│   ├── Profile.tsx            # Profil utilisateur
+│   ├── ProtectedRoute.tsx     # Route protégée
+│   ├── Register.tsx           # Inscription
+│   └── investigation/         # Composants d'enquête
+│       ├── Actions.tsx        # Actions de l'enquête
+│       ├── HintsModal.tsx     # Modal des indices
+│  Configuration API
+
+L'URL du backend est configurée dans le fichier `src/api/api.ts`. Par défaut :
+- Développement : `http://localhost:8080`
+- Production : à configurer selon l'environnement
+
+Les tokens d'authentification sont automatiquement gérés et stockés dans le localStorage.ook données enquête
+│   ├── useInvestigationSubmission.ts # Hook soumission
+│   └── useLeaderboard.ts             # Hook classement
+├── services/            # Services API
+│   ├── authService.ts   # Service authentification
+│   ├── hintsService.ts  # Service indices
+│   ├── investigationService.ts  # Service enquêtes
+│   ├── leaderboardService.ts    # Service classement
+│   └── sqlService.ts             # Service SQL
+├── types/               # Types TypeScript
+│   ├── auth.ts          # Types authentification
+│   ├── investigation.ts # Types enquête
+│   └── leaderboard.ts   # Types classement
+├── utils/               # Utilitaires
+│   ├── formatters.ts    # Formatage des données
+│   └── investigationUtils.ts  # Utils pour enquêtes
+├── tests/               # Tests unitaires
+├── api/                 # Configuration API
+│   └── api.ts           # Client Axios
+├── assets/              # Ressources statiques
+├── App.tsx              # Composant principal
+├── App.css              # Styles globaux
+├── main.tsx             # Point d'entrée
+└── index.css            # Styles de base
 ```
 
 ## Variables d'Environnement

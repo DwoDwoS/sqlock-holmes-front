@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getHints, unlockNextHint, getHintCount } from '../services/investigationService';
+import { HintsService } from '../services/hintsService';
 import type { Hint, HintCount } from '../types/investigation';
 import { getMockHints } from '../utils/investigationUtils';
 
@@ -22,14 +22,19 @@ export const useHints = (investigationId: number | undefined) => {
     setLoading(true);
     try {
       const [hintsData, countData] = await Promise.all([
-        getHints(investigationId),
-        getHintCount(investigationId)
+        HintsService.getHints(investigationId),
+        HintsService.getHintCount(investigationId)
       ]);
-      setHints(hintsData.map((hint: { id: number; content?: string; text?: string; locked?: boolean }) => ({
+      
+      type ApiHintData = Hint & { text?: string };
+      
+      const normalizedHints: Hint[] = hintsData.map((hint: ApiHintData) => ({
         id: hint.id,
         content: hint.content || hint.text || '',
         locked: hint.locked || false
-      })));
+      }));
+      
+      setHints(normalizedHints);
       setHintCount(countData);
     } catch (error) {
       console.error('Erreur lors du chargement des indices depuis le back-end, utilisation des données mockées:', error);
@@ -45,10 +50,11 @@ export const useHints = (investigationId: number | undefined) => {
     if (!investigationId || !hintCount || hintCount.remaining === 0) return;
 
     try {
-      const unlockedHint = await unlockNextHint(investigationId);
+      const unlockedHint = await HintsService.unlockNextHint(investigationId);
+      const hintWithText = unlockedHint as Hint & { text?: string };
       setHints(prev => prev.map(hint =>
         hint.id === unlockedHint.id
-          ? { ...hint, content: unlockedHint.content || unlockedHint.text || '', locked: false }
+          ? { ...hint, content: unlockedHint.content || hintWithText.text || '', locked: false }
           : hint
       ));
       setHintCount(prev => prev ? { ...prev, unlocked: prev.unlocked + 1, remaining: prev.remaining - 1 } : null);

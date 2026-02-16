@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
-import { executeSQL } from '../services/investigationService';
+import { SQLService } from '../services/sqlService';
 import { InvestigationHeader, SQLEditor, ResultsDisplay, HintsModal, Actions, SubmitSolutionModal } from './investigation';
 import type { QueryHistoryEntry } from './investigation/SQLEditor';
 import { useInvestigationSubmission } from '../hooks/useInvestigationSubmission';
@@ -41,7 +41,7 @@ const InvestigationPage: React.FC = () => {
     if (!id || !investigation) return;
     setLoading(true);
     try {
-      const data = await executeSQL({ sql: sqlCode, investigationId: parseInt(id) });
+      const data = await SQLService.executeSQL({ sql: sqlCode, investigationId: parseInt(id) });
       setResults(data);
       setQueryHistory(prev => [...prev, { query: sqlCode, timestamp: new Date() }]);
       setTimeout(() => {

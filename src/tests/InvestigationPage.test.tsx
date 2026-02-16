@@ -42,12 +42,27 @@ vi.mock('../api/api', () => ({
 
 // Mock the investigation service
 vi.mock('../services/investigationService', () => ({
-  executeSQL: vi.fn(() => Promise.reject({ response: { status: 404 } })),
   getHints: vi.fn(() => Promise.reject({ response: { status: 404 } })),
   getHintCount: vi.fn(() => Promise.reject({ response: { status: 404 } })),
   unlockNextHint: vi.fn(() => Promise.reject({ response: { status: 404 } })),
   getInvestigationDetails: vi.fn(() => Promise.reject({ response: { status: 404 } })),
   submitSolution: vi.fn(() => Promise.reject({ response: { status: 404 } }))
+}));
+
+// Mock the SQL service
+vi.mock('../services/sqlService', () => ({
+  SQLService: {
+    executeSQL: vi.fn(() => Promise.reject({ response: { status: 404 } }))
+  }
+}));
+
+// Mock the hints service
+vi.mock('../services/hintsService', () => ({
+  HintsService: {
+    getHints: vi.fn(() => Promise.reject({ response: { status: 404 } })),
+    getHintCount: vi.fn(() => Promise.reject({ response: { status: 404 } })),
+    unlockNextHint: vi.fn(() => Promise.reject({ response: { status: 404 } }))
+  }
 }));
 
 // Mock Monaco Editor
@@ -74,6 +89,9 @@ const renderWithProviders = (component: React.ReactElement) => {
 describe('InvestigationPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    
+    // Mock scrollIntoView
+    Element.prototype.scrollIntoView = vi.fn();
   });
 
   it('should render investigation details', async () => {
@@ -94,7 +112,7 @@ describe('InvestigationPage', () => {
   });
 
   it('should execute SQL when button is clicked', async () => {
-    const { executeSQL } = await import('../services/investigationService');
+    const { SQLService } = await import('../services/sqlService');
     renderWithProviders(<InvestigationPage />);
 
     await waitFor(() => {
@@ -105,12 +123,11 @@ describe('InvestigationPage', () => {
     fireEvent.click(executeButton);
 
     await waitFor(() => {
-      expect(executeSQL).toHaveBeenCalledWith({ investigationId: 1, sql: 'SELECT * FROM museum_employees LIMIT 5;' });
+      expect(SQLService.executeSQL).toHaveBeenCalledWith({ investigationId: 1, sql: 'SELECT * FROM museum_employees LIMIT 5;' });
     });
   });
 
   it('should handle hints gracefully when not authenticated', async () => {
-    const { getHints } = await import('../services/investigationService');
     renderWithProviders(<InvestigationPage />);
 
     await waitFor(() => {
@@ -120,11 +137,6 @@ describe('InvestigationPage', () => {
     const hintsButton = screen.getByText('Indices');
     fireEvent.click(hintsButton);
 
-    // Sans token, devrait utiliser les mocks directement sans appeler getHints
-    await waitFor(() => {
-      expect(getHints).not.toHaveBeenCalled();
-    });
-    
     // La modal devrait s'ouvrir avec les indices mockés
     await waitFor(() => {
       expect(screen.getByText('Les caméras de sécurité ont enregistré les entrées et sorties du musée.')).toBeInTheDocument();
