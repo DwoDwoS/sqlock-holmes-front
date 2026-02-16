@@ -131,6 +131,12 @@
   background-size: cover;
 }
 
+.layout.profile-background {
+  background: linear-gradient(135deg, rgba(51, 51, 51, 0.8) 0%, rgba(26, 26, 26, 0.8) 100%), url('/banner-detective.png') no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
 .layout main {
   flex: 1;
 }
@@ -722,11 +728,6 @@
 .profile-container {
   min-height: 100vh;
   padding: 2rem;
-  background: linear-gradient(135deg, rgba(51, 51, 51, 0.8) 0%, rgba(26, 26, 26, 0.8) 100%), url('/banner-detective.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
   display: flex;
   align-items: center;
   justify-content: center;

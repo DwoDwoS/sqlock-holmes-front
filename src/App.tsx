@@ -12,8 +12,8 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import './App.css';
 
-const Layout: React.FC<{ children: React.ReactNode; isInvestigationsPage: boolean; isHomePage: boolean; isInvestigationPage?: boolean }> = ({ children, isInvestigationsPage, isHomePage, isInvestigationPage = false }) => (
-  <div className={`layout ${isHomePage ? 'home-background' : ''} ${isInvestigationsPage ? 'investigations-background' : ''}`}>
+const Layout: React.FC<{ children: React.ReactNode; isInvestigationsPage: boolean; isHomePage: boolean; isInvestigationPage?: boolean; isProfilePage?: boolean }> = ({ children, isInvestigationsPage, isHomePage, isInvestigationPage = false, isProfilePage = false }) => (
+  <div className={`layout ${isHomePage ? 'home-background' : ''} ${isInvestigationsPage ? 'investigations-background' : ''} ${isProfilePage ? 'profile-background' : ''}`}>
     <Navbar />
     <main style={{ paddingTop: isHomePage || isInvestigationPage ? '0' : '90px', paddingBottom: isHomePage || isInvestigationPage ? '0' : '100px', flex: 1 }}>
       {children}
@@ -37,6 +37,7 @@ const AppContent: React.FC = () => {
   const isInvestigationsPage = location.pathname === '/investigations';
   const isHomePage = location.pathname === '/';
   const isInvestigationPage = location.pathname.startsWith('/investigation/');
+  const isProfilePage = location.pathname === '/profile';
 
   return (
     <div className="App">
@@ -67,7 +68,7 @@ const AppContent: React.FC = () => {
           path="/profile"
           element={
             <ProtectedRoute>
-              <Layout isInvestigationsPage={false} isHomePage={false}>
+              <Layout isInvestigationsPage={false} isHomePage={false} isProfilePage={isProfilePage}>
                 <Profile />
               </Layout>
             </ProtectedRoute>
