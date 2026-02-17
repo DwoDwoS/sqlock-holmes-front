@@ -2,14 +2,17 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
 import { AuthProvider } from '../contexts/AuthProvider';
+import { LeaderboardRefreshProvider } from '../contexts/LeaderboardRefreshContext';
 import Navbar from '../components/Navbar';
 
 const renderWithProviders = (component: React.ReactElement) => {
   return render(
     <AuthProvider>
-      <BrowserRouter>
-        {component}
-      </BrowserRouter>
+      <LeaderboardRefreshProvider>
+        <BrowserRouter>
+          {component}
+        </BrowserRouter>
+      </LeaderboardRefreshProvider>
     </AuthProvider>
   );
 };

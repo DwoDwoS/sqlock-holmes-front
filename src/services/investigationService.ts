@@ -66,7 +66,23 @@ export async function startInvestigation(id: number): Promise<void> {
 }
 
 export async function restartInvestigation(id: number): Promise<void> {
-  await api.post(`/investigations/${id}/restart`);
+  try {
+    await api.post(`/investigations/${id}/restart`);
+  } catch (error) {
+    const axiosError = error as { response?: { status?: number; data?: { message?: string; error?: string } } };
+    const backendMessage = axiosError.response?.data?.message || axiosError.response?.data?.error;
+    
+    if (axiosError.response?.status === 403) {
+      const message = backendMessage || 'Accès refusé. Vérifiez que vous êtes connecté et que cette fonctionnalité est activée sur le serveur.';
+      throw new Error(message);
+    } else if (axiosError.response?.status === 404) {
+      const message = backendMessage || 'Enquête non trouvée.';
+      throw new Error(message);
+    }
+    
+    const message = backendMessage || 'Erreur lors du redémarrage de l\'enquête.';
+    throw new Error(message);
+  }
 }
 
 export interface SubmitSolutionResponse {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { authService } from '../services/authService';
 import { AuthContext } from './AuthContext';
 import type { AuthProviderProps, User } from '../types/auth';
@@ -6,8 +6,12 @@ import type { AuthProviderProps, User } from '../types/auth';
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const hasCheckedAuth = useRef(false);
 
   useEffect(() => {
+    if (hasCheckedAuth.current) return;
+    hasCheckedAuth.current = true;
+
     const checkAuth = async () => {
       const token = localStorage.getItem('token');
       const storedUser = localStorage.getItem('user');
@@ -16,13 +20,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         try {
           const userData = await authService.getCurrentUser();
           setUser(userData);
-        } catch {
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
-          setUser(null);
+        } catch (error) {
+          const isAuthError = (error as { response?: { status?: number }; message?: string });
+          if (isAuthError.response?.status === 403 || isAuthError.response?.status === 401 || isAuthError.message === 'Unauthorized') {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            setUser(null);
+          }
         }
       } else {
-        // Pas de token = pas connecté, inutile d'appeler l'API
         setUser(null);
       }
       setIsLoading(false);

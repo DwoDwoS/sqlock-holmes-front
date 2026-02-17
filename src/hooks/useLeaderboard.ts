@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { leaderboardService } from '../services/leaderboardService';
+import { useLeaderboardRefresh } from '../contexts/LeaderboardRefreshContext';
 import type { LeaderboardEntry, GlobalLeaderboardEntry, LeaderboardType } from '../types/leaderboard';
 
 interface UseLeaderboardProps {
@@ -19,6 +20,7 @@ export const useLeaderboard = ({ type, investigationId, limit = 10 }: UseLeaderb
   const [data, setData] = useState<LeaderboardEntry[] | GlobalLeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { refreshToken } = useLeaderboardRefresh();
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -50,7 +52,7 @@ export const useLeaderboard = ({ type, investigationId, limit = 10 }: UseLeaderb
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, [fetchData, refreshToken]);
 
   return {
     data,

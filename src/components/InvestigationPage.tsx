@@ -15,7 +15,7 @@ const InvestigationPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const investigationId = id ? parseInt(id) : 1;
-  const { investigation } = useInvestigationData(id);
+  const { investigation, error: dataError } = useInvestigationData(id);
   const { hints, hintCount, loadHints, unlockNextHint } = useHints(investigationId);
   const [sqlCode, setSqlCode] = useState<string>(getDefaultQuery(investigationId));
   const [results, setResults] = useState<SQLResult | null>(null);
@@ -91,6 +91,23 @@ const InvestigationPage: React.FC = () => {
   return (
     <div className={`investigation-page investigation-${investigation.id} ${investigation.image ? 'has-image' : ''}`} style={style}>
       <div className="investigation-overlay">
+        {dataError && (
+          <div style={{
+            backgroundColor: '#fff3cd',
+            border: '1px solid #ffc107',
+            borderRadius: '4px',
+            padding: '12px 16px',
+            marginBottom: '16px',
+            color: '#856404',
+            fontSize: '14px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}>
+            <span style={{ fontSize: '18px' }}>⚠️</span>
+            <span>{dataError}</span>
+          </div>
+        )}
         <InvestigationHeader investigation={investigation} />
 
         <SQLEditor
