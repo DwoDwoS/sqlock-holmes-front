@@ -71,12 +71,15 @@ const Investigations: React.FC = () => {
   }, []);
 
   const handleRestart = async (investigationId: number) => {
+    if (loading) return;
+    
     try {
       await restartInvestigation(investigationId);
       navigate(`/investigation/${investigationId}`);
     } catch (error) {
       console.error('Erreur lors du redémarrage de l\'enquête:', error);
-      alert('Erreur lors du redémarrage de l\'enquête.');
+      const message = error instanceof Error ? error.message : 'Erreur lors du redémarrage de l\'enquête.';
+      alert(`❌ ${message}\n\nSi le problème persiste, vérifiez que le backend autorise cette fonctionnalité.`);
     }
   };
 

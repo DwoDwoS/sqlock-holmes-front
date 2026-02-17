@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthProvider';
+import { LeaderboardRefreshProvider } from './contexts/LeaderboardRefreshContext';
 import Login from './components/Login';
 import Register from './components/Register';
 import Home from './components/Home';
@@ -25,9 +26,11 @@ const Layout: React.FC<{ children: React.ReactNode; isInvestigationsPage: boolea
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <AppContent />
-      </Router>
+      <LeaderboardRefreshProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </LeaderboardRefreshProvider>
     </AuthProvider>
   );
 }
