@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { AuthProvider } from '../contexts/AuthProvider';
+import { LeaderboardRefreshProvider } from '../contexts/LeaderboardRefreshContext';
 import InvestigationPage from '../components/InvestigationPage';
 
 // Mock useNavigate
@@ -80,7 +81,9 @@ const renderWithProviders = (component: React.ReactElement) => {
   return render(
     <BrowserRouter>
       <AuthProvider>
-        {component}
+        <LeaderboardRefreshProvider>
+          {component}
+        </LeaderboardRefreshProvider>
       </AuthProvider>
     </BrowserRouter>
   );
@@ -154,5 +157,13 @@ describe('InvestigationPage', () => {
     fireEvent.click(backButton);
 
     expect(mockNavigate).toHaveBeenCalledWith('/investigations');
+  });
+
+  it('should display error banner when backend fails', async () => {
+    renderWithProviders(<InvestigationPage />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/cette enquête n'est pas encore disponible/i)).toBeInTheDocument();
+    });
   });
 });

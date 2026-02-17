@@ -60,6 +60,20 @@ export const useHints = (investigationId: number | undefined) => {
       setHintCount(prev => prev ? { ...prev, unlocked: prev.unlocked + 1, remaining: prev.remaining - 1 } : null);
     } catch (error) {
       console.error('Erreur lors du déblocage du prochain indice:', error);
+      
+      let errorMessage = 'Erreur lors du déblocage de l\'indice.';
+      const axiosError = error as { response?: { status?: number; data?: { message?: string; error?: string } } };
+      
+      if (axiosError.response?.status === 403) {
+        const backendMessage = axiosError.response?.data?.message || axiosError.response?.data?.error;
+        errorMessage = backendMessage || 'Accès refusé. Vous n\'avez peut-être pas démarré cette enquête ou votre session a expiré.';
+      } else if (axiosError.response?.status === 404) {
+        errorMessage = 'Aucun indice supplémentaire disponible.';
+      } else if (axiosError.response?.data?.message) {
+        errorMessage = axiosError.response.data.message;
+      }
+      
+      alert(`❌ ${errorMessage}\n\nSi le problème persiste, essayez de vous reconnecter ou vérifiez que vous avez démarré l'enquête.`);
     }
   };
 

@@ -7,6 +7,8 @@ interface LeaderboardRefreshContextType {
 
 const LeaderboardRefreshContext = createContext<LeaderboardRefreshContextType | undefined>(undefined);
 
+/* eslint-disable react-refresh/only-export-components */
+
 export const LeaderboardRefreshProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [refreshToken, setRefreshToken] = useState(0);
 
