@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { submitSolution } from '../services/investigationService';
+import { useLeaderboardRefresh } from '../contexts/LeaderboardRefreshContext';
 
 export const useInvestigationSubmission = (investigationId: string | undefined) => {
   const navigate = useNavigate();
+  const { triggerRefresh } = useLeaderboardRefresh();
   const [culprit, setCulprit] = useState('');
   const [motive, setMotive] = useState('');
   const [showSubmitModal, setShowSubmitModal] = useState(false);
@@ -51,6 +53,7 @@ export const useInvestigationSubmission = (investigationId: string | undefined) 
         setShowSubmitModal(false);
         setCulprit('');
         setMotive('');
+        triggerRefresh();
         navigate('/investigations');
         alert(data.message || 'Solution soumise avec succès !');
       } else {
