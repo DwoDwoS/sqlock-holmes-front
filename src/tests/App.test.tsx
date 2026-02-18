@@ -12,8 +12,8 @@ const renderWithProviders = (component: React.ReactElement) => {
 };
 
 describe('App', () => {
-  it('renders login page by default when not authenticated', () => {
+  it('renders login page by default when not authenticated', async () => {
     renderWithProviders(<App />);
-    expect(screen.getByRole('heading', { name: /Connexion/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Connexion/i })).toBeInTheDocument();
   });
 });

@@ -28,7 +28,7 @@ const Login: React.FC = () => {
         </div>
       </section>
       <div className="auth-container">
-      <h2>Connexion</h2>
+      <h1>Connexion</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Nom d'utilisateur :</label>

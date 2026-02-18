@@ -3,6 +3,7 @@
   min-height: 100vh;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
 .logo {
@@ -147,6 +148,12 @@
   min-height: 100vh;
 }
 
+@media (max-width: 768px) {
+  .home-container {
+    padding-bottom: 80px;
+  }
+}
+
 .hero-section {
   flex-shrink: 0;
   padding: 1rem 2rem 2rem;
@@ -187,7 +194,7 @@
   flex: 1;
   display: flex;
   align-items: stretch;
-  justify-content: stretch;
+  justify-content: center;
   padding: 0;
   margin: 0;
   width: 100%;
@@ -196,14 +203,17 @@
 .welcome-card {
   border: none;
   border-radius: 0;
-  padding: 4rem 2rem 2rem;
+  padding: 4rem 3rem 2rem;
   backdrop-filter: none;
   box-shadow: none;
   width: 100%;
+  max-width: 1200px;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .welcome-card h2 {
@@ -321,22 +331,46 @@
   }
 
   .welcome-section {
-    padding: 1rem;
+    padding: 0;
   }
 
   .welcome-card {
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.5rem 1rem;
     height: auto;
+  }
+
+  .welcome-card h2 {
+    font-size: 1.5rem;
+    margin: 0 0 1rem 0;
+  }
+
+  .welcome-card p {
+    font-size: 1rem;
+    margin: 0 0 1.5rem 0;
   }
 
   .features-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .feature-item {
+    padding: 1.25rem;
+  }
+
+  .feature-item h3 {
+    font-size: 1.15rem;
+  }
+
+  .feature-item p {
+    font-size: 0.9rem;
   }
 
   .action-buttons {
     flex-direction: column;
     align-items: center;
+    margin-top: 1.5rem;
   }
 
   .primary-button,
@@ -346,11 +380,68 @@
   }
 }
 
+@media (max-width: 480px) {
+  .welcome-card {
+    padding: 1.5rem 1rem 0.5rem;
+  }
+
+  .welcome-card h2 {
+    font-size: 1.3rem;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .welcome-card p {
+    font-size: 0.95rem;
+    margin: 0 0 1.25rem 0;
+  }
+
+  .features-grid {
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .feature-item {
+    padding: 1rem;
+  }
+
+  .feature-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .feature-item h3 {
+    font-size: 1.05rem;
+    margin: 0 0 0.4rem 0;
+  }
+
+  .feature-item p {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  .action-buttons {
+    margin-top: 1rem;
+    gap: 0.75rem;
+  }
+
+  .primary-button,
+  .secondary-button {
+    padding: 0.65rem 1.25rem;
+    font-size: 0.95rem;
+  }
+}
+
 /* Styles pour la page Investigations */
 .investigations-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1rem;
+}
+
+@media (max-width: 768px) {
+  .investigations-container {
+    padding-bottom: 5rem;
+  }
 }
 
 .investigations-container h1 {
@@ -731,6 +822,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    padding-bottom: 5rem;
+    align-items: flex-start;
+    padding-top: 6rem;
+  }
 }
 
 .profile-card {

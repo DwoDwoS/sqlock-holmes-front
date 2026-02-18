@@ -1,17 +1,30 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthProvider';
 import { LeaderboardRefreshProvider } from './contexts/LeaderboardRefreshContext';
-import Login from './components/Login';
-import Register from './components/Register';
-import Home from './components/Home';
-import Profile from './components/Profile';
-import Investigations from './components/Investigations';
-import InvestigationPage from './components/InvestigationPage';
-import ProtectedRoute from './components/ProtectedRoute';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import './App.css';
+
+const Login = lazy(() => import('./components/Login'));
+const Register = lazy(() => import('./components/Register'));
+const Home = lazy(() => import('./components/Home'));
+const Profile = lazy(() => import('./components/Profile'));
+const Investigations = lazy(() => import('./components/Investigations'));
+const InvestigationPage = lazy(() => import('./components/InvestigationPage'));
+const ProtectedRoute = lazy(() => import('./components/ProtectedRoute'));
+
+const LoadingFallback = () => (
+  <div style={{ 
+    display: 'flex', 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    minHeight: '100vh',
+    color: '#fff'
+  }}>
+    <div>Chargement...</div>
+  </div>
+);
 
 const Layout: React.FC<{ children: React.ReactNode; isInvestigationsPage: boolean; isHomePage: boolean; isInvestigationPage?: boolean; isProfilePage?: boolean }> = ({ children, isInvestigationsPage, isHomePage, isInvestigationPage = false, isProfilePage = false }) => (
   <div className={`layout ${isHomePage ? 'home-background' : ''} ${isInvestigationsPage ? 'investigations-background' : ''} ${isProfilePage ? 'profile-background' : ''}`}>
@@ -44,50 +57,52 @@ const AppContent: React.FC = () => {
 
   return (
     <div className="App">
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Layout isInvestigationsPage={false} isHomePage={isHomePage}>
-                <Home />
-              </Layout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/investigations"
-          element={
-            <ProtectedRoute>
-              <Layout isInvestigationsPage={isInvestigationsPage} isHomePage={false}>
-                <Investigations />
-              </Layout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Layout isInvestigationsPage={false} isHomePage={false} isProfilePage={isProfilePage}>
-                <Profile />
-              </Layout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/investigation/:id"
-          element={
-            <ProtectedRoute>
-              <Layout isInvestigationsPage={false} isHomePage={false} isInvestigationPage={isInvestigationPage}>
-                <InvestigationPage />
-              </Layout>
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+      <Suspense fallback={<LoadingFallback />}>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Layout isInvestigationsPage={false} isHomePage={isHomePage}>
+                  <Home />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/investigations"
+            element={
+              <ProtectedRoute>
+                <Layout isInvestigationsPage={isInvestigationsPage} isHomePage={false}>
+                  <Investigations />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Layout isInvestigationsPage={false} isHomePage={false} isProfilePage={isProfilePage}>
+                  <Profile />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/investigation/:id"
+            element={
+              <ProtectedRoute>
+                <Layout isInvestigationsPage={false} isHomePage={false} isInvestigationPage={isInvestigationPage}>
+                  <InvestigationPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </Suspense>
     </div>
   );
 };
