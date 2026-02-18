@@ -98,7 +98,7 @@ const Register: React.FC = () => {
         </div>
       </section>
       <div className="auth-container">
-      <h2>Inscrivez-vous !</h2>
+      <h1>Inscrivez-vous !</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Nom d'utilisateur:</label>

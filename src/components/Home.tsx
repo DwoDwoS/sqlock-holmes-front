@@ -32,8 +32,8 @@ const Home = () => {
           </div>
 
           <div className="action-buttons">
-            <button className="primary-button" onClick={() => navigate('/investigations')} aria-label="Accéder aux enquêtes disponibles">Trouver une enquête</button>
-            <button className="secondary-button" onClick={logout} aria-label="Se déconnecter de l'application">Déconnexion</button>
+            <button className="primary-button" onClick={() => navigate('/investigations')}>Trouver une enquête</button>
+            <button className="secondary-button" onClick={logout}>Déconnexion</button>
           </div>
         </div>
       </section>
