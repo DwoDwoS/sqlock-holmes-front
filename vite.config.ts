@@ -31,13 +31,21 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'react-core': ['react', 'react-dom'],
+          'react-router': ['react-router-dom'],
           'monaco-editor': ['@monaco-editor/react'],
+          'axios': ['axios'],
         },
       },
     },
     chunkSizeWarningLimit: 1000,
     sourcemap: false,
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
