@@ -123,17 +123,17 @@
 }
 
 .layout.investigations-background {
-  background: url('/investigations-board.png') no-repeat center center;
+  background: url('/investigations-board.webp') no-repeat center center;
   background-size: cover;
 }
 
 .layout.home-background {
-  background: url('/landing-page-bg.png') no-repeat center center;
+  background: url('/landing-page-bg.webp') no-repeat center center;
   background-size: cover;
 }
 
 .layout.profile-background {
-  background: linear-gradient(135deg, rgba(51, 51, 51, 0.8) 0%, rgba(26, 26, 26, 0.8) 100%), url('/banner-detective.png') no-repeat center center;
+  background: linear-gradient(135deg, rgba(51, 51, 51, 0.8) 0%, rgba(26, 26, 26, 0.8) 100%), url('/banner-detective.webp') no-repeat center center;
   background-size: cover;
   background-attachment: fixed;
 }
@@ -158,7 +158,7 @@
   flex-shrink: 0;
   padding: 1rem 2rem 2rem;
   text-align: center;
-  background: linear-gradient(135deg, rgba(51, 51, 51, 0.8) 0%, rgba(26, 26, 26, 0.8) 100%), url('/homepage_board.png');
+  background: linear-gradient(135deg, rgba(51, 51, 51, 0.8) 0%, rgba(26, 26, 26, 0.8) 100%), url('/homepage_board.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -480,7 +480,7 @@
 }
 
 .investigation-museum {
-  background-image: url('/museum-heist.png');
+  background-image: url('/museum-heist.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -508,7 +508,7 @@
 }
 
 .investigation-corporate {
-  background-image: url('/corporate-fraud.png');
+  background-image: url('/corporate-fraud.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -536,7 +536,7 @@
 }
 
 .investigation-manor {
-  background-image: url('/manor-murder.png');
+  background-image: url('/manor-murder.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
