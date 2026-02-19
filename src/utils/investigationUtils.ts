@@ -9,7 +9,7 @@ export const getMockInvestigationData = (id: number): Investigation => {
       difficulty: 'Facile' as const,
       status: 'En cours' as const,
       databaseId: 'museum_db',
-      image: '/museum-heist.png'
+      image: '/museum-heist.webp'
     },
     2: {
       id: 2,
@@ -18,7 +18,7 @@ export const getMockInvestigationData = (id: number): Investigation => {
       difficulty: 'Moyen' as const,
       status: 'En cours' as const,
       databaseId: 'corporate_db',
-      image: '/corporate-fraud.png'
+      image: '/corporate-fraud.webp'
     },
     3: {
       id: 3,
@@ -27,7 +27,7 @@ export const getMockInvestigationData = (id: number): Investigation => {
       difficulty: 'Difficile' as const,
       status: 'En cours' as const,
       databaseId: 'manor_db',
-      image: '/manor-murder.png'
+      image: '/manor-murder.webp'
     }
   };
 
