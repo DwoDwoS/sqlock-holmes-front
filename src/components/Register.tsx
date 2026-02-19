@@ -93,7 +93,7 @@ const Register: React.FC = () => {
     <div>
       <section className="hero-section">
         <div className="hero-content">
-        <img src="sqlock-holmes-logo.webp" alt="Logo SQLock Holmes" className="navbar-logo" loading="lazy" width="400" height="217" />
+        <img src="sqlock-holmes-logo.webp" alt="Logo SQLock Holmes" className="navbar-logo" fetchPriority="high" width="400" height="217" />
           <p className="hero-subtitle">Outil de résolution d'enquêtes en exécutant des requêtes SQL</p>
         </div>
       </section>
