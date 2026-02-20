@@ -10,6 +10,7 @@ const Login = lazy(() => import('./components/Login'));
 const Register = lazy(() => import('./components/Register'));
 const Home = lazy(() => import('./components/Home'));
 const Profile = lazy(() => import('./components/Profile'));
+const AdminDashboardPage = lazy(() => import('./components/administration/AdminDashboardPage'));
 const Investigations = lazy(() => import('./components/Investigations'));
 const InvestigationPage = lazy(() => import('./components/InvestigationPage'));
 const ProtectedRoute = lazy(() => import('./components/ProtectedRoute'));
@@ -87,6 +88,16 @@ const AppContent: React.FC = () => {
               <ProtectedRoute>
                 <Layout isInvestigationsPage={false} isHomePage={false} isProfilePage={isProfilePage}>
                   <Profile />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute requiredRole="ADMIN">
+                <Layout isInvestigationsPage={false} isHomePage={false}>
+                  <AdminDashboardPage />
                 </Layout>
               </ProtectedRoute>
             }
