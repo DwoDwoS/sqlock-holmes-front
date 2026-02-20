@@ -8,7 +8,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const location = useLocation();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -73,7 +73,9 @@ const Navbar = () => {
         <ul className={`navbar-menu ${isMenuOpen ? 'open' : ''}`} role="menu">
           <li role="menuitem"><Link to="/" className={isActive('/') ? 'active' : ''} onClick={handleNavClick}>Accueil</Link></li>
           <li role="menuitem"><Link to="/profile" className={isActive('/profile') ? 'active' : ''} onClick={handleNavClick}>Mon compte</Link></li>
-          <li role="menuitem"><Link to="/admin" className={isActive('/admin') ? 'active' : ''} onClick={handleNavClick}>Admin</Link></li>
+          {user?.role === 'ADMIN' && (
+            <li role="menuitem"><Link to="/admin" className={isActive('/admin') ? 'active' : ''} onClick={handleNavClick}>Admin</Link></li>
+          )}
           <li role="menuitem"><Link to="/investigations" className={isActive('/investigations') ? 'active' : ''} onClick={handleNavClick}>Enquêtes</Link></li>
           <li role="menuitem"><Link to="/login" onClick={handleLogout}>Déconnexion</Link></li>
         </ul>
