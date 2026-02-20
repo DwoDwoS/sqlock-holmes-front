@@ -29,7 +29,6 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Ne pas rediriger ni logger si c'est un appel de vérification silencieux
     const isAuthCheck = error.config?.url?.includes('/users/me');
     const isStartInvestigation = error.config?.url?.includes('/start');
     const isSilentCall = isAuthCheck || isStartInvestigation;
