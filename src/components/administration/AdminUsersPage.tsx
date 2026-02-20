@@ -24,26 +24,27 @@ const AdminUsersPage: React.FC = () => {
       navigate('/');
       return;
     }
+
+    const loadUsers = async () => {
+      setLoading(true);
+      try {
+        setTimeout(() => {
+          setUsers([
+            { id: '1', username: 'admin', email: 'admin@sqlock.com', role: 'ADMIN', createdAt: '2024-01-15' },
+            { id: '2', username: 'detective1', email: 'det1@sqlock.com', role: 'USER', createdAt: '2024-02-20' },
+            { id: '3', username: 'sherlock', email: 'sherlock@sqlock.com', role: 'USER', createdAt: '2024-03-10' },
+            { id: '4', username: 'watson', email: 'watson@sqlock.com', role: 'USER', createdAt: '2024-03-12' },
+          ]);
+          setLoading(false);
+        }, 500);
+      } catch (error) {
+        console.error('Erreur lors du chargement des utilisateurs:', error);
+        setLoading(false);
+      }
+    };
+
     loadUsers();
   }, [user, navigate]);
-
-  const loadUsers = async () => {
-    setLoading(true);
-    try {
-      setTimeout(() => {
-        setUsers([
-          { id: '1', username: 'admin', email: 'admin@sqlock.com', role: 'ADMIN', createdAt: '2024-01-15' },
-          { id: '2', username: 'detective1', email: 'det1@sqlock.com', role: 'USER', createdAt: '2024-02-20' },
-          { id: '3', username: 'sherlock', email: 'sherlock@sqlock.com', role: 'USER', createdAt: '2024-03-10' },
-          { id: '4', username: 'watson', email: 'watson@sqlock.com', role: 'USER', createdAt: '2024-03-12' },
-        ]);
-        setLoading(false);
-      }, 500);
-    } catch (error) {
-      console.error('Erreur lors du chargement des utilisateurs:', error);
-      setLoading(false);
-    }
-  };
 
   const handleDeleteUser = async (userId: string) => {
     if (!window.confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
