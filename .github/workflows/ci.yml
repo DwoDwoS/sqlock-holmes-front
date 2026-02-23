@@ -29,9 +29,7 @@ jobs:
         run: npx tsc --noEmit
       
       - name: Test
-        run: npm run test:coverage
-        env:
-          NODE_OPTIONS: --max-old-space-size=4096
+        run: node --max-old-space-size=4096 ./node_modules/vitest/vitest.mjs run --coverage
       
       - name: Build
         run: npm run build
