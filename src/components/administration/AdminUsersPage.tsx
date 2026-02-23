@@ -28,15 +28,13 @@ const AdminUsersPage: React.FC = () => {
     const loadUsers = async () => {
       setLoading(true);
       try {
-        setTimeout(() => {
-          setUsers([
-            { id: '1', username: 'admin', email: 'admin@sqlock.com', role: 'ADMIN', createdAt: '2024-01-15' },
-            { id: '2', username: 'detective1', email: 'det1@sqlock.com', role: 'USER', createdAt: '2024-02-20' },
-            { id: '3', username: 'sherlock', email: 'sherlock@sqlock.com', role: 'USER', createdAt: '2024-03-10' },
-            { id: '4', username: 'watson', email: 'watson@sqlock.com', role: 'USER', createdAt: '2024-03-12' },
-          ]);
-          setLoading(false);
-        }, 500);
+        setUsers([
+          { id: '1', username: 'admin', email: 'admin@sqlock.com', role: 'ADMIN', createdAt: '2024-01-15' },
+          { id: '2', username: 'detective1', email: 'det1@sqlock.com', role: 'USER', createdAt: '2024-02-20' },
+          { id: '3', username: 'sherlock', email: 'sherlock@sqlock.com', role: 'USER', createdAt: '2024-03-10' },
+          { id: '4', username: 'watson', email: 'watson@sqlock.com', role: 'USER', createdAt: '2024-03-12' },
+        ]);
+        setLoading(false);
       } catch (error) {
         console.error('Erreur lors du chargement des utilisateurs:', error);
         setLoading(false);

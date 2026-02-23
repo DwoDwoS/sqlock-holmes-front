@@ -40,10 +40,7 @@ const AdminSettingsPage: React.FC = () => {
   const loadSettings = async () => {
     setLoading(true);
     try {
-      // Simulation de chargement - à remplacer par un vrai appel API
-      setTimeout(() => {
-        setLoading(false);
-      }, 500);
+      setLoading(false);
     } catch (error) {
       console.error('Erreur lors du chargement des paramètres:', error);
       setLoading(false);
@@ -57,7 +54,8 @@ const AdminSettingsPage: React.FC = () => {
       // TODO: Appel API pour sauvegarder les paramètres
       await new Promise(resolve => setTimeout(resolve, 1000));
       setMessage('Paramètres sauvegardés avec succès');
-      setTimeout(() => setMessage(''), 3000);
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      setMessage('');
     } catch (error) {
       console.error('Erreur lors de la sauvegarde:', error);
       setMessage('Erreur lors de la sauvegarde des paramètres');
@@ -66,7 +64,7 @@ const AdminSettingsPage: React.FC = () => {
     }
   };
 
-  const handleResetSettings = () => {
+  const handleResetSettings = async () => {
     if (!window.confirm('Êtes-vous sûr de vouloir réinitialiser tous les paramètres ?')) {
       return;
     }
@@ -80,7 +78,8 @@ const AdminSettingsPage: React.FC = () => {
       debugMode: false,
     });
     setMessage('Paramètres réinitialisés');
-    setTimeout(() => setMessage(''), 3000);
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    setMessage('');
   };
 
   if (loading) {

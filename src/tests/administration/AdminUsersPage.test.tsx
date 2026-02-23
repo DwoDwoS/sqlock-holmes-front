@@ -1,7 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { AuthProvider } from '../../contexts/AuthProvider';
 import AdminUsersPage from '../../components/administration/AdminUsersPage';
 
 // Mock useNavigate
@@ -39,9 +38,7 @@ window.alert = vi.fn();
 const renderWithProviders = (component: React.ReactElement) => {
   return render(
     <BrowserRouter>
-      <AuthProvider>
-        {component}
-      </AuthProvider>
+      {component}
     </BrowserRouter>
   );
 };
@@ -56,24 +53,24 @@ describe('AdminUsersPage', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Gestion des Utilisateurs')).toBeInTheDocument();
-    }, { timeout: 10000 });
-  }, 15000);
+    });
+  });
 
   it('displays back button', async () => {
     renderWithProviders(<AdminUsersPage />);
 
     await waitFor(() => {
       expect(screen.getByText('← Retour au tableau de bord')).toBeInTheDocument();
-    }, { timeout: 10000 });
-  }, 15000);
+    });
+  });
 
   it('displays search bar', async () => {
     renderWithProviders(<AdminUsersPage />);
 
     await waitFor(() => {
       expect(screen.getByPlaceholderText('Rechercher un utilisateur...')).toBeInTheDocument();
-    }, { timeout: 10000 });
-  }, 15000);
+    });
+  });
 
   it('displays filter buttons', async () => {
     renderWithProviders(<AdminUsersPage />);
@@ -82,8 +79,8 @@ describe('AdminUsersPage', () => {
       expect(screen.getByText(/Tous/)).toBeInTheDocument();
       expect(screen.getByText(/Utilisateurs/)).toBeInTheDocument();
       expect(screen.getByText(/Admins/)).toBeInTheDocument();
-    }, { timeout: 10000 });
-  }, 15000);
+    });
+  });
 
   it('displays users table after loading', async () => {
     renderWithProviders(<AdminUsersPage />);
@@ -91,23 +88,24 @@ describe('AdminUsersPage', () => {
     await waitFor(() => {
       expect(screen.getByText('admin')).toBeInTheDocument();
       expect(screen.getByText('detective1')).toBeInTheDocument();
-    }, { timeout: 10000 });
-  }, 15000);
+    });
+  });
 
   it('filters users when search term is entered', async () => {
     renderWithProviders(<AdminUsersPage />);
 
+    let searchInput: HTMLElement;
     await waitFor(() => {
       expect(screen.getByText('admin')).toBeInTheDocument();
-    }, { timeout: 10000 });
+      searchInput = screen.getByPlaceholderText('Rechercher un utilisateur...');
+    });
 
-    const searchInput = screen.getByPlaceholderText('Rechercher un utilisateur...');
-    fireEvent.change(searchInput, { target: { value: 'detective' } });
+    fireEvent.change(searchInput!, { target: { value: 'detective' } });
 
     await waitFor(() => {
       expect(screen.getByText('detective1')).toBeInTheDocument();
     });
-  }, 15000);
+  });
 
   it('redirects non-admin users', () => {
     mockUseAuth.mockReturnValueOnce({
@@ -124,11 +122,5 @@ describe('AdminUsersPage', () => {
     renderWithProviders(<AdminUsersPage />);
 
     expect(mockNavigate).toHaveBeenCalledWith('/');
-  });
-
-  it('shows loading state', () => {
-    renderWithProviders(<AdminUsersPage />);
-
-    expect(screen.getByText('Chargement...')).toBeInTheDocument();
   });
 });

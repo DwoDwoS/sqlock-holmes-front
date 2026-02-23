@@ -36,41 +36,39 @@ const AdminInvestigationsPage: React.FC = () => {
     const loadInvestigations = async () => {
       setLoading(true);
       try {
-        setTimeout(() => {
-          setInvestigations([
-            {
-              id: 1,
-              title: 'Le vol du musée',
-              description: 'Un tableau de valeur inestimable a disparu du musée national.',
-              difficulty: 'Facile',
-              databaseId: 'museum_db',
-              isActive: true,
-              createdAt: '2024-01-10',
-              completions: 45
-            },
-            {
-              id: 2,
-              title: 'Fraudes corporatives',
-              description: 'Des transactions suspectes dans les comptes de TechCorp.',
-              difficulty: 'Moyen',
-              databaseId: 'corporate_db',
-              isActive: true,
-              createdAt: '2024-01-15',
-              completions: 28
-            },
-            {
-              id: 3,
-              title: 'Meurtre au Manoir',
-              description: 'Lord Blackwood retrouvé mort dans sa bibliothèque.',
-              difficulty: 'Difficile',
-              databaseId: 'manor_db',
-              isActive: true,
-              createdAt: '2024-02-01',
-              completions: 12
-            },
-          ]);
-          setLoading(false);
-        }, 500);
+        setInvestigations([
+          {
+            id: 1,
+            title: 'Le vol du musée',
+            description: 'Un tableau de valeur inestimable a disparu du musée national.',
+            difficulty: 'Facile',
+            databaseId: 'museum_db',
+            isActive: true,
+            createdAt: '2024-01-10',
+            completions: 45
+          },
+          {
+            id: 2,
+            title: 'Fraudes corporatives',
+            description: 'Des transactions suspectes dans les comptes de TechCorp.',
+            difficulty: 'Moyen',
+            databaseId: 'corporate_db',
+            isActive: true,
+            createdAt: '2024-01-15',
+            completions: 28
+          },
+          {
+            id: 3,
+            title: 'Meurtre au Manoir',
+            description: 'Lord Blackwood retrouvé mort dans sa bibliothèque.',
+            difficulty: 'Difficile',
+            databaseId: 'manor_db',
+            isActive: true,
+            createdAt: '2024-02-01',
+            completions: 12
+          },
+        ]);
+        setLoading(false);
       } catch (error) {
         console.error('Erreur lors du chargement des enquêtes:', error);
         setLoading(false);
