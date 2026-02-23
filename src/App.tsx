@@ -10,6 +10,10 @@ const Login = lazy(() => import('./components/Login'));
 const Register = lazy(() => import('./components/Register'));
 const Home = lazy(() => import('./components/Home'));
 const Profile = lazy(() => import('./components/Profile'));
+const AdminDashboardPage = lazy(() => import('./components/administration/AdminDashboardPage'));
+const AdminUsersPage = lazy(() => import('./components/administration/AdminUsersPage'));
+const AdminInvestigationsPage = lazy(() => import('./components/administration/AdminInvestigationsPage'));
+const AdminSettingsPage = lazy(() => import('./components/administration/AdminSettingsPage'));
 const Investigations = lazy(() => import('./components/Investigations'));
 const InvestigationPage = lazy(() => import('./components/InvestigationPage'));
 const ProtectedRoute = lazy(() => import('./components/ProtectedRoute'));
@@ -87,6 +91,46 @@ const AppContent: React.FC = () => {
               <ProtectedRoute>
                 <Layout isInvestigationsPage={false} isHomePage={false} isProfilePage={isProfilePage}>
                   <Profile />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute requiredRole="ADMIN">
+                <Layout isInvestigationsPage={false} isHomePage={false}>
+                  <AdminDashboardPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <ProtectedRoute requiredRole="ADMIN">
+                <Layout isInvestigationsPage={false} isHomePage={false}>
+                  <AdminUsersPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/investigations"
+            element={
+              <ProtectedRoute requiredRole="ADMIN">
+                <Layout isInvestigationsPage={false} isHomePage={false}>
+                  <AdminInvestigationsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/settings"
+            element={
+              <ProtectedRoute requiredRole="ADMIN">
+                <Layout isInvestigationsPage={false} isHomePage={false}>
+                  <AdminSettingsPage />
                 </Layout>
               </ProtectedRoute>
             }
