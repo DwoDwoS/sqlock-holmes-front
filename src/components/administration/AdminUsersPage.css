@@ -178,6 +178,76 @@
   cursor: not-allowed;
 }
 
+.status-button {
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: 1px solid;
+}
+
+.status-button.active {
+  background-color: rgba(34, 197, 94, 0.2);
+  border-color: rgba(34, 197, 94, 0.5);
+  color: #4ade80;
+}
+
+.status-button.active:hover {
+  background-color: rgba(34, 197, 94, 0.3);
+  border-color: #4ade80;
+}
+
+.status-button.inactive {
+  background-color: rgba(156, 163, 175, 0.2);
+  border-color: rgba(156, 163, 175, 0.5);
+  color: #9ca3af;
+}
+
+.status-button.inactive:hover {
+  background-color: rgba(156, 163, 175, 0.3);
+  border-color: #9ca3af;
+}
+
+.user-stats {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.user-stats span {
+  padding: 0.25rem 0.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  cursor: help;
+}
+
+.admin-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  color: #ff6b6b;
+  text-align: center;
+  gap: 1rem;
+}
+
+.admin-error button {
+  padding: 0.75rem 1.5rem;
+  background-color: #646cff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.admin-error button:hover {
+  background-color: #535bf2;
+}
+
 .no-results {
   text-align: center;
   padding: 3rem;

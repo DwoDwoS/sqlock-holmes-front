@@ -1,30 +1,95 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { adminService } from '../../services/adminService';
+import type { UserStats } from '../../types/admin';
 import './AdminDashboardPage.css';
 
 const AdminDashboardPage: React.FC = () => {
   const { user } = useAuth();
-  const navigate = useNavigate();   
-    useEffect(() => {
-        if (!user || user.role !== 'ADMIN') {
-            navigate('/login');
-        }
-    }, [user, navigate]);
+  const navigate = useNavigate();
+  const [stats, setStats] = useState<UserStats | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+    
+  useEffect(() => {
+    if (!user || user.role !== 'ADMIN') {
+      navigate('/login');
+      return;
+    }
 
+    const loadStats = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await adminService.getUsersStats();
+        setStats(data);
+      } catch (err) {
+        console.error('Erreur lors du chargement des statistiques:', err);
+        setError('Impossible de charger les statistiques.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadStats();
+  }, [user, navigate]);
+
+  if (loading) {
+    return <div className="admin-loading">Chargement des statistiques...</div>;
+  }
+
+  if (error) {
     return (
-        <div className="admin-dashboard">
-            <h1>Tableau de bord administrateur SQLock Holmes</h1>
-            <p>Bienvenue sur le tableau de bord administrateur. Ici, vous pouvez gérer les utilisateurs, les enquêtes et les paramètres du système.</p>
-            <div className="admin-actions">
-                <button onClick={() => navigate('/admin/users')}>Gérer les utilisateurs</button>
-                <button onClick={() => navigate('/admin/investigations')}>Gérer les enquêtes</button>
-                <button onClick={() => navigate('/admin/settings')}>Paramètres du système</button>
-            </div>
-        </div>
+      <div className="admin-error">
+        <p>{error}</p>
+        <button onClick={() => window.location.reload()}>Réessayer</button>
+      </div>
     );
+  }
+
+  return (
+    <div className="admin-dashboard">
+      <h1>Tableau de bord administrateur SQLock Holmes</h1>
+      <p>Bienvenue sur le tableau de bord administrateur. Ici, vous pouvez gérer les utilisateurs, les enquêtes et les paramètres du système.</p>
+      
+      {stats && (
+        <div className="admin-stats">
+          <h2>Statistiques des utilisateurs</h2>
+          <div className="stats-grid">
+            <div className="stat-card">
+              <h3>Total utilisateurs</h3>
+              <p className="stat-value">{stats.totalUsers}</p>
+            </div>
+            <div className="stat-card">
+              <h3>Utilisateurs actifs</h3>
+              <p className="stat-value">{stats.activeUsers}</p>
+            </div>
+            <div className="stat-card">
+              <h3>Utilisateurs inactifs</h3>
+              <p className="stat-value">{stats.inactiveUsers}</p>
+            </div>
+            <div className="stat-card">
+              <h3>Administrateurs</h3>
+              <p className="stat-value">{stats.admins}</p>
+            </div>
+            <div className="stat-card">
+              <h3>Utilisateurs réguliers</h3>
+              <p className="stat-value">{stats.regularUsers}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="admin-actions">
+        <button onClick={() => navigate('/admin/users')}>Gérer les utilisateurs</button>
+        <button onClick={() => navigate('/admin/investigations')}>Gérer les enquêtes</button>
+        <button onClick={() => navigate('/admin/settings')}>Paramètres du système</button>
+      </div>
+    </div>
+  );
 };
 
 export default AdminDashboardPage;
