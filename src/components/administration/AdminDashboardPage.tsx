@@ -78,6 +78,12 @@ const AdminDashboardPage: React.FC = () => {
       
       <p>Bienvenue sur le tableau de bord administrateur. Ici, vous pouvez gérer les utilisateurs, les enquêtes et les paramètres du système.</p>
       
+      <div className="admin-actions">
+        <button onClick={() => navigate('/admin/users')}>Gérer les utilisateurs</button>
+        <button onClick={() => navigate('/admin/investigations')}>Gérer les enquêtes</button>
+        <button onClick={() => navigate('/admin/settings')}>Paramètres du système</button>
+      </div>
+
       {stats && (
         <div className="admin-stats">
           <h2>Statistiques des utilisateurs</h2>
@@ -93,10 +99,6 @@ const AdminDashboardPage: React.FC = () => {
             <div className="stat-card warning">
               <h3>Utilisateurs inactifs</h3>
               <p className="stat-value">{stats.inactiveUsers}</p>
-            </div>
-            <div className="stat-card info">
-              <h3>Administrateurs</h3>
-              <p className="stat-value">{stats.admins}</p>
             </div>
             <div className="stat-card">
               <h3>Utilisateurs réguliers</h3>
@@ -137,11 +139,6 @@ const AdminDashboardPage: React.FC = () => {
         </div>
       )}
 
-      <div className="admin-actions">
-        <button onClick={() => navigate('/admin/users')}>Gérer les utilisateurs</button>
-        <button onClick={() => navigate('/admin/investigations')}>Gérer les enquêtes</button>
-        <button onClick={() => navigate('/admin/settings')}>Paramètres du système</button>
-      </div>
     </div>
   );
 };
