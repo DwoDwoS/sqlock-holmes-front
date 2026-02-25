@@ -21,4 +21,9 @@ export interface UserStats {
   inactiveUsers: number;
   admins: number;
   regularUsers: number;
+  totalSubmissions?: number;
+  totalSolvedInvestigations?: number;
+  averageScore?: number;
+  usersWithActivity?: number;
+  recentlyActiveUsers?: number;
 }
