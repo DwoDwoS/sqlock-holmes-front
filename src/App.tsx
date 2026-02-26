@@ -9,6 +9,7 @@ import './App.css';
 const Login = lazy(() => import('./components/Login'));
 const Register = lazy(() => import('./components/Register'));
 const Home = lazy(() => import('./components/Home'));
+const About = lazy(() => import('./components/About'));
 const Profile = lazy(() => import('./components/Profile'));
 const AdminDashboardPage = lazy(() => import('./components/administration/AdminDashboardPage'));
 const AdminUsersPage = lazy(() => import('./components/administration/AdminUsersPage'));
@@ -81,6 +82,16 @@ const AppContent: React.FC = () => {
               <ProtectedRoute>
                 <Layout isInvestigationsPage={isInvestigationsPage} isHomePage={false}>
                   <Investigations />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/about"
+            element={
+              <ProtectedRoute>
+                <Layout isInvestigationsPage={false} isHomePage={false}>
+                  <About />
                 </Layout>
               </ProtectedRoute>
             }
