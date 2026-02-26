@@ -77,6 +77,7 @@ const Navbar = () => {
             <li role="menuitem"><Link to="/admin" className={isActive('/admin') ? 'active' : ''} onClick={handleNavClick}>Admin</Link></li>
           )}
           <li role="menuitem"><Link to="/investigations" className={isActive('/investigations') ? 'active' : ''} onClick={handleNavClick}>Enquêtes</Link></li>
+          <li role="menuitem"><Link to="/about" className={isActive('/about') ? 'active' : ''} onClick={handleNavClick}>À propos</Link></li>
           <li role="menuitem"><Link to="/login" onClick={handleLogout}>Déconnexion</Link></li>
         </ul>
       </nav>
@@ -99,6 +100,7 @@ const Navbar = () => {
               </span>
             </button>
           </li>
+          <li><Link to="/about" aria-label="À propos" className={isActive('/about') ? 'active' : ''} onClick={handleNavClick}><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-info-icon lucide-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></span></Link></li>
           <li><Link to="/profile" aria-label="Mon compte" className={isActive('/profile') ? 'active' : ''} onClick={handleNavClick}><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-hat-glasses-icon lucide-hat-glasses"><path d="M14 18a2 2 0 0 0-4 0"/><path d="m19 11-2.11-6.657a2 2 0 0 0-2.752-1.148l-1.276.61A2 2 0 0 1 12 4H8.5a2 2 0 0 0-1.925 1.456L5 11"/><path d="M2 11h20"/><circle cx="17" cy="18" r="3"/><circle cx="7" cy="18" r="3"/></svg></span></Link></li>
           <li><Link to="/login" onClick={handleLogout} aria-label="Déconnexion"><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-log-out-icon lucide-log-out"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg></span></Link></li>
         </ul>
