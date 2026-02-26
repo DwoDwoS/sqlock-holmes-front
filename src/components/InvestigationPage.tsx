@@ -37,13 +37,14 @@ const InvestigationPage: React.FC = () => {
     closeSubmitModal,
   } = useInvestigationSubmission(id);
 
-  const handleExecuteSQL = async () => {
+  const handleExecuteSQL = async (queryOverride?: string) => {
     if (!id || !investigation) return;
     setLoading(true);
+    const queryToExecute = queryOverride !== undefined ? queryOverride : sqlCode;
     try {
-      const data = await SQLService.executeSQL({ sql: sqlCode, investigationId: parseInt(id) });
+      const data = await SQLService.executeSQL({ sql: queryToExecute, investigationId: parseInt(id) });
       setResults(data);
-      setQueryHistory(prev => [...prev, { query: sqlCode, timestamp: new Date() }]);
+      setQueryHistory(prev => [...prev, { query: queryToExecute, timestamp: new Date() }]);
       setTimeout(() => {
         resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
