@@ -79,48 +79,39 @@ const About: React.FC = () => {
           <h2>Fonctionnalités</h2>
           <div className="about-features-list">
             <div className="about-feature-item">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
               <div>
                 <h4>Éditeur SQL intégré</h4>
                 <p>Éditeur Monaco (VS Code) avec coloration syntaxique</p>
               </div>
             </div>
             <div className="about-feature-item">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
               <div>
                 <h4>Système d'indices</h4>
                 <p>Débloquez des indices progressifs si vous êtes bloqué</p>
               </div>
             </div>
             <div className="about-feature-item">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
               <div>
                 <h4>Historique des requêtes</h4>
                 <p>Consultez et rechargez vos requêtes précédentes</p>
               </div>
             </div>
             <div className="about-feature-item">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
               <div>
                 <h4>Classement et statistiques</h4>
                 <p>Comparez vos performances avec les autres détectives</p>
               </div>
             </div>
             <div className="about-feature-item">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
               <div>
                 <h4>Feedback immédiat</h4>
                 <p>Vérifiez vos réponses instantanément et apprenez de vos erreurs</p>
+              </div>
+            </div>
+            <div className="about-feature-item">
+              <div>
+                <h4>Recommencez une enquête</h4>
+                <p>Reprenez une enquête depuis le début pour améliorer vos compétences (cela ne comptera pas pour le classement global)</p>
               </div>
             </div>
           </div>
