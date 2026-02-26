@@ -6,7 +6,7 @@ const About: React.FC = () => {
     <div className="about-container">
       <div className="about-hero">
         <h1>À propos de SQLock Holmes</h1>
-        <p className="hero-subtitle">Apprenez SQL en résolvant des enquêtes captivantes</p>
+        <p className="hero-subtitle">Apprenez SQL de manière ludique en résolvant des enquêtes captivantes</p>
       </div>
 
       <section className="about-section">
@@ -128,54 +128,6 @@ const About: React.FC = () => {
       </section>
 
       <section className="about-section">
-        <div className="about-card">
-          <div className="section-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-            </svg>
-          </div>
-          <h2>Ressources SQL</h2>
-          <p>Pour approfondir vos connaissances en SQL, voici quelques ressources recommandées :</p>
-          <div className="resources-grid">
-            <a href="https://www.w3schools.com/sql/" target="_blank" rel="noopener noreferrer" className="resource-card">
-              <h4>W3Schools SQL Tutorial</h4>
-              <p>Tutoriel interactif complet pour apprendre les bases du SQL avec des exemples pratiques</p>
-              <span className="external-link">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                  <polyline points="15 3 21 3 21 9"/>
-                  <line x1="10" y1="14" x2="21" y2="3"/>
-                </svg>
-              </span>
-            </a>
-            <a href="https://sql.sh/" target="_blank" rel="noopener noreferrer" className="resource-card">
-              <h4>SQL.sh</h4>
-              <p>Cours SQL en français avec de nombreux exemples et exercices pratiques</p>
-              <span className="external-link">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                  <polyline points="15 3 21 3 21 9"/>
-                  <line x1="10" y1="14" x2="21" y2="3"/>
-                </svg>
-              </span>
-            </a>
-            <a href="https://www.postgresql.org/docs/" target="_blank" rel="noopener noreferrer" className="resource-card">
-              <h4>PostgreSQL Documentation</h4>
-              <p>Documentation officielle de PostgreSQL, une référence complète pour SQL</p>
-              <span className="external-link">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                  <polyline points="15 3 21 3 21 9"/>
-                  <line x1="10" y1="14" x2="21" y2="3"/>
-                </svg>
-              </span>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <section className="about-section">
         <div className="about-card sql-basics-card">
           <div className="section-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -226,6 +178,54 @@ GROUP BY lieu;`}</code></pre>
 FROM suspects 
 ORDER BY nom ASC;`}</code></pre>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="about-section">
+        <div className="about-card">
+          <div className="section-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+          </div>
+          <h2>Ressources SQL</h2>
+          <p>Pour approfondir vos connaissances en SQL, voici quelques ressources recommandées :</p>
+          <div className="resources-grid">
+            <a href="https://www.w3schools.com/sql/" target="_blank" rel="noopener noreferrer" className="resource-card">
+              <h4>W3Schools SQL Tutorial</h4>
+              <p>Tutoriel interactif complet pour apprendre les bases du SQL avec des exemples pratiques</p>
+              <span className="external-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  <polyline points="15 3 21 3 21 9"/>
+                  <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+              </span>
+            </a>
+            <a href="https://sql.sh/" target="_blank" rel="noopener noreferrer" className="resource-card">
+              <h4>SQL.sh</h4>
+              <p>Cours SQL en français avec de nombreux exemples et exercices pratiques</p>
+              <span className="external-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  <polyline points="15 3 21 3 21 9"/>
+                  <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+              </span>
+            </a>
+            <a href="https://www.postgresql.org/docs/" target="_blank" rel="noopener noreferrer" className="resource-card">
+              <h4>PostgreSQL Documentation</h4>
+              <p>Documentation officielle de PostgreSQL, une référence complète pour SQL</p>
+              <span className="external-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  <polyline points="15 3 21 3 21 9"/>
+                  <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+              </span>
+            </a>
           </div>
         </div>
       </section>
