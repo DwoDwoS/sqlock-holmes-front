@@ -77,8 +77,8 @@ const About: React.FC = () => {
             </svg>
           </div>
           <h2>Fonctionnalités</h2>
-          <div className="features-list">
-            <div className="feature-item">
+          <div className="about-features-list">
+            <div className="about-feature-item">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
@@ -87,7 +87,7 @@ const About: React.FC = () => {
                 <p>Éditeur Monaco (VS Code) avec coloration syntaxique</p>
               </div>
             </div>
-            <div className="feature-item">
+            <div className="about-feature-item">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
@@ -96,7 +96,7 @@ const About: React.FC = () => {
                 <p>Débloquez des indices progressifs si vous êtes bloqué</p>
               </div>
             </div>
-            <div className="feature-item">
+            <div className="about-feature-item">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
@@ -105,7 +105,7 @@ const About: React.FC = () => {
                 <p>Consultez et rechargez vos requêtes précédentes</p>
               </div>
             </div>
-            <div className="feature-item">
+            <div className="about-feature-item">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
@@ -114,7 +114,7 @@ const About: React.FC = () => {
                 <p>Comparez vos performances avec les autres détectives</p>
               </div>
             </div>
-            <div className="feature-item">
+            <div className="about-feature-item">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
