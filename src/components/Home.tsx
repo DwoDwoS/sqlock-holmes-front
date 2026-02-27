@@ -12,6 +12,7 @@ const Home = () => {
           <h2 id="welcome-heading">Bienvenue, Détective {user?.username} !</h2>
           <p>Vous êtes maintenant connecté à votre plateforme d'investigation numérique.</p>
           <p>Utilisez les outils à votre disposition pour résoudre les mystères des bases de données.</p>
+          <p>Si vous n'êtes pas familier avec les requêtes SQL, n'hésitez pas à consulter notre section <a href="/about">À propos</a> pour en savoir plus.</p>
 
           <div className="features-grid" role="list">
             <article className="feature-item" role="listitem">

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { AuthProvider } from '../../contexts/AuthProvider';
@@ -13,6 +13,14 @@ vi.mock('react-router-dom', async () => {
     useNavigate: () => mockNavigate,
   };
 });
+
+// Mock adminService
+const mockGetUsersStats = vi.fn();
+vi.mock('../../services/adminService', () => ({
+  adminService: {
+    getUsersStats: () => mockGetUsersStats(),
+  },
+}));
 
 // Mock useAuth hook with admin user
 const mockUseAuth = vi.fn(() => ({
@@ -43,21 +51,32 @@ const renderWithProviders = (component: React.ReactElement) => {
 describe('AdminDashboardPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockGetUsersStats.mockResolvedValue({
+      totalUsers: 10,
+      activeUsers: 8,
+      inactiveUsers: 2,
+      admins: 2,
+      regularUsers: 8,
+    });
   });
 
-  it('renders admin dashboard when user is ADMIN', () => {
+  it('renders admin dashboard when user is ADMIN', async () => {
     renderWithProviders(<AdminDashboardPage />);
 
-    expect(screen.getByText('Tableau de bord administrateur SQLock Holmes')).toBeInTheDocument();
-    expect(screen.getByText(/Bienvenue sur le tableau de bord administrateur/i)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Tableau de bord administrateur SQLock Holmes')).toBeInTheDocument();
+      expect(screen.getByText(/Bienvenue sur le tableau de bord administrateur/i)).toBeInTheDocument();
+    });
   });
 
-  it('displays all management buttons', () => {
+  it('displays all management buttons', async () => {
     renderWithProviders(<AdminDashboardPage />);
 
-    expect(screen.getByText('Gérer les utilisateurs')).toBeInTheDocument();
-    expect(screen.getByText('Gérer les enquêtes')).toBeInTheDocument();
-    expect(screen.getByText('Paramètres du système')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Gérer les utilisateurs')).toBeInTheDocument();
+      expect(screen.getByText('Gérer les enquêtes')).toBeInTheDocument();
+      expect(screen.getByText('Paramètres du système')).toBeInTheDocument();
+    });
   });
 
   it('redirects non-admin users to login', () => {

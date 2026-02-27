@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './Footer.css';
 
 const Footer = () => {
@@ -12,7 +13,7 @@ const Footer = () => {
           <div className="footer-section">
             <h4>Liens utiles</h4>
             <ul>
-              <li><a href="#about">À propos</a></li>
+              <li><Link to="/about">À propos</Link></li>
               <li><a href="#help">Aide</a></li>
               <li><a href="#contact">Contact</a></li>
             </ul>

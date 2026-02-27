@@ -10,7 +10,7 @@ export interface QueryHistoryEntry {
 interface SQLEditorProps {
   sqlCode: string;
   onChange: (value: string | undefined) => void;
-  onExecute: () => void;
+  onExecute: (query?: string) => void;
   onShowHints: () => void;
   onSubmit: () => void;
   loading: boolean;
@@ -49,8 +49,9 @@ const SQLEditor: React.FC<SQLEditorProps> = ({
         ? (2048 | 3)
         : (2048 | 3),
       () => {
-        if (!loading) {
-          onExecute();
+        if (!loading && editorRef.current) {
+          const currentQuery = editorRef.current.getValue();
+          onExecute(currentQuery);
         }
       }
     );
@@ -119,7 +120,7 @@ const SQLEditor: React.FC<SQLEditorProps> = ({
           </div>
         )}
       </div>
-      <button className="execute-button" onClick={onExecute} disabled={loading}>
+      <button className="execute-button" onClick={() => onExecute()} disabled={loading}>
         {loading ? 'Exécution...' : 'Exécuter'}
       </button>
       <button className="submit-button" onClick={onSubmit} disabled={loading}>

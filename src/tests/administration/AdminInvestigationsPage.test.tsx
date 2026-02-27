@@ -14,13 +14,15 @@ vi.mock('react-router-dom', async () => {
 });
 
 // Mock useAuth hook with admin user
+const mockUser = {
+  id: '1',
+  username: 'admin',
+  email: 'admin@sqlock.com',
+  role: 'ADMIN',
+};
+
 const mockUseAuth = vi.fn(() => ({
-  user: {
-    id: '1',
-    username: 'admin',
-    email: 'admin@sqlock.com',
-    role: 'ADMIN',
-  },
+  user: mockUser,
   isLoading: false,
   logout: vi.fn(),
 }));
@@ -28,12 +30,6 @@ const mockUseAuth = vi.fn(() => ({
 vi.mock('../../hooks/useAuth', () => ({
   useAuth: () => mockUseAuth(),
 }));
-
-// Mock window.confirm
-window.confirm = vi.fn(() => true);
-
-// Mock window.alert
-window.alert = vi.fn();
 
 const renderWithProviders = (component: React.ReactElement) => {
   return render(
@@ -46,78 +42,60 @@ const renderWithProviders = (component: React.ReactElement) => {
 describe('AdminInvestigationsPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockUseAuth.mockReturnValue({
+      user: mockUser,
+      isLoading: false,
+      logout: vi.fn(),
+    });
   });
 
   it('renders investigations management page when user is ADMIN', async () => {
     renderWithProviders(<AdminInvestigationsPage />);
 
-    await waitFor(() => {
-      expect(screen.getByText('Gestion des Enquêtes')).toBeInTheDocument();
-    }, { timeout: 2000 });
+    expect(await screen.findByText('Gestion des Enquêtes')).toBeInTheDocument();
   });
 
   it('displays back button', async () => {
     renderWithProviders(<AdminInvestigationsPage />);
 
-    await waitFor(() => {
-      expect(screen.getByText('← Retour au tableau de bord')).toBeInTheDocument();
-    }, { timeout: 2000 });
+    expect(await screen.findByText('← Retour au tableau de bord')).toBeInTheDocument();
   });
 
   it('displays create investigation button', async () => {
     renderWithProviders(<AdminInvestigationsPage />);
 
-    await waitFor(() => {
-      expect(screen.getByText('+ Créer une enquête')).toBeInTheDocument();
-    }, { timeout: 2000 });
+    expect(await screen.findByText('+ Créer une enquête')).toBeInTheDocument();
   });
 
-  it('displays investigations after loading', async () => {
+  it('displays mocked investigations after loading', async () => {
     renderWithProviders(<AdminInvestigationsPage />);
 
-    await waitFor(() => {
-      expect(screen.getByText('Le vol du musée')).toBeInTheDocument();
-      expect(screen.getByText('Fraudes corporatives')).toBeInTheDocument();
-      expect(screen.getByText('Meurtre au Manoir')).toBeInTheDocument();
-    }, { timeout: 2000 });
+    expect(await screen.findByText('Le vol du musée')).toBeInTheDocument();
+    expect(await screen.findByText('Fraudes corporatives')).toBeInTheDocument();
+    expect(await screen.findByText('Meurtre au Manoir')).toBeInTheDocument();
   });
 
   it('shows create form when create button is clicked', async () => {
     renderWithProviders(<AdminInvestigationsPage />);
 
-    let createButton: HTMLElement;
-    await waitFor(() => {
-      createButton = screen.getByText((content, element) => {
-        return element?.tagName === 'BUTTON' && content.includes('Créer une enquête');
-      });
-    }, { timeout: 2000 });
+    const createButton = await screen.findByText('+ Créer une enquête');
+    fireEvent.click(createButton);
 
-    fireEvent.click(createButton!);
-
-    await waitFor(() => {
-      expect(screen.getByText('Nouvelle Enquête')).toBeInTheDocument();
-      expect(screen.getByLabelText('Titre:')).toBeInTheDocument();
-      expect(screen.getByLabelText('Description:')).toBeInTheDocument();
-    });
+    expect(await screen.findByText('Nouvelle Enquête')).toBeInTheDocument();
+    expect(screen.getByText('Titre:')).toBeInTheDocument();
+    expect(screen.getByText('Description:')).toBeInTheDocument();
+    expect(screen.getByText('Difficulté:')).toBeInTheDocument();
   });
 
-  it('hides create form when button is clicked again', async () => {
+  it('hides create form when cancel button is clicked', async () => {
     renderWithProviders(<AdminInvestigationsPage />);
 
-    let createButton: HTMLElement;
-    await waitFor(() => {
-      createButton = screen.getByText((content, element) => {
-        return element?.tagName === 'BUTTON' && content.includes('Créer une enquête');
-      });
-    }, { timeout: 2000 });
+    const createButton = await screen.findByText('+ Créer une enquête');
+    fireEvent.click(createButton);
 
-    fireEvent.click(createButton!);
+    expect(await screen.findByText('Nouvelle Enquête')).toBeInTheDocument();
 
-    await waitFor(() => {
-      expect(screen.getByText('Annuler')).toBeInTheDocument();
-    });
-
-    const cancelButton = screen.getByText('Annuler');
+    const cancelButton = await screen.findByText('Annuler');
     fireEvent.click(cancelButton);
 
     await waitFor(() => {
@@ -125,14 +103,18 @@ describe('AdminInvestigationsPage', () => {
     });
   });
 
-  it('displays difficulty badges', async () => {
+  it('displays difficulty badges for mocked data', async () => {
     renderWithProviders(<AdminInvestigationsPage />);
 
-    await waitFor(() => {
-      expect(screen.getByText('Facile')).toBeInTheDocument();
-      expect(screen.getByText('Moyen')).toBeInTheDocument();
-      expect(screen.getByText('Difficile')).toBeInTheDocument();
-    }, { timeout: 2000 });
+    await screen.findByText('Le vol du musée');
+    
+    const facile = screen.getAllByText('Facile');
+    const moyen = screen.getAllByText('Moyen');
+    const difficile = screen.getAllByText('Difficile');
+    
+    expect(facile.length).toBeGreaterThan(0);
+    expect(moyen.length).toBeGreaterThan(0);
+    expect(difficile.length).toBeGreaterThan(0);
   });
 
   it('redirects non-admin users', () => {
