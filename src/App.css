@@ -133,7 +133,7 @@
 }
 
 .layout.about-background {
-  background: url('/about_bg.png') no-repeat center center;
+  background: url('/about_bg.webp') no-repeat center center;
   background-size: cover;
   background-attachment: fixed;
 }
