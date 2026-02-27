@@ -1,8 +1,10 @@
 .about-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
+  width: 100%;
+  padding: 0;
   animation: fadeIn 0.3s ease-in;
+  min-height: calc(100vh - 90px);
+  position: relative;
+  margin-top: 90px;
 }
 
 @keyframes fadeIn {
@@ -18,11 +20,13 @@
 
 .about-hero {
   text-align: center;
-  margin-bottom: 4rem;
-  padding: 3rem 1rem;
-  background: linear-gradient(135deg, rgba(74, 144, 226, 0.1) 0%, rgba(138, 43, 226, 0.1) 100%);
+  margin: 0 auto 4rem;
+  max-width: 1200px;
+  padding: 2rem 1rem 3rem;
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.15) 0%, rgba(138, 43, 226, 0.15) 100%);
+  backdrop-filter: blur(20px);
   border-radius: 16px;
-  border: 1px solid rgba(74, 144, 226, 0.2);
+  border: 1px solid rgba(74, 144, 226, 0.3);
 }
 
 .about-hero h1 {
@@ -41,14 +45,19 @@
 
 .about-section {
   margin-bottom: 3rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1rem;
 }
 
 .about-card {
-  background: rgba(45, 45, 55, 0.9);
+  background: rgba(45, 45, 55, 0.7);
+  backdrop-filter: blur(20px);
   border-radius: 12px;
   padding: 2.5rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(74, 144, 226, 0.2);
+  border: 1px solid rgba(74, 144, 226, 0.3);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -86,11 +95,12 @@
 }
 
 .step-card {
-  background: rgba(60, 60, 70, 0.8);
+  background: rgba(60, 60, 70, 0.4);
+  backdrop-filter: blur(20px);
   border-radius: 10px;
   padding: 2rem 1.5rem;
   text-align: center;
-  border: 1px solid rgba(74, 144, 226, 0.3);
+  border: 1px solid rgba(74, 144, 226, 0.5);
   transition: all 0.3s ease;
 }
 
@@ -129,20 +139,19 @@
 
 /* Features List */
 .about-features-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
   margin-top: 2rem;
 }
 
 .about-feature-item {
-  display: flex;
   gap: 1.5rem;
-  align-items: center;
   padding: 1.5rem;
-  background: rgba(60, 60, 70, 0.5);
+  background: rgba(60, 60, 70, 0.35);
+  backdrop-filter: blur(20px);
   border-radius: 10px;
-  border: 1px solid rgba(74, 144, 226, 0.2);
+  border: 1px solid rgba(74, 144, 226, 0.4);
   transition: all 0.3s ease;
 }
 
@@ -150,14 +159,6 @@
   background: rgba(74, 144, 226, 0.1);
   border-color: #4a90e2;
   transform: translateX(10px);
-}
-
-.about-feature-item svg {
-  flex-shrink: 0;
-  color: #4a90e2;
-  width: 24px;
-  height: 24px;
-  margin-top: 4px;
 }
 
 .about-feature-item h4 {
@@ -181,10 +182,11 @@
 }
 
 .resource-card {
-  background: rgba(60, 60, 70, 0.8);
+  background: rgba(60, 60, 70, 0.4);
+  backdrop-filter: blur(20px);
   border-radius: 10px;
   padding: 2rem;
-  border: 1px solid rgba(74, 144, 226, 0.3);
+  border: 1px solid rgba(74, 144, 226, 0.5);
   text-decoration: none;
   color: inherit;
   transition: all 0.3s ease;
@@ -225,7 +227,8 @@
 
 /* SQL Basics */
 .sql-basics-card {
-  background: rgba(40, 40, 50, 0.95);
+  background: rgba(40, 40, 50, 0.5);
+  backdrop-filter: blur(20px);
 }
 
 .sql-commands {
@@ -236,10 +239,11 @@
 }
 
 .sql-command-card {
-  background: rgba(30, 30, 40, 0.9);
+  background: rgba(30, 30, 40, 0.5);
+  backdrop-filter: blur(20px);
   border-radius: 10px;
   padding: 1.5rem;
-  border: 1px solid rgba(74, 144, 226, 0.3);
+  border: 1px solid rgba(74, 144, 226, 0.5);
   transition: all 0.3s ease;
 }
 
@@ -309,12 +313,15 @@
 /* CTA Section */
 .cta-section {
   margin-top: 4rem;
+  margin-bottom: 0;
+  padding-bottom: 2rem;
 }
 
 .cta-card {
   text-align: center;
   background: linear-gradient(135deg, rgba(74, 144, 226, 0.2) 0%, rgba(138, 43, 226, 0.2) 100%);
-  border: 2px solid rgba(74, 144, 226, 0.4);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(74, 144, 226, 0.6);
   padding: 3rem 2rem;
 }
 
@@ -349,6 +356,12 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .about-container {
+    min-height: 100vh;
+    background-attachment: scroll;
+    padding: 1rem 0;
+  }
+
   .about-hero h1 {
     font-size: 2rem;
   }
@@ -406,7 +419,7 @@
 
 @media (max-width: 480px) {
   .about-container {
-    padding: 1rem 0.5rem;
+    padding: 0.5rem 0;
   }
 
   .about-hero {
