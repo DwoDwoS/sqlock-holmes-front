@@ -132,6 +132,12 @@
   background-size: cover;
 }
 
+.layout.about-background {
+  background: url('/about_bg.png') no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
 .layout.profile-background {
   background: linear-gradient(135deg, rgba(51, 51, 51, 0.8) 0%, rgba(26, 26, 26, 0.8) 100%), url('/banner-detective.webp') no-repeat center center;
   background-size: cover;

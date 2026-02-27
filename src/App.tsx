@@ -31,10 +31,10 @@ const LoadingFallback = () => (
   </div>
 );
 
-const Layout: React.FC<{ children: React.ReactNode; isInvestigationsPage: boolean; isHomePage: boolean; isInvestigationPage?: boolean; isProfilePage?: boolean }> = ({ children, isInvestigationsPage, isHomePage, isInvestigationPage = false, isProfilePage = false }) => (
-  <div className={`layout ${isHomePage ? 'home-background' : ''} ${isInvestigationsPage ? 'investigations-background' : ''} ${isProfilePage ? 'profile-background' : ''}`}>
+const Layout: React.FC<{ children: React.ReactNode; isInvestigationsPage: boolean; isHomePage: boolean; isInvestigationPage?: boolean; isProfilePage?: boolean; isAboutPage?: boolean }> = ({ children, isInvestigationsPage, isHomePage, isInvestigationPage = false, isProfilePage = false, isAboutPage = false }) => (
+  <div className={`layout ${isHomePage ? 'home-background' : ''} ${isInvestigationsPage ? 'investigations-background' : ''} ${isProfilePage ? 'profile-background' : ''} ${isAboutPage ? 'about-background' : ''}`}>
     <Navbar />
-    <main style={{ paddingTop: isHomePage || isInvestigationPage ? '0' : '90px', paddingBottom: isHomePage || isInvestigationPage ? '0' : '100px', flex: 1 }}>
+    <main style={{ paddingTop: isHomePage || isInvestigationPage || isAboutPage ? '0' : '90px', paddingBottom: isHomePage || isInvestigationPage || isAboutPage ? '0' : '100px', flex: 1 }}>
       {children}
     </main>
     <Footer />
@@ -59,6 +59,7 @@ const AppContent: React.FC = () => {
   const isHomePage = location.pathname === '/';
   const isInvestigationPage = location.pathname.startsWith('/investigation/');
   const isProfilePage = location.pathname === '/profile';
+  const isAboutPage = location.pathname === '/about';
 
   return (
     <div className="App">
@@ -90,7 +91,7 @@ const AppContent: React.FC = () => {
             path="/about"
             element={
               <ProtectedRoute>
-                <Layout isInvestigationsPage={false} isHomePage={false}>
+                <Layout isInvestigationsPage={false} isHomePage={false} isAboutPage={isAboutPage}>
                   <About />
                 </Layout>
               </ProtectedRoute>
