@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import { contactService } from '../services/contactService';
 import './Contact.css';
 
 interface FormData {
@@ -47,9 +48,7 @@ const Contact = () => {
     setSubmitStatus('idle');
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      console.log('Formulaire soumis:', formData);
+      await contactService.sendContactMessage(formData);
       
       setSubmitStatus('success');
       setFormData({
