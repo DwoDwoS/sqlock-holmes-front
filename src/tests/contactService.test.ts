@@ -50,22 +50,6 @@ describe('contactService', () => {
       expect(api.post).toHaveBeenCalledWith('/contact', contactData);
     });
 
-    it('should send contact message successfully with question type', async () => {
-      const contactData: ContactRequest = {
-        name: 'Alice Brown',
-        email: 'alice@example.com',
-        subject: 'How to use?',
-        message: 'Can you explain how to create an investigation?',
-        type: 'question',
-      };
-
-      (api.post as Mock).mockResolvedValue({ data: {} });
-
-      await contactService.sendContactMessage(contactData);
-
-      expect(api.post).toHaveBeenCalledWith('/contact', contactData);
-    });
-
     it('should throw error when API call fails', async () => {
       const contactData: ContactRequest = {
         name: 'Test User',

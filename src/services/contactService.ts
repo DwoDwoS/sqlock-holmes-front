@@ -5,7 +5,7 @@ export interface ContactRequest {
   email: string;
   subject: string;
   message: string;
-  type: 'feedback' | 'bug' | 'question';
+  type: 'feedback' | 'bug';
 }
 
 export const contactService = {
