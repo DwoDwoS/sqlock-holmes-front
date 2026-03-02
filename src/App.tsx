@@ -61,7 +61,6 @@ const AppContent: React.FC = () => {
   const isInvestigationPage = location.pathname.startsWith('/investigation/');
   const isProfilePage = location.pathname === '/profile';
   const isAboutPage = location.pathname === '/about';
-  const isContactPage = location.pathname === '/contact';
 
   return (
     <div className="App">
@@ -103,7 +102,7 @@ const AppContent: React.FC = () => {
             path="/contact"
             element={
               <ProtectedRoute>
-                <Layout isInvestigationsPage={false} isHomePage={false} isAboutPage={isContactPage}>
+                <Layout isInvestigationsPage={false} isHomePage={false}>
                   <Contact />
                 </Layout>
               </ProtectedRoute>
