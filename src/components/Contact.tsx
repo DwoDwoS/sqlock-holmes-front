@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useAuth } from '../hooks/useAuth';
 import './Contact.css';
 
 interface FormData {
@@ -10,6 +11,7 @@ interface FormData {
 }
 
 const Contact = () => {
+  const { user } = useAuth();
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -20,6 +22,16 @@ const Contact = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  useEffect(() => {
+    if (user) {
+      setFormData(prev => ({
+        ...prev,
+        name: user.username,
+        email: user.email
+      }));
+    }
+  }, [user]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -41,8 +53,8 @@ const Contact = () => {
       
       setSubmitStatus('success');
       setFormData({
-        name: '',
-        email: '',
+        name: user?.username || '',
+        email: user?.email || '',
         subject: '',
         message: '',
         type: 'feedback'
