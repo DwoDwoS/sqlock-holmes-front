@@ -11,6 +11,7 @@ const Register = lazy(() => import('./components/Register'));
 const Home = lazy(() => import('./components/Home'));
 const About = lazy(() => import('./components/About'));
 const Contact = lazy(() => import('./components/Contact'));
+const Privacy = lazy(() => import('./components/Privacy'));
 const Profile = lazy(() => import('./components/Profile'));
 const AdminDashboardPage = lazy(() => import('./components/administration/AdminDashboardPage'));
 const AdminUsersPage = lazy(() => import('./components/administration/AdminUsersPage'));
@@ -104,6 +105,16 @@ const AppContent: React.FC = () => {
               <ProtectedRoute>
                 <Layout isInvestigationsPage={false} isHomePage={false}>
                   <Contact />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/privacy"
+            element={
+              <ProtectedRoute>
+                <Layout isInvestigationsPage={false} isHomePage={false}>
+                  <Privacy />
                 </Layout>
               </ProtectedRoute>
             }
