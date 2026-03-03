@@ -17,6 +17,29 @@
   justify-content: space-between;
   gap: 8px;
   flex-shrink: 0;
+  width: 100%;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s;
+  border: none;
+  text-align: left;
+}
+
+.ds-header:hover {
+  background: linear-gradient(90deg, rgba(40, 54, 78, 0.95) 0%, rgba(20, 30, 50, 0.95) 100%);
+}
+
+.ds-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.ds-header-chevron {
+  color: #22d3ee;
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
 }
 
 .ds-header-left {
