@@ -22,7 +22,7 @@ const Footer = () => {
             <h4>Légal</h4>
             <ul>
               <li><Link to="/privacy">Confidentialité</Link></li>
-              <li><a href="#terms">Conditions d'utilisation</a></li>
+              <li><Link to="/terms">Conditions d'utilisation</Link></li>
             </ul>
           </div>
         </div>
