@@ -14,7 +14,6 @@ const Footer = () => {
             <h4>Liens utiles</h4>
             <ul>
               <li><Link to="/about">À propos</Link></li>
-              <li><a href="#help">Aide</a></li>
               <li><Link to="/contact">Contact</Link></li>
             </ul>
           </div>
@@ -22,7 +21,7 @@ const Footer = () => {
             <h4>Légal</h4>
             <ul>
               <li><Link to="/privacy">Confidentialité</Link></li>
-              <li><a href="#terms">Conditions d'utilisation</a></li>
+              <li><Link to="/terms">Conditions d'utilisation</Link></li>
             </ul>
           </div>
         </div>
