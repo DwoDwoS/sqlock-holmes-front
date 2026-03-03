@@ -14,8 +14,32 @@
   padding: 40px;
   border-radius: 15px;
   margin: 20px auto;
-  max-width: 1200px;
+  max-width: 1450px;
   min-height: calc(100vh - 230px);
+}
+
+.investigation-editor-layout {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.investigation-editor-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.investigation-schema-panel {
+  flex: 0 0 300px;
+  width: 300px;
+  max-height: 452px;
+  overflow-y: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(10px);
+  animation: slideIn 0.3s ease;
 }
 
 .investigation-page.has-image .investigation-overlay {
@@ -30,7 +54,6 @@
   text-align: center;
 }
 
-/* Fallback pour les enquêtes sans image */
 .investigation-page:not([style*="background-image"]) {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
@@ -104,7 +127,6 @@
   cursor: not-allowed;
 }
 
-/* Editor wrapper and history panel */
 .editor-wrapper {
   display: flex;
   gap: 12px;
@@ -342,7 +364,6 @@
   position: relative;
 }
 
-/* Info tooltip styles */
 .info-tooltip {
   position: relative;
   display: inline-block;
@@ -616,7 +637,6 @@
   background-color: #5a6268;
 }
 
-/* Force Monaco Editor to respect container width */
 .editor-main > div {
   width: 100% !important;
 }
@@ -625,7 +645,18 @@
   width: 100% !important;
 }
 
-/* Responsive design for smaller screens */
+@media (max-width: 1200px) {
+  .investigation-editor-layout {
+    flex-direction: column;
+  }
+
+  .investigation-schema-panel {
+    flex: 0 0 auto;
+    width: 100%;
+    max-height: 300px;
+  }
+}
+
 @media (max-width: 1024px) {
   .editor-wrapper.with-history {
     flex-direction: column;
@@ -705,7 +736,6 @@
     margin: 10px 0 0 0;
   }
   
-  /* Tooltip responsive on mobile */
   .tooltip-text {
     width: 200px;
     font-size: 12px;

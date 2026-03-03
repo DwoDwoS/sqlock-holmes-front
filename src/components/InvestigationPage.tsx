@@ -10,6 +10,7 @@ import { useHints } from '../hooks/useHints';
 import { getDefaultQuery } from '../utils/investigationUtils';
 import type { SQLResult } from '../types/investigation';
 import './InvestigationPage.css';
+import { DatabaseSchema } from './investigation/DatabaseSchema';
 
 const InvestigationPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -111,18 +112,25 @@ const InvestigationPage: React.FC = () => {
         )}
         <InvestigationHeader investigation={investigation} />
 
-        <SQLEditor
-          sqlCode={sqlCode}
-          onChange={(value) => setSqlCode(value || '')}
-          onExecute={handleExecuteSQL}
-          onShowHints={handleShowHints}
-          onSubmit={openSubmitModal}
-          loading={loading}
-          queryHistory={queryHistory}
-          showHistory={showHistory}
-          onToggleHistory={handleToggleHistory}
-          onLoadQuery={handleLoadQuery}
-        />
+        <div className="investigation-editor-layout">
+          <div className="investigation-editor-main">
+            <SQLEditor
+              sqlCode={sqlCode}
+              onChange={(value) => setSqlCode(value || '')}
+              onExecute={handleExecuteSQL}
+              onShowHints={handleShowHints}
+              onSubmit={openSubmitModal}
+              loading={loading}
+              queryHistory={queryHistory}
+              showHistory={showHistory}
+              onToggleHistory={handleToggleHistory}
+              onLoadQuery={handleLoadQuery}
+            />
+          </div>
+          <div className="investigation-schema-panel">
+            <DatabaseSchema investigationId={investigationId} />
+          </div>
+        </div>
 
         <ResultsDisplay results={results} ref={resultsRef} />
 
