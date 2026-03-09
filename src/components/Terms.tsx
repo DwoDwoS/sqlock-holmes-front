@@ -1,5 +1,5 @@
 import React from 'react';
-import './Terms.css';
+import './Terms.scss';
 
 const Terms: React.FC = () => {
   return (

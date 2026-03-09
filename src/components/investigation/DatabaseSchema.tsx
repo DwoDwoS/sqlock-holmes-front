@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { Database, ChevronDown, Info, Hash, Type, ToggleLeft } from 'lucide-react';
 import { SCHEMAS, COLOR_MAP } from './databaseSchemas';
 import type { Table, Column } from './databaseSchemas';
-import './DatabaseSchema.css';
+import './DatabaseSchema.scss';
 
 function TypeIcon({ type }: { type: string }) {
   const t = type.toUpperCase();

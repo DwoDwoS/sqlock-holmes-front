@@ -1,0 +1,195 @@
+@use '../styles/variables' as v;
+@use '../styles/mixins' as m;
+
+@include m.fade-in-keyframes;
+
+.privacy-container {
+  width: 100%;
+  padding: 0;
+  animation: fadeIn v.$transition-base;
+  min-height: calc(100vh - 90px);
+  position: relative;
+  margin-top: 90px;
+
+  @include m.mobile {
+    margin-top: 60px;
+  }
+}
+
+.privacy-hero {
+  text-align: center;
+  margin: 0 auto v.$spacing-2xl;
+  max-width: v.$bp-lg;
+  padding: v.$spacing-xl v.$spacing-md v.$spacing-2xl;
+  background: linear-gradient(
+    135deg,
+    rgba(212, 175, 55, 0.15) 0%,
+    rgba(255, 215, 0, 0.1) 100%
+  );
+  backdrop-filter: blur(20px);
+  border-radius: v.$radius-xl;
+  border: 1px solid v.$color-gold-500;
+  box-shadow: v.$shadow-gold;
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: v.$spacing-md;
+    color: v.$color-white;
+  }
+
+  @include m.mobile {
+    padding: v.$spacing-lg v.$spacing-md v.$spacing-xl;
+    margin-bottom: v.$spacing-xl;
+
+    h1 { font-size: 2rem; }
+  }
+
+  @include m.phone-xs {
+    h1 { font-size: 1.75rem; }
+  }
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  color: v.$color-silver-400;
+  font-style: italic;
+
+  @include m.mobile { font-size: 0.95rem; }
+}
+
+.privacy-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 v.$spacing-md v.$spacing-3xl;
+}
+
+.privacy-section {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid v.$color-border;
+  border-radius: v.$radius-xl;
+  padding: v.$spacing-xl;
+  margin-bottom: v.$spacing-xl;
+  transition: all v.$transition-base;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: v.$color-silver-400;
+    transform: translateY(-2px);
+    box-shadow: v.$shadow-lg;
+  }
+
+  h2 {
+    font-size: 2rem;
+    color: v.$color-white;
+    margin-bottom: v.$spacing-lg;
+    padding-bottom: v.$spacing-sm;
+    border-bottom: 2px solid v.$color-silver-500;
+
+    @include m.mobile  { font-size: 1.5rem; margin-bottom: v.$spacing-md; }
+    @include m.phone-xs { font-size: 1.3rem; }
+  }
+
+  h3 {
+    font-size: 1.4rem;
+    color: v.$color-silver-200;
+    margin: v.$spacing-lg 0 v.$spacing-md;
+
+    @include m.mobile  { font-size: 1.2rem; }
+    @include m.phone-xs { font-size: 1.1rem; }
+  }
+
+  p {
+    color: v.$color-text-dim;
+    line-height: 1.8;
+    margin-bottom: v.$spacing-md;
+    font-size: 1rem;
+
+    @include m.mobile  { font-size: 0.9rem; }
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: v.$spacing-md 0;
+
+    li {
+      color: v.$color-text-dim;
+      line-height: 1.8;
+      margin-bottom: v.$spacing-sm;
+      padding-left: v.$spacing-lg;
+      position: relative;
+      font-size: 0.95rem;
+
+      &::before {
+        content: '•';
+        color: v.$color-gold-400;
+        font-size: 1.5rem;
+        position: absolute;
+        left: 0;
+        top: -0.2rem;
+      }
+
+      strong {
+        color: v.$color-white;
+        font-weight: 600;
+      }
+
+      @include m.mobile { font-size: 0.9rem; }
+    }
+  }
+
+  a {
+    color: v.$color-gold-300;
+    text-decoration: none;
+    transition: all v.$transition-fast;
+    border-bottom: 1px solid transparent;
+
+    &:hover {
+      color: v.$color-gold-200;
+      border-bottom-color: v.$color-gold-300;
+    }
+  }
+
+  @include m.mobile  { padding: v.$spacing-lg; margin-bottom: v.$spacing-lg; }
+  @include m.phone-xs { padding: v.$spacing-md; }
+}
+
+.contact-section {
+  border: 2px solid v.$color-gold-500;
+  background: linear-gradient(
+    135deg,
+    rgba(212, 175, 55, 0.1) 0%,
+    rgba(255, 215, 0, 0.05) 100%
+  );
+  box-shadow: v.$shadow-gold;
+}
+
+.contact-info-box {
+  background: v.$color-bg-tertiary;
+  border: 1px solid v.$color-border;
+  border-radius: v.$radius-lg;
+  padding: v.$spacing-lg;
+  margin: v.$spacing-lg 0;
+
+  p {
+    margin-bottom: v.$spacing-sm;
+    color: v.$color-text;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  @include m.mobile {
+    padding: v.$spacing-md;
+  }
+}
+
+.gdpr-info {
+  font-size: 0.9rem;
+  color: v.$color-text-muted;
+  font-style: italic;
+  margin-top: v.$spacing-lg;
+  padding-top: v.$spacing-lg;
+  border-top: 1px solid v.$color-border;
+}

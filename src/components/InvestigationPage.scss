@@ -1,0 +1,331 @@
+@use '../styles/variables' as v;
+@use '../styles/mixins' as m;
+
+$btn-bg:       rgba(51, 51, 51, 0.9);
+$btn-border:   rgba(255, 255, 255, 0.3);
+$btn-hover-bg: rgba(0, 86, 179, 0.9);
+$btn-hover-border: rgba(255, 255, 255, 0.6);
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.investigation-page {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 90px 20px 100px;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+
+  &:not([style*='background-image']) {
+    background: linear-gradient(135deg, v.$color-indigo 0%, v.$color-purple 100%);
+
+    .investigation-overlay {
+      background: rgba(0, 0, 0, 0.8);
+    }
+  }
+
+  &.has-image .investigation-overlay {
+    background: transparent;
+  }
+}
+
+.investigation-overlay {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 40px;
+  border-radius: 15px;
+  margin: 20px auto;
+  max-width: 1450px;
+  min-height: calc(100vh - 230px);
+
+  h1 {
+    color: v.$color-white;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+}
+
+.investigation-plot {
+  font-size: 1.2em;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  color: v.$color-white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.investigation-editor-layout {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.investigation-editor-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.investigation-schema-panel {
+  flex: 0 0 300px;
+  width: 300px;
+  max-height: 452px;
+  overflow-y: auto;
+  border-radius: v.$radius-lg;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(10px);
+  animation: slideIn 0.3s ease;
+}
+
+.editor-container {
+  position: relative;
+  margin-bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.editor-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.editor-wrapper {
+  display: flex;
+  gap: 12px;
+  transition: all v.$transition-base;
+  width: 100%;
+  overflow: visible;
+  box-sizing: border-box;
+
+  &.with-history .editor-main {
+    flex: 1 1 58%;
+    min-width: 0;
+  }
+}
+
+.editor-main {
+  flex: 1;
+  transition: all v.$transition-base;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+%investigation-btn {
+  background-color: $btn-bg;
+  color: white;
+  border: 2px solid $btn-border;
+  border-radius: 5px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: all v.$transition-base;
+
+  &:hover {
+    background-color: $btn-hover-bg;
+    border-color: $btn-hover-border;
+  }
+
+  &:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+  }
+}
+
+.hints-button,
+.history-button {
+  @extend %investigation-btn;
+  padding: 10px 15px;
+  font-size: 14px;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.execute-button {
+  @extend %investigation-btn;
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  justify-content: center;
+}
+
+.submit-button {
+  @extend %investigation-btn;
+  margin-top: 10px;
+  margin-left: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+.query-history-panel {
+  flex: 0 0 38%;
+  min-width: 280px;
+  max-width: 38%;
+  background-color: rgba(30, 30, 30, 0.95);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  padding: 15px;
+  backdrop-filter: blur(10px);
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  animation: slideIn 0.3s ease;
+  box-sizing: border-box;
+
+  h4 {
+    margin: 0 0 15px;
+    color: v.$color-white;
+    font-size: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  }
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.history-entry {
+  background-color: rgba(51, 51, 51, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  transition: all v.$transition-fast;
+
+  &:hover {
+    background-color: rgba(0, 86, 179, 0.8);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateX(-5px);
+    box-shadow: 0 2px 8px rgba(0, 86, 179, 0.4);
+  }
+}
+
+.history-timestamp {
+  color: #888;
+  font-size: 12px;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.history-query {
+  color: #e0e0e0;
+  font-size: 13px;
+  font-family: 'Courier New', monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+.results-container {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: rgba(248, 249, 250, 0.95);
+  border: 1px solid rgba(222, 226, 230, 0.3);
+  border-radius: 5px;
+  backdrop-filter: blur(10px);
+  scroll-margin-top: 20px;
+
+  h3 {
+    margin-top: 0;
+    color: v.$color-text-dark;
+  }
+
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    color: v.$color-text-dark;
+    background-color: rgba(248, 249, 250, 0.9);
+    padding: 10px;
+    border-radius: 3px;
+    border: 1px solid rgba(233, 236, 239, 0.5);
+  }
+}
+
+.hints-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: flex-end;
+  z-index: v.$z-modal;
+}
+
+.hints-content {
+  background-color: white;
+  width: 100%;
+  padding: 20px;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+  overflow-y: auto;
+
+  h3 {
+    margin-top: 0;
+  }
+
+  ul {
+    padding-left: 20px;
+  }
+
+  button {
+    margin-top: 20px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #5a6268;
+    }
+  }
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: v.$z-modal;
+}
+
+.modal-content {
+  background-color: #ad8762;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+
+  h3 {
+    margin-top: 0;
+    color: v.$color-text-dark;
+  }
+}
+
+.submission-options {
+  margin: 20px 0;
+}
+
+.option-section {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+}

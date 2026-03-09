@@ -1,3 +1,4 @@
+import './Investigations.scss';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getInvestigations, restartInvestigation } from '../services/investigationService';

@@ -83,7 +83,8 @@ const SQLEditor: React.FC<SQLEditorProps> = ({
       <div className={`editor-wrapper ${showHistory ? 'with-history' : ''}`}>
         <div className="editor-main">
           <Editor
-            height="400px"
+            height="20rem"
+            width="100%"
             language="sql"
             value={sqlCode}
             onChange={onChange}

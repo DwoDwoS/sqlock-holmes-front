@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useLeaderboard } from '../hooks/useLeaderboard';
 import type { LeaderboardEntry, GlobalLeaderboardEntry, LeaderboardType } from '../types/leaderboard';
-import './Leaderboard.css';
+import './Leaderboard.scss';
 
 interface LeaderboardProps {
   investigationId?: number;

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import api from '../api/api';
 import { useLeaderboard } from '../hooks/useLeaderboard';
 import { formatTime, formatDate, getRankClass } from '../utils/formatters';
-import './LeaderboardModal.css';
+import './LeaderboardModal.scss';
 
 interface LeaderboardModalProps {
   isOpen: boolean;

@@ -9,7 +9,7 @@ import { useInvestigationData } from '../hooks/useInvestigationData';
 import { useHints } from '../hooks/useHints';
 import { getDefaultQuery } from '../utils/investigationUtils';
 import type { SQLResult } from '../types/investigation';
-import './InvestigationPage.css';
+import './InvestigationPage.scss';
 import { DatabaseSchema } from './investigation/DatabaseSchema';
 
 const InvestigationPage: React.FC = () => {
