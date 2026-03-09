@@ -4,12 +4,16 @@ import { AuthProvider } from './contexts/AuthProvider';
 import { LeaderboardRefreshProvider } from './contexts/LeaderboardRefreshContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import './App.css';
+import ScrollToTop from './components/ScrollToTop';
+import './App.scss';
 
 const Login = lazy(() => import('./components/Login'));
 const Register = lazy(() => import('./components/Register'));
 const Home = lazy(() => import('./components/Home'));
 const About = lazy(() => import('./components/About'));
+const Contact = lazy(() => import('./components/Contact'));
+const Privacy = lazy(() => import('./components/Privacy'));
+const Terms = lazy(() => import('./components/Terms'));
 const Profile = lazy(() => import('./components/Profile'));
 const AdminDashboardPage = lazy(() => import('./components/administration/AdminDashboardPage'));
 const AdminUsersPage = lazy(() => import('./components/administration/AdminUsersPage'));
@@ -63,6 +67,7 @@ const AppContent: React.FC = () => {
 
   return (
     <div className="App">
+      <ScrollToTop />
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
           <Route path="/login" element={<Login />} />
@@ -93,6 +98,36 @@ const AppContent: React.FC = () => {
               <ProtectedRoute>
                 <Layout isInvestigationsPage={false} isHomePage={false} isAboutPage={isAboutPage}>
                   <About />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/contact"
+            element={
+              <ProtectedRoute>
+                <Layout isInvestigationsPage={false} isHomePage={false}>
+                  <Contact />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/privacy"
+            element={
+              <ProtectedRoute>
+                <Layout isInvestigationsPage={false} isHomePage={false}>
+                  <Privacy />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/terms"
+            element={
+              <ProtectedRoute>
+                <Layout isInvestigationsPage={false} isHomePage={false}>
+                  <Terms />
                 </Layout>
               </ProtectedRoute>
             }

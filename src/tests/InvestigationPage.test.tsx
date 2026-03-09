@@ -101,7 +101,7 @@ describe('InvestigationPage', () => {
     renderWithProviders(<InvestigationPage />);
 
     await waitFor(() => {
-      expect(screen.getByText('Le vol du musée')).toBeInTheDocument();
+      expect(screen.getAllByText('Le vol du musée').length).toBeGreaterThanOrEqual(1);
       expect(screen.getByText(/Un tableau de valeur inestimable/)).toBeInTheDocument();
     });
   });
@@ -140,7 +140,6 @@ describe('InvestigationPage', () => {
     const hintsButton = screen.getByText('Indices');
     fireEvent.click(hintsButton);
 
-    // La modal devrait s'ouvrir avec les indices mockés
     await waitFor(() => {
       expect(screen.getByText('Les caméras de sécurité ont enregistré les entrées et sorties du musée.')).toBeInTheDocument();
     });

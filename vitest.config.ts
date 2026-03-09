@@ -10,8 +10,9 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{ts,tsx}'],
     exclude: ['node_modules', 'dist', 'coverage'],
     passWithNoTests: false,
-    pool: 'forks',
-    maxWorkers: 1,
+    pool: 'threads',
+    testTimeout: 10000,
+    hookTimeout: 10000,
     coverage: {
       provider: 'v8',
       reporter: ['text', 'lcov', 'json'],

@@ -12,7 +12,13 @@ interface ResultsDisplayProps {
 }
 
 const ResultsDisplay = forwardRef<HTMLDivElement, ResultsDisplayProps>(({ results }, ref) => {
-  if (!results) return null;
+  if (!results) {
+    return (
+      <div className="results-container results-container--empty" ref={ref}>
+        <span className="results-placeholder">Exécutez une requête pour voir les résultats ici.</span>
+      </div>
+    );
+  }
 
   return (
     <div className="results-container" ref={ref}>

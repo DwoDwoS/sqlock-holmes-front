@@ -1,0 +1,270 @@
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
+
+.admin-settings-page {
+  @include m.admin-page(1200px);
+}
+
+.admin-header {
+  @include m.admin-header;
+}
+
+.back-button {
+  @include m.btn-admin-ghost;
+}
+
+.message {
+  padding: v.$spacing-md;
+  border-radius: v.$radius-md;
+  margin-bottom: v.$spacing-xl;
+  text-align: center;
+  font-weight: 500;
+
+  &.success {
+    background-color: rgba(16, 185, 129, 0.2);
+    border: 1px solid rgba(16, 185, 129, 0.5);
+    color: v.$color-success;
+  }
+
+  &.error {
+    background-color: rgba(239, 68, 68, 0.2);
+    border: 1px solid rgba(239, 68, 68, 0.5);
+    color: v.$color-danger;
+  }
+}
+
+.settings-grid {
+  display: grid;
+  gap: v.$spacing-xl;
+  margin-bottom: v.$spacing-xl;
+}
+
+.settings-section {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: v.$radius-lg;
+  padding: v.$spacing-xl;
+  box-shadow: v.$shadow-md;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: v.$spacing-lg;
+    color: v.$color-white;
+    font-size: 1.5rem;
+    border-bottom: 2px solid rgba(100, 108, 255, 0.3);
+    padding-bottom: v.$spacing-xs;
+  }
+
+  &.actions {
+    background-color: rgba(100, 108, 255, 0.05);
+    border-color: rgba(100, 108, 255, 0.2);
+  }
+}
+
+.setting-item {
+  margin-bottom: v.$spacing-lg;
+
+  &:last-child { margin-bottom: 0; }
+
+  label {
+    display: block;
+    margin-bottom: v.$spacing-xs;
+    color: rgba(255, 255, 255, 0.87);
+    font-weight: 500;
+  }
+
+  input[type='text'],
+  input[type='number'] {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: v.$radius-md;
+    color: v.$color-white;
+    font-size: 1rem;
+    transition: all v.$transition-base;
+
+    &:focus {
+      outline: none;
+      border-color: v.$color-primary;
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+  }
+
+  &.toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: v.$spacing-md;
+    background-color: rgba(255, 255, 255, 0.03);
+    border-radius: v.$radius-md;
+    margin-bottom: v.$spacing-md;
+
+    @include m.mobile {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: v.$spacing-md;
+    }
+  }
+}
+
+.toggle-info {
+  flex: 1;
+
+  label { margin-bottom: 0.25rem; font-size: 1rem; }
+
+  .description {
+    display: block;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 0.25rem;
+  }
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  margin-left: v.$spacing-md;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  @include m.mobile { margin-left: 0; }
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.2);
+  transition: 0.4s;
+  border-radius: 34px;
+
+  &::before {
+    position: absolute;
+    content: '';
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+  }
+}
+
+input:checked + .slider {
+  background-color: v.$color-primary;
+
+  &::before { transform: translateX(26px); }
+}
+
+.action-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: v.$spacing-md;
+
+  @include m.mobile { grid-template-columns: 1fr; }
+}
+
+.action-button {
+  padding: v.$spacing-md;
+  border: none;
+  border-radius: v.$radius-md;
+  cursor: pointer;
+  transition: all v.$transition-base;
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: v.$spacing-xs;
+
+  &.cache {
+    background-color: rgba(251, 191, 36, 0.2);
+    border: 1px solid rgba(251, 191, 36, 0.5);
+    color: #fbbf24;
+
+    &:hover { background-color: rgba(251, 191, 36, 0.3); transform: translateY(-2px); }
+  }
+
+  &.export {
+    background-color: rgba(74, 144, 226, 0.2);
+    border: 1px solid rgba(74, 144, 226, 0.5);
+    color: v.$color-blue;
+
+    &:hover { background-color: rgba(74, 144, 226, 0.3); transform: translateY(-2px); }
+  }
+
+  &.reset {
+    background-color: rgba(239, 68, 68, 0.2);
+    border: 1px solid rgba(239, 68, 68, 0.5);
+    color: v.$color-danger;
+
+    &:hover { background-color: rgba(239, 68, 68, 0.3); transform: translateY(-2px); }
+  }
+}
+
+.settings-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: v.$spacing-md;
+  padding-top: v.$spacing-xl;
+  border-top: 2px solid rgba(255, 255, 255, 0.1);
+
+  @include m.mobile {
+    flex-direction: column;
+  }
+}
+
+.reset-button {
+  padding: 0.75rem 1.5rem;
+  background-color: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  color: v.$color-danger;
+  border-radius: v.$radius-md;
+  cursor: pointer;
+  transition: all v.$transition-base;
+  font-size: 1rem;
+  font-weight: 500;
+
+  &:hover {
+    background-color: rgba(239, 68, 68, 0.3);
+    color: v.$color-white;
+  }
+
+  @include m.mobile { width: 100%; }
+}
+
+.save-button {
+  padding: 0.75rem 2rem;
+  background-color: #333;
+  color: v.$color-white;
+  border: 1px solid v.$color-gold-300;
+  border-radius: v.$radius-md;
+  cursor: pointer;
+  transition: all v.$transition-base;
+  font-size: 1rem;
+  font-weight: 500;
+
+  &:hover:not(:disabled) {
+    background-color: #357abd;
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  @include m.mobile { width: 100%; }
+}
+
+.admin-loading {
+  @include m.admin-state-center;
+}

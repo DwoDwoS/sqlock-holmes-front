@@ -27,7 +27,6 @@ describe('Footer', () => {
   it('renders navigation links', () => {
     renderWithRouter(<Footer />);
     expect(screen.getByRole('link', { name: /à propos/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /aide/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /contact/i })).toBeInTheDocument();
   });
 

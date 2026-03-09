@@ -1,0 +1,270 @@
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
+
+.admin-investigations-page {
+  @include m.admin-page(1400px);
+}
+
+.admin-header {
+  @include m.admin-header;
+}
+
+.back-button {
+  @include m.btn-admin-ghost;
+}
+
+.investigations-actions {
+  margin-bottom: v.$spacing-xl;
+}
+
+.create-button {
+  padding: 0.75rem 1.5rem;
+  background-color: v.$color-success;
+  color: v.$color-white;
+  border: none;
+  border-radius: v.$radius-md;
+  cursor: pointer;
+  transition: all v.$transition-base;
+  font-size: 1rem;
+  font-weight: 500;
+
+  &:hover {
+    background-color: #059669;
+    transform: translateY(-2px);
+  }
+}
+
+.create-form-container {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: v.$spacing-xl;
+  border-radius: v.$radius-lg;
+  margin-bottom: v.$spacing-xl;
+  box-shadow: v.$shadow-md;
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: v.$spacing-lg;
+    color: v.$color-white;
+  }
+}
+
+.investigation-form {
+  .form-group {
+    margin-bottom: v.$spacing-lg;
+  }
+
+  label {
+    display: block;
+    margin-bottom: v.$spacing-xs;
+    color: rgba(255, 255, 255, 0.87);
+    font-weight: 500;
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: v.$radius-md;
+    color: v.$color-white;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all v.$transition-base;
+
+    &:focus {
+      outline: none;
+      border-color: v.$color-primary;
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+  }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: v.$spacing-md;
+
+  @include m.mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.submit-button {
+  padding: 0.75rem 2rem;
+  background-color: v.$color-primary;
+  color: v.$color-white;
+  border: none;
+  border-radius: v.$radius-md;
+  cursor: pointer;
+  transition: all v.$transition-base;
+  font-size: 1rem;
+  font-weight: 500;
+
+  &:hover {
+    background-color: #535bf2;
+    transform: translateY(-2px);
+  }
+}
+
+.investigations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: v.$spacing-lg;
+
+  @include m.mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.investigation-card {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: v.$radius-lg;
+  padding: v.$spacing-lg;
+  box-shadow: v.$shadow-md;
+  transition: all v.$transition-base;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    border-color: rgba(100, 108, 255, 0.5);
+  }
+
+  &.inactive {
+    opacity: 0.6;
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: v.$spacing-md;
+
+  h3 {
+    margin: 0;
+    color: v.$color-white;
+    font-size: 1.4rem;
+    flex: 1;
+  }
+}
+
+.difficulty-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: v.$radius-sm;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  margin-left: v.$spacing-md;
+
+  &.easy {
+    background-color: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.5);
+  }
+
+  &.medium {
+    background-color: rgba(251, 191, 36, 0.2);
+    color: #fbbf24;
+    border: 1px solid rgba(251, 191, 36, 0.5);
+  }
+
+  &.hard {
+    background-color: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.5);
+  }
+}
+
+.card-description {
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: v.$spacing-lg;
+  line-height: 1.6;
+}
+
+.card-info {
+  margin-bottom: v.$spacing-lg;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: v.$spacing-xs 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+  &:last-child { border-bottom: none; }
+
+  .label { color: rgba(255, 255, 255, 0.6); font-size: 0.9rem; }
+  .value  { color: v.$color-white; font-weight: 500; }
+}
+
+.card-actions {
+  display: flex;
+  gap: v.$spacing-xs;
+  flex-wrap: wrap;
+
+  button {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: v.$radius-sm;
+    cursor: pointer;
+    transition: all v.$transition-base;
+    font-size: 0.9rem;
+    font-weight: 500;
+
+    @include m.mobile { flex: 1 1 100%; }
+  }
+}
+
+.toggle-button {
+  &.active {
+    background-color: rgba(239, 68, 68, 0.2);
+    border: 1px solid rgba(239, 68, 68, 0.5);
+    color: #ef4444;
+  }
+
+  &.inactive {
+    background-color: rgba(16, 185, 129, 0.2);
+    border: 1px solid rgba(16, 185, 129, 0.5);
+    color: #10b981;
+  }
+
+  &:hover { opacity: 0.8; }
+}
+
+.view-button {
+  background-color: rgba(74, 144, 226, 0.2);
+  border: 1px solid rgba(74, 144, 226, 0.5);
+  color: v.$color-blue;
+
+  &:hover {
+    background-color: rgba(74, 144, 226, 0.3);
+    color: v.$color-white;
+  }
+}
+
+.delete-button {
+  background-color: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  color: #ff6b6b;
+
+  &:hover {
+    background-color: rgba(239, 68, 68, 0.3);
+    color: v.$color-white;
+  }
+}
+
+.no-results {
+  text-align: center;
+  padding: v.$spacing-3xl;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.2rem;
+}
+
+.admin-loading {
+  @include m.admin-state-center;
+}

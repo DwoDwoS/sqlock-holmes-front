@@ -1,3 +1,4 @@
+import './Profile.scss';
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';

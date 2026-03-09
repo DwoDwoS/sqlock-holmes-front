@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import LeaderboardModal from './LeaderboardModal';
-import './Navbar.css';
+import './Navbar.scss';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -78,6 +78,7 @@ const Navbar = () => {
           )}
           <li role="menuitem"><Link to="/investigations" className={isActive('/investigations') ? 'active' : ''} onClick={handleNavClick}>Enquêtes</Link></li>
           <li role="menuitem"><Link to="/about" className={isActive('/about') ? 'active' : ''} onClick={handleNavClick}>À propos</Link></li>
+          <li role="menuitem"><Link to="/contact" className={isActive('/contact') ? 'active' : ''} onClick={handleNavClick}>Contact</Link></li>
           <li role="menuitem"><Link to="/login" onClick={handleLogout}>Déconnexion</Link></li>
         </ul>
       </nav>

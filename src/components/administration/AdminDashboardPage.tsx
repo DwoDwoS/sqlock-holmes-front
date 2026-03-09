@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { adminService } from '../../services/adminService';
 import type { UserStats } from '../../types/admin';
-import './AdminDashboardPage.css';
+import './AdminDashboardPage.scss';
 
 const AdminDashboardPage: React.FC = () => {
   const { user } = useAuth();

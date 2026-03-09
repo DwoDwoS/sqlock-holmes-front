@@ -1,0 +1,171 @@
+@use '../styles/variables' as v;
+@use '../styles/mixins' as m;
+
+.profile-container {
+  min-height: 100vh;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @include m.mobile {
+    padding-bottom: 5rem;
+    align-items: flex-start;
+    padding-top: 6rem;
+  }
+}
+
+.profile-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: v.$radius-lg;
+  padding: 2.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+
+  h1 {
+    color: v.$color-white;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-size: 2.5rem;
+    background: linear-gradient(45deg, #fff, #ccc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+.error-message {
+  background-color: rgba(255, 68, 68, 0.1);
+  border: 1px solid #ff4444;
+  color: #ff4444;
+  padding: 1rem;
+  border-radius: v.$radius-sm;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.profile-form {
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #ccc;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: v.$radius-sm;
+    background: rgba(255, 255, 255, 0.05);
+    color: v.$color-white;
+    font-size: 1rem;
+
+    &:focus {
+      outline: none;
+      border-color: v.$color-primary;
+      box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.2);
+    }
+  }
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.profile-display {
+  margin-bottom: 2rem;
+}
+
+.profile-info {
+  margin-bottom: 2rem;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  label {
+    font-weight: bold;
+    color: #ccc;
+    flex: 0 0 150px;
+  }
+
+  span {
+    color: v.$color-white;
+    flex: 1;
+  }
+}
+
+.danger-zone {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid #ff4444;
+
+  h3 {
+    color: #ff4444;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+
+  p {
+    color: #ccc;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.danger-button {
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: v.$radius-sm;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color v.$transition-base;
+
+  &:hover {
+    background-color: #cc3333;
+  }
+
+  &:disabled {
+    background-color: #444;
+    cursor: not-allowed;
+  }
+}
+
+.delete-confirm {
+  background: rgba(255, 68, 68, 0.1);
+  border: 1px solid #ff4444;
+  border-radius: v.$radius-md;
+  padding: 1.5rem;
+  margin-top: 1rem;
+
+  p {
+    color: v.$color-white;
+    margin-bottom: 1rem;
+    font-weight: bold;
+  }
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}

@@ -1,0 +1,185 @@
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
+
+.admin-dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: v.$spacing-xl;
+  color: v.$color-white;
+
+  p {
+    font-size: 1.1rem;
+    margin-bottom: v.$spacing-xl;
+    text-align: center;
+    color: #ccc;
+  }
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: v.$spacing-lg;
+  flex-wrap: wrap;
+  gap: v.$spacing-md;
+
+  h1 {
+    font-size: 2.5rem;
+    color: v.$color-white;
+    margin: 0;
+    flex: 1;
+    min-width: 300px;
+  }
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-md;
+}
+
+.last-refresh {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.refresh-button {
+  padding: 0.6rem 1.2rem;
+  background-color: v.$color-primary;
+  color: v.$color-white;
+  border: none;
+  border-radius: v.$radius-md;
+  cursor: pointer;
+  transition: all v.$transition-base;
+  font-size: 0.95rem;
+  font-weight: 500;
+
+  &:hover:not(:disabled) {
+    background-color: #535bf2;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(100, 108, 255, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.admin-stats {
+  margin: v.$spacing-xl 0;
+  padding: v.$spacing-xl;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: v.$radius-lg;
+
+  h2 {
+    font-size: 1.8rem;
+    margin-bottom: v.$spacing-lg;
+    color: v.$color-white;
+    text-align: center;
+  }
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: v.$spacing-lg;
+}
+
+@mixin stat-card-variant($color) {
+  background: linear-gradient(
+    135deg,
+    rgba($color, 0.2) 0%,
+    rgba($color, 0.1) 100%
+  );
+
+  &:hover {
+    border-color: rgba($color, 0.6);
+    box-shadow: 0 8px 16px rgba($color, 0.3);
+  }
+
+  .stat-value { color: $color; }
+}
+
+.stat-card {
+  background: linear-gradient(
+    135deg,
+    rgba(100, 108, 255, 0.1),
+    rgba(100, 108, 255, 0.05)
+  );
+  padding: v.$spacing-lg;
+  border-radius: v.$radius-lg;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  transition: all v.$transition-base;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: rgba(100, 108, 255, 0.5);
+    box-shadow: 0 8px 16px rgba(100, 108, 255, 0.2);
+  }
+
+  h3 {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &.primary  { @include stat-card-variant(#646cff); }
+  &.success  { @include stat-card-variant(v.$color-success); }
+  &.warning  { @include stat-card-variant(#fb923c); }
+  &.info     { @include stat-card-variant(#3b82f6); }
+  &.accent   { @include stat-card-variant(v.$color-accent); }
+  &.highlight { @include stat-card-variant(v.$color-highlight); }
+}
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: v.$color-primary;
+  margin: 0;
+}
+
+.stat-subtitle {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: v.$spacing-xs;
+}
+
+.admin-loading {
+  @include m.admin-state-center;
+}
+
+.admin-error {
+  @include m.admin-state-center;
+  flex-direction: column;
+  color: v.$color-danger;
+  gap: v.$spacing-md;
+
+  button {
+    padding: 0.75rem 1.5rem;
+    background-color: v.$color-primary;
+    color: v.$color-white;
+    border: none;
+    border-radius: v.$radius-md;
+    cursor: pointer;
+    transition: all v.$transition-base;
+
+    &:hover { background-color: #535bf2; }
+  }
+}
+
+.admin-actions {
+  display: flex;
+  gap: v.$spacing-lg;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: v.$spacing-lg;
+  margin-bottom: v.$spacing-3xl;
+
+  button {
+    @include m.btn-admin-ghost;
+  }
+}
