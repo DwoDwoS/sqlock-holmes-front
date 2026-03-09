@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
+import { Database } from 'lucide-react';
 import { SQLService } from '../services/sqlService';
 import { InvestigationHeader, SQLEditor, HintsModal, Actions, SubmitSolutionModal } from './investigation';
 import type { QueryHistoryEntry } from './investigation/SQLEditor';
@@ -24,6 +25,7 @@ const InvestigationPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [queryHistory, setQueryHistory] = useState<QueryHistoryEntry[]>([]);
   const [showHistory, setShowHistory] = useState(false);
+  const [showSchema, setShowSchema] = useState(false);
   const resultsRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -112,8 +114,7 @@ const InvestigationPage: React.FC = () => {
         )}
         <InvestigationHeader investigation={investigation} />
 
-        <div className="investigation-content-row">
-          <div className="investigation-editor-layout">
+        <div className="investigation-editor-layout">
             <div className="investigation-editor-main">
               <SQLEditor
                 sqlCode={sqlCode}
@@ -130,11 +131,7 @@ const InvestigationPage: React.FC = () => {
                 resultsRef={resultsRef}
               />
             </div>
-            <div className="investigation-schema-panel">
-              <DatabaseSchema investigationId={investigationId} />
-            </div>
           </div>
-        </div>
 
         <HintsModal
           hints={hints}
@@ -158,6 +155,22 @@ const InvestigationPage: React.FC = () => {
         />
 
         <Actions onBack={() => navigate('/investigations')} />
+        <button
+          className={`schema-float-trigger${showSchema ? ' schema-float-trigger--open' : ''}`}
+          onClick={() => setShowSchema(prev => !prev)}
+          title="Schéma de base de données"
+        >
+          <Database size={26} />
+          <span className="schema-float-label">Schéma</span>
+        </button>
+        <div className={`schema-float-panel${showSchema ? ' schema-float-panel--open' : ''}`}>
+          <div className="schema-float-panel-inner">
+            <DatabaseSchema investigationId={investigationId} />
+          </div>
+        </div>
+        {showSchema && (
+          <div className="schema-float-backdrop" onClick={() => setShowSchema(false)} />
+        )}
       </div>
     </div>
   );

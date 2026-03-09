@@ -140,7 +140,7 @@ const SQL_TIPS = [
 ];
 
 function SqlTips() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   return (
     <div className="ds-tips">
       <button
@@ -180,7 +180,7 @@ export function DatabaseSchema({ investigationId }: DatabaseSchemaProps) {
     [investigationId],
   );
 
-  const [panelOpen, setPanelOpen] = useState(false);
+  const [panelOpen, setPanelOpen] = useState(true);
   const [expandedTable, setExpandedTable] = useState<string | null>(
     () => schema.tables[0]?.name ?? null,
   );
