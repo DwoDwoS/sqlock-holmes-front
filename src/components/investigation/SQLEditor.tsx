@@ -21,7 +21,6 @@ interface SQLEditorProps {
   onToggleHistory?: () => void;
   onLoadQuery?: (query: string) => void;
   results?: SQLResult | null;
-  resultsRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 const SQLEditor: React.FC<SQLEditorProps> = ({ 
@@ -36,7 +35,6 @@ const SQLEditor: React.FC<SQLEditorProps> = ({
   onToggleHistory,
   onLoadQuery,
   results,
-  resultsRef,
 }) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
@@ -131,7 +129,7 @@ const SQLEditor: React.FC<SQLEditorProps> = ({
           </div>
         </div>
         <div className="editor-body-right">
-            <ResultsDisplay results={results ?? null} ref={resultsRef} />
+            <ResultsDisplay results={results ?? null} />
           </div>
       </div>
       <div className="editor-actions">

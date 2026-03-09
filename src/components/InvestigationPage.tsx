@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { Database } from 'lucide-react';
@@ -26,7 +26,6 @@ const InvestigationPage: React.FC = () => {
   const [queryHistory, setQueryHistory] = useState<QueryHistoryEntry[]>([]);
   const [showHistory, setShowHistory] = useState(false);
   const [showSchema, setShowSchema] = useState(false);
-  const resultsRef = useRef<HTMLDivElement>(null);
 
   const {
     culprit,
@@ -48,9 +47,6 @@ const InvestigationPage: React.FC = () => {
       const data = await SQLService.executeSQL({ sql: queryToExecute, investigationId: parseInt(id) });
       setResults(data);
       setQueryHistory(prev => [...prev, { query: queryToExecute, timestamp: new Date() }]);
-      setTimeout(() => {
-        resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
     } catch (error) {
       let errorMessage = 'Erreur lors de l\'exécution de la requête.';
       if (error instanceof AxiosError) {
@@ -61,9 +57,6 @@ const InvestigationPage: React.FC = () => {
         }
       }
       setResults({ error: errorMessage });
-      setTimeout(() => {
-        resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
     } finally {
       setLoading(false);
     }
@@ -128,7 +121,6 @@ const InvestigationPage: React.FC = () => {
                 onToggleHistory={handleToggleHistory}
                 onLoadQuery={handleLoadQuery}
                 results={results}
-                resultsRef={resultsRef}
               />
             </div>
           </div>
