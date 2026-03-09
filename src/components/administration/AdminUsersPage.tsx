@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { adminService } from '../../services/adminService';
 import type { AdminUserDTO } from '../../types/admin';
-import './AdminUsersPage.css';
+import './AdminUsersPage.scss';
 
 const AdminUsersPage: React.FC = () => {
   const { user } = useAuth();

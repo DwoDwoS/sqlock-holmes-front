@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useLeaderboard } from '../hooks/useLeaderboard';
 import { formatTime } from '../utils/formatters';
 import type { LeaderboardEntry, GlobalLeaderboardEntry } from '../types/leaderboard';
-import './LeaderboardDropdown.css';
+import './LeaderboardDropdown.scss';
 
 interface LeaderboardDropdownProps {
   investigationId?: number;

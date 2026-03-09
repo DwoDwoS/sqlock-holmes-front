@@ -1,0 +1,88 @@
+@use '../styles/variables' as v;
+@use '../styles/mixins' as m;
+
+.footer {
+  background-color: #222;
+  color: #ccc;
+  padding: 2rem 0 1rem;
+  margin-top: auto;
+  border-top: 1px solid #444;
+}
+
+.footer-container {
+  max-width: v.$bp-lg;
+  margin: 0 auto;
+  padding: 0 v.$spacing-md;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 200px;
+
+  h3 {
+    color: v.$color-white;
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+  }
+
+  h4 {
+    color: v.$color-white;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+  }
+
+  p {
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin-bottom: 0.5rem;
+
+      a {
+        color: #ccc;
+        text-decoration: none;
+        transition: color v.$transition-base;
+
+        &:hover {
+          color: v.$color-white;
+        }
+      }
+    }
+  }
+}
+
+.footer-bottom {
+  border-top: 1px solid #444;
+  padding-top: 1rem;
+  text-align: center;
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+}
+
+@include m.mobile {
+  .footer-content {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .footer-section {
+    text-align: center;
+  }
+}

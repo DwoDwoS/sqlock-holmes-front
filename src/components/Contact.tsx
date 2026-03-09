@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { contactService } from '../services/contactService';
-import './Contact.css';
+import './Contact.scss';
 
 interface FormData {
   name: string;

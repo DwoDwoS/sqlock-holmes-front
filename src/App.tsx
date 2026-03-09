@@ -5,7 +5,7 @@ import { LeaderboardRefreshProvider } from './contexts/LeaderboardRefreshContext
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
-import './App.css';
+import './App.scss';
 
 const Login = lazy(() => import('./components/Login'));
 const Register = lazy(() => import('./components/Register'));

@@ -1,6 +1,8 @@
 import React, { useRef, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 import type { editor } from 'monaco-editor';
+import ResultsDisplay from './ResultsDisplay';
+import type { SQLResult } from '../../types/investigation';
 
 export interface QueryHistoryEntry {
   query: string;
@@ -18,6 +20,7 @@ interface SQLEditorProps {
   showHistory?: boolean;
   onToggleHistory?: () => void;
   onLoadQuery?: (query: string) => void;
+  results?: SQLResult | null;
 }
 
 const SQLEditor: React.FC<SQLEditorProps> = ({ 
@@ -30,7 +33,8 @@ const SQLEditor: React.FC<SQLEditorProps> = ({
   queryHistory = [],
   showHistory = false,
   onToggleHistory,
-  onLoadQuery
+  onLoadQuery,
+  results,
 }) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
@@ -80,52 +84,62 @@ const SQLEditor: React.FC<SQLEditorProps> = ({
           </button>
         )}
       </div>
-      <div className={`editor-wrapper ${showHistory ? 'with-history' : ''}`}>
-        <div className="editor-main">
-          <Editor
-            height="400px"
-            language="sql"
-            value={sqlCode}
-            onChange={onChange}
-            onMount={handleEditorDidMount}
-            theme="vs-dark"
-            options={{
-              minimap: { enabled: false },
-              fontSize: 14,
-              automaticLayout: true,
-            }}
-          />
-        </div>
-        {showHistory && queryHistory.length > 0 && (
-          <div className="query-history-panel">
-            <h4>Requêtes précédentes</h4>
-            <div className="history-list">
-              {queryHistory.slice().reverse().map((entry, index) => (
-                <div 
-                  key={queryHistory.length - 1 - index} 
-                  className="history-entry"
-                  onClick={() => onLoadQuery?.(entry.query)}
-                  title="Cliquez pour charger cette requête"
-                >
-                  <div className="history-timestamp">
-                    {formatTimestamp(entry.timestamp)}
-                  </div>
-                  <div className="history-query">
-                    {entry.query.slice(0, 100)}
-                    {entry.query.length > 100 ? '...' : ''}
-                  </div>
-                </div>
-              ))}
+      <div className="editor-body">
+        <div className="editor-body-left">
+          <div className={`editor-wrapper ${showHistory ? 'with-history' : ''}`}>
+            <div className="editor-main">
+              <Editor
+                height="20rem"
+                width="100%"
+                language="sql"
+                value={sqlCode}
+                onChange={onChange}
+                onMount={handleEditorDidMount}
+                theme="vs-dark"
+                options={{
+                  minimap: { enabled: false },
+                  fontSize: 14,
+                  automaticLayout: true,
+                }}
+              />
             </div>
+            {showHistory && queryHistory.length > 0 && (
+              <div className="query-history-panel">
+                <h4>Requêtes précédentes</h4>
+                <div className="history-list">
+                  {queryHistory.slice().reverse().map((entry, index) => (
+                    <div
+                      key={queryHistory.length - 1 - index}
+                      className="history-entry"
+                      onClick={() => onLoadQuery?.(entry.query)}
+                      title="Cliquez pour charger cette requête"
+                    >
+                      <div className="history-timestamp">
+                        {formatTimestamp(entry.timestamp)}
+                      </div>
+                      <div className="history-query">
+                        {entry.query.slice(0, 100)}
+                        {entry.query.length > 100 ? '...' : ''}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
-        )}
+        </div>
+        <div className="editor-body-right">
+            <ResultsDisplay results={results ?? null} />
+          </div>
       </div>
-      <button className="execute-button" onClick={() => onExecute()} disabled={loading}>
-        {loading ? 'Exécution...' : 'Exécuter'}
-      </button>
-      <button className="submit-button" onClick={onSubmit} disabled={loading}>
-        Soumettre la réponse
-      </button>
+      <div className="editor-actions">
+        <button className="execute-button" onClick={() => onExecute()} disabled={loading}>
+          {loading ? 'Exécution...' : 'Exécuter'}
+        </button>
+        <button className="submit-button" onClick={onSubmit} disabled={loading}>
+          Soumettre la réponse
+        </button>
+      </div>
     </div>
   );
 };

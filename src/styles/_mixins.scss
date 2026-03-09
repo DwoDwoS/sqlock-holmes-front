@@ -1,0 +1,133 @@
+@use 'variables' as v;
+
+@mixin mobile   { @media (max-width: v.$bp-sm) { @content; } }
+@mixin tablet   { @media (max-width: v.$bp-md) { @content; } }
+@mixin phone-xs { @media (max-width: v.$bp-xs) { @content; } }
+@mixin glass($alpha: 0.05, $blur: 10px) {
+  background: rgba(255, 255, 255, $alpha);
+  backdrop-filter: blur($blur);
+  border: 1px solid v.$color-border;
+}
+@mixin gradient-primary($deg: 135deg) {
+  background: linear-gradient($deg, v.$color-indigo 0%, v.$color-purple 100%);
+}
+@mixin gradient-dark($deg: 135deg) {
+  background: linear-gradient($deg, v.$color-bg-medium 0%, v.$color-bg-dark 100%);
+}
+@mixin hover-lift($y: -2px) {
+  transition: transform v.$transition-base, box-shadow v.$transition-base;
+
+  &:hover {
+    transform: translateY($y);
+  }
+}
+@mixin btn-primary {
+  padding: 0.75rem 1.5rem;
+  background-color: v.$color-primary;
+  color: white;
+  border: none;
+  border-radius: v.$radius-md;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all v.$transition-base;
+
+  &:hover:not(:disabled) {
+    background-color: v.$color-primary-hover;
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+@mixin btn-admin-ghost {
+  background-color: rgba(51, 51, 51, 0.9);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 10px 15px;
+  border-radius: v.$radius-xs;
+  cursor: pointer;
+  font-size: 14px;
+  backdrop-filter: blur(10px);
+  transition: all v.$transition-base;
+
+  &:hover {
+    background-color: v.$color-blue-hover;
+    transform: translateY(-2px);
+  }
+}
+
+
+@mixin scrollbar($color: rgba(102, 126, 234, 0.5)) {
+  scrollbar-width: thin;
+  scrollbar-color: $color transparent;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $color;
+    border-radius: 4px;
+
+    &:hover {
+      background: rgba(102, 126, 234, 0.7);
+    }
+  }
+}
+
+@mixin fade-in-keyframes {
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@mixin admin-page($max-width: 1200px) {
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: v.$spacing-xl;
+  color: v.$color-white;
+  min-height: calc(100vh - 190px);
+}
+
+@mixin admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: v.$spacing-xl;
+
+  h1 {
+    font-size: 2.5rem;
+    color: v.$color-white;
+    margin: 0;
+  }
+
+  @include mobile {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+}
+
+@mixin admin-state-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+}

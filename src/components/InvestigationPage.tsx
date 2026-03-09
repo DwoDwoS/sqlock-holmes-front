@@ -1,15 +1,16 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
+import { Database } from 'lucide-react';
 import { SQLService } from '../services/sqlService';
-import { InvestigationHeader, SQLEditor, ResultsDisplay, HintsModal, Actions, SubmitSolutionModal } from './investigation';
+import { InvestigationHeader, SQLEditor, HintsModal, Actions, SubmitSolutionModal } from './investigation';
 import type { QueryHistoryEntry } from './investigation/SQLEditor';
 import { useInvestigationSubmission } from '../hooks/useInvestigationSubmission';
 import { useInvestigationData } from '../hooks/useInvestigationData';
 import { useHints } from '../hooks/useHints';
 import { getDefaultQuery } from '../utils/investigationUtils';
 import type { SQLResult } from '../types/investigation';
-import './InvestigationPage.css';
+import './InvestigationPage.scss';
 import { DatabaseSchema } from './investigation/DatabaseSchema';
 
 const InvestigationPage: React.FC = () => {
@@ -24,7 +25,7 @@ const InvestigationPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [queryHistory, setQueryHistory] = useState<QueryHistoryEntry[]>([]);
   const [showHistory, setShowHistory] = useState(false);
-  const resultsRef = useRef<HTMLDivElement>(null);
+  const [showSchema, setShowSchema] = useState(false);
 
   const {
     culprit,
@@ -46,9 +47,6 @@ const InvestigationPage: React.FC = () => {
       const data = await SQLService.executeSQL({ sql: queryToExecute, investigationId: parseInt(id) });
       setResults(data);
       setQueryHistory(prev => [...prev, { query: queryToExecute, timestamp: new Date() }]);
-      setTimeout(() => {
-        resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
     } catch (error) {
       let errorMessage = 'Erreur lors de l\'exécution de la requête.';
       if (error instanceof AxiosError) {
@@ -59,9 +57,6 @@ const InvestigationPage: React.FC = () => {
         }
       }
       setResults({ error: errorMessage });
-      setTimeout(() => {
-        resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
     } finally {
       setLoading(false);
     }
@@ -113,26 +108,22 @@ const InvestigationPage: React.FC = () => {
         <InvestigationHeader investigation={investigation} />
 
         <div className="investigation-editor-layout">
-          <div className="investigation-editor-main">
-            <SQLEditor
-              sqlCode={sqlCode}
-              onChange={(value) => setSqlCode(value || '')}
-              onExecute={handleExecuteSQL}
-              onShowHints={handleShowHints}
-              onSubmit={openSubmitModal}
-              loading={loading}
-              queryHistory={queryHistory}
-              showHistory={showHistory}
-              onToggleHistory={handleToggleHistory}
-              onLoadQuery={handleLoadQuery}
-            />
+            <div className="investigation-editor-main">
+              <SQLEditor
+                sqlCode={sqlCode}
+                onChange={(value) => setSqlCode(value || '')}
+                onExecute={handleExecuteSQL}
+                onShowHints={handleShowHints}
+                onSubmit={openSubmitModal}
+                loading={loading}
+                queryHistory={queryHistory}
+                showHistory={showHistory}
+                onToggleHistory={handleToggleHistory}
+                onLoadQuery={handleLoadQuery}
+                results={results}
+              />
+            </div>
           </div>
-          <div className="investigation-schema-panel">
-            <DatabaseSchema investigationId={investigationId} />
-          </div>
-        </div>
-
-        <ResultsDisplay results={results} ref={resultsRef} />
 
         <HintsModal
           hints={hints}
@@ -156,6 +147,22 @@ const InvestigationPage: React.FC = () => {
         />
 
         <Actions onBack={() => navigate('/investigations')} />
+        <button
+          className={`schema-float-trigger${showSchema ? ' schema-float-trigger--open' : ''}`}
+          onClick={() => setShowSchema(prev => !prev)}
+          title="Schéma de base de données"
+        >
+          <Database size={26} />
+          <span className="schema-float-label">Schéma</span>
+        </button>
+        <div className={`schema-float-panel${showSchema ? ' schema-float-panel--open' : ''}`}>
+          <div className="schema-float-panel-inner">
+            <DatabaseSchema investigationId={investigationId} />
+          </div>
+        </div>
+        {showSchema && (
+          <div className="schema-float-backdrop" onClick={() => setShowSchema(false)} />
+        )}
       </div>
     </div>
   );
