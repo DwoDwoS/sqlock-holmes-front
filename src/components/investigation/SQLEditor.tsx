@@ -129,20 +129,18 @@ const SQLEditor: React.FC<SQLEditorProps> = ({
               </div>
             )}
           </div>
-          <div className="editor-actions">
-            <button className="execute-button" onClick={() => onExecute()} disabled={loading}>
-              {loading ? 'Exécution...' : 'Exécuter'}
-            </button>
-            <button className="submit-button" onClick={onSubmit} disabled={loading}>
-              Soumettre la réponse
-            </button>
-          </div>
         </div>
-        {results && (
-          <div className="editor-body-right">
-            <ResultsDisplay results={results} ref={resultsRef} />
+        <div className="editor-body-right">
+            <ResultsDisplay results={results ?? null} ref={resultsRef} />
           </div>
-        )}
+      </div>
+      <div className="editor-actions">
+        <button className="execute-button" onClick={() => onExecute()} disabled={loading}>
+          {loading ? 'Exécution...' : 'Exécuter'}
+        </button>
+        <button className="submit-button" onClick={onSubmit} disabled={loading}>
+          Soumettre la réponse
+        </button>
       </div>
     </div>
   );
