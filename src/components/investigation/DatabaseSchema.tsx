@@ -11,35 +11,6 @@ function TypeIcon({ type }: { type: string }) {
   return <Type size={11} />;
 }
 
-function SchemaHeader({ label, tableCount, isOpen, onToggle }: {
-  label: string;
-  tableCount: number;
-  isOpen: boolean;
-  onToggle: () => void;
-}) {
-  return (
-    <button className="ds-header" onClick={onToggle}>
-      <div className="ds-header-left">
-        <div className="ds-header-icon">
-          <Database size={15} />
-        </div>
-        <div>
-          <div className="ds-header-title">Schéma de base de données</div>
-          <div className="ds-header-label">{label}</div>
-        </div>
-      </div>
-      <div className="ds-header-right">
-        <span className="ds-header-badge">{tableCount} tables</span>
-        <ChevronDown
-          size={14}
-          className="ds-header-chevron"
-          style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
-        />
-      </div>
-    </button>
-  );
-}
-
 function TablePreview({ columns, color }: { columns: Column[]; color: string }) {
   const colors = COLOR_MAP[color] ?? COLOR_MAP.cyan;
   return (
@@ -180,7 +151,6 @@ export function DatabaseSchema({ investigationId }: DatabaseSchemaProps) {
     [investigationId],
   );
 
-  const [panelOpen, setPanelOpen] = useState(true);
   const [expandedTable, setExpandedTable] = useState<string | null>(
     () => schema.tables[0]?.name ?? null,
   );
@@ -189,13 +159,21 @@ export function DatabaseSchema({ investigationId }: DatabaseSchemaProps) {
 
   return (
     <div className="ds-root">
-      <SchemaHeader
-        label={schema.label}
-        tableCount={schema.tables.length}
-        isOpen={panelOpen}
-        onToggle={() => setPanelOpen(o => !o)}
-      />
-      {panelOpen && <div className="ds-list">
+      <div className="ds-header ds-header--static">
+        <div className="ds-header-left">
+          <div className="ds-header-icon">
+            <Database size={15} />
+          </div>
+          <div>
+            <div className="ds-header-title">Schéma de base de données</div>
+            <div className="ds-header-label">{schema.label}</div>
+          </div>
+        </div>
+        <div className="ds-header-right">
+          <span className="ds-header-badge">{schema.tables.length} tables</span>
+        </div>
+      </div>
+      <div className="ds-list">
         {schema.tables.map(table => (
           <TableCard
             key={table.name}
@@ -205,7 +183,7 @@ export function DatabaseSchema({ investigationId }: DatabaseSchemaProps) {
           />
         ))}
         <SqlTips />
-      </div>}
+      </div>
     </div>
   );
 }
