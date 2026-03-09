@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { SQLService } from '../services/sqlService';
-import { InvestigationHeader, SQLEditor, ResultsDisplay, HintsModal, Actions, SubmitSolutionModal } from './investigation';
+import { InvestigationHeader, SQLEditor, HintsModal, Actions, SubmitSolutionModal } from './investigation';
 import type { QueryHistoryEntry } from './investigation/SQLEditor';
 import { useInvestigationSubmission } from '../hooks/useInvestigationSubmission';
 import { useInvestigationData } from '../hooks/useInvestigationData';
@@ -112,27 +112,29 @@ const InvestigationPage: React.FC = () => {
         )}
         <InvestigationHeader investigation={investigation} />
 
-        <div className="investigation-editor-layout">
-          <div className="investigation-editor-main">
-            <SQLEditor
-              sqlCode={sqlCode}
-              onChange={(value) => setSqlCode(value || '')}
-              onExecute={handleExecuteSQL}
-              onShowHints={handleShowHints}
-              onSubmit={openSubmitModal}
-              loading={loading}
-              queryHistory={queryHistory}
-              showHistory={showHistory}
-              onToggleHistory={handleToggleHistory}
-              onLoadQuery={handleLoadQuery}
-            />
-          </div>
-          <div className="investigation-schema-panel">
-            <DatabaseSchema investigationId={investigationId} />
+        <div className="investigation-content-row">
+          <div className="investigation-editor-layout">
+            <div className="investigation-editor-main">
+              <SQLEditor
+                sqlCode={sqlCode}
+                onChange={(value) => setSqlCode(value || '')}
+                onExecute={handleExecuteSQL}
+                onShowHints={handleShowHints}
+                onSubmit={openSubmitModal}
+                loading={loading}
+                queryHistory={queryHistory}
+                showHistory={showHistory}
+                onToggleHistory={handleToggleHistory}
+                onLoadQuery={handleLoadQuery}
+                results={results}
+                resultsRef={resultsRef}
+              />
+            </div>
+            <div className="investigation-schema-panel">
+              <DatabaseSchema investigationId={investigationId} />
+            </div>
           </div>
         </div>
-
-        <ResultsDisplay results={results} ref={resultsRef} />
 
         <HintsModal
           hints={hints}
