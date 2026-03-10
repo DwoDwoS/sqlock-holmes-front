@@ -121,6 +121,8 @@ const InvestigationPage: React.FC = () => {
                 onToggleHistory={handleToggleHistory}
                 onLoadQuery={handleLoadQuery}
                 results={results}
+                onToggleSchema={() => setShowSchema(prev => !prev)}
+                showSchema={showSchema}
               />
             </div>
           </div>
