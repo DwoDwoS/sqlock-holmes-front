@@ -49,6 +49,12 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
     margin-bottom: 20px;
     text-align: center;
   }
+
+  @include m.mobile {
+    padding: 16px;
+    margin: 10px auto;
+    border-radius: 8px;
+  }
 }
 
 .investigation-plot {
@@ -64,6 +70,10 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
   gap: 12px;
   align-items: flex-start;
   margin-bottom: 20px;
+
+  @include m.mobile {
+    flex-direction: column;
+  }
 }
 
 .investigation-editor-main {
@@ -89,6 +99,12 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
   overflow: hidden;
   display: flex;
   flex-direction: column;
+
+  @include m.mobile {
+    height: 20rem;
+    flex: none;
+    width: 100%;
+  }
 }
 
 .editor-body-right {
@@ -102,7 +118,7 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
     flex: 1;
     overflow-y: auto;
     overflow-x: auto;
-    height: 0; // force flex child to respect parent height
+    height: 0;
   }
 
   @include m.mobile {
@@ -116,6 +132,17 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
   display: flex;
   gap: 10px;
   margin-top: 10px;
+
+  @include m.mobile {
+    flex-wrap: wrap;
+
+    .execute-button,
+    .submit-button {
+      flex: 1 1 auto;
+      font-size: 14px;
+      padding: 10px 12px;
+    }
+  }
 }
 
 .editor-container {

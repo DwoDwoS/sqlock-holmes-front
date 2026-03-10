@@ -100,6 +100,7 @@ const SQLEditor: React.FC<SQLEditorProps> = ({
                   minimap: { enabled: false },
                   fontSize: 14,
                   automaticLayout: true,
+                  wordWrap: 'on',
                 }}
               />
             </div>
