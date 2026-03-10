@@ -23,7 +23,9 @@ const ResultsDisplay = forwardRef<HTMLDivElement, ResultsDisplayProps>(({ result
   return (
     <div className="results-container" ref={ref}>
       <h3>Résultats</h3>
-      <pre>{JSON.stringify(results, null, 2)}</pre>
+      <div className="results-pre-wrapper">
+        <pre>{JSON.stringify(results, null, 2)}</pre>
+      </div>
     </div>
   );
 });

@@ -20,6 +20,11 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
   background-position: center;
   background-attachment: fixed;
   position: relative;
+  overflow-x: hidden;
+
+  @include m.mobile {
+    padding-right: 72px;
+  }
 
   &:not([style*='background-image']) {
     background: linear-gradient(135deg, v.$color-indigo 0%, v.$color-purple 100%);
@@ -101,9 +106,13 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
   flex-direction: column;
 
   @include m.mobile {
-    height: 20rem;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: visible;
     flex: none;
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 }
 
@@ -124,7 +133,16 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
   @include m.mobile {
     flex: none;
     width: 100%;
+    max-width: 100%;
     height: 20rem;
+    overflow: hidden;
+    box-sizing: border-box;
+
+    .results-container {
+      overflow-x: hidden;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
   }
 }
 
@@ -170,6 +188,16 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
   &.with-history .editor-main {
     flex: 1 1 58%;
     min-width: 0;
+  }
+
+  @include m.mobile {
+    flex-direction: column;
+    overflow-x: hidden;
+    max-width: 100%;
+
+    &.with-history .editor-main {
+      flex: none;
+    }
   }
 }
 
@@ -246,6 +274,17 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
     padding-bottom: 10px;
     border-bottom: 2px solid rgba(255, 255, 255, 0.2);
   }
+
+  @include m.mobile {
+    flex: none;
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    max-height: 220px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    word-break: break-word;
+  }
 }
 
 .history-list {
@@ -296,6 +335,7 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
   border-radius: 5px;
   backdrop-filter: blur(10px);
   scroll-margin-top: 20px;
+  overflow-x: hidden;
 
   h3 {
     margin-top: 0;
@@ -305,11 +345,28 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
   pre {
     white-space: pre-wrap;
     word-wrap: break-word;
+    word-break: break-all;
+    overflow-x: hidden;
+    max-width: 100%;
     color: v.$color-text-dark;
     background-color: rgba(248, 249, 250, 0.9);
     padding: 10px;
     border-radius: 3px;
     border: 1px solid rgba(233, 236, 239, 0.5);
+    box-sizing: border-box;
+  }
+}
+
+.results-pre-wrapper {
+  overflow-x: auto;
+  max-width: 100%;
+  width: 0;
+  min-width: 100%;
+
+  pre {
+    white-space: pre-wrap;
+    word-break: break-all;
+    margin: 0;
   }
 }
 
@@ -338,6 +395,45 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
   &--open {
     background: rgba(34, 211, 238, 0.15);
     padding-right: 20px;
+  }
+
+  @include m.mobile {
+    display: none;
+  }
+}
+
+.schema-header-button {
+  display: none;
+
+  @include m.mobile {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 15px;
+    font-size: 14px;
+    background-color: $btn-bg;
+    color: white;
+    border: 2px solid $btn-border;
+    border-radius: 5px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: all v.$transition-base;
+
+    &:hover {
+      background-color: $btn-hover-bg;
+      border-color: $btn-hover-border;
+      transform: translateY(-2px);
+    }
+
+    &:disabled {
+      background-color: #6c757d;
+      cursor: not-allowed;
+    }
+
+    &--open {
+      background-color: rgba(34, 211, 238, 0.2);
+      border-color: rgba(34, 211, 238, 0.6);
+    }
   }
 }
 
@@ -370,8 +466,16 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
   }
 
   @include m.mobile {
-    width: 100%;
+    width: 85vw;
+    right: 0;
     top: v.$navbar-height;
+    bottom: v.$navbar-height;
+    height: auto;
+    transform: translateX(100%);
+
+    &--open {
+      transform: translateX(0);
+    }
   }
 }
 
