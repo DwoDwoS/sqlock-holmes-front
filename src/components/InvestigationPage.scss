@@ -448,9 +448,9 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
 }
 
 .reveal-button {
-  background-color: #007bff;
+  background-color: #333;
   color: white;
-  border: none;
+  border: 2px solid rgba(173, 216, 230, 0.3);
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
@@ -496,9 +496,8 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
   max-height: 80vh;
   overflow-y: auto;
 
-  h3 {
+  h3, h4 {
     margin-top: 0;
-    color: v.$color-text-dark;
   }
 }
 
@@ -509,6 +508,98 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
 .option-section {
   margin-bottom: 20px;
   padding: 15px;
+  background-color: #ffffff;
   border: 1px solid #dee2e6;
   border-radius: 5px;
+  color: #333;
+
+  input[type="text"] {
+    background-color: #f0ede8;
+    color: #222;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    padding: 8px 10px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 4px;
+
+    &::placeholder {
+      color: #6b6868;
+      opacity: 1;
+    }
+
+    &:focus {
+      outline: 2px solid #ad8762;
+      border-color: #ad8762;
+    }
+  }
+}
+
+.info-tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 6px;
+  vertical-align: middle;
+
+  .info-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #ad8762;
+    color: #fff;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: bold;
+    cursor: default;
+    user-select: none;
+  }
+
+  .tooltip-text {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 0;
+    transform: translateX(-10px);
+    background-color: #3d3225;
+    color: #f5ede0;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 1.5;
+    padding: 8px 12px;
+    border-radius: 6px;
+    width: 260px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    z-index: 9999;
+    white-space: normal;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 16px;
+      transform: none;
+      border: 6px solid transparent;
+      border-top-color: #3d3225;
+    }
+  }
+
+  &:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 24px;
 }
