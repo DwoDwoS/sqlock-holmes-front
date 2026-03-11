@@ -22,10 +22,6 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
   position: relative;
   overflow-x: hidden;
 
-  @include m.mobile {
-    padding-right: 72px;
-  }
-
   &:not([style*='background-image']) {
     background: linear-gradient(135deg, v.$color-indigo 0%, v.$color-purple 100%);
 
@@ -345,6 +341,7 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
 
   @include m.mobile {
     flex-direction: column;
+    align-items: stretch;
   }
 }
 
@@ -415,15 +412,24 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
 
 .editor-actions {
   display: flex;
-  gap: 10px;
+  flex-direction: row;
+  justify-content: center;
+  gap: 12px;
   margin-top: 10px;
 
+  .execute-button,
+  .submit-button {
+    min-width: 160px;
+  }
+
   @include m.mobile {
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
 
     .execute-button,
     .submit-button {
-      flex: 1 1 auto;
+      width: 100%;
+      max-width: 340px;
       font-size: 14px;
       padding: 10px 12px;
     }
@@ -431,10 +437,8 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
 }
 
 .actions {
-  @include m.mobile {
-    display: flex;
-    justify-content: center;
-  }
+  display: flex;
+  justify-content: center;
 }
 
 .editor-container {
