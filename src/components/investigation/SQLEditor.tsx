@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import { Database } from 'lucide-react';
 import Editor from '@monaco-editor/react';
 import type { editor } from 'monaco-editor';
 import ResultsDisplay from './ResultsDisplay';
@@ -21,6 +22,8 @@ interface SQLEditorProps {
   onToggleHistory?: () => void;
   onLoadQuery?: (query: string) => void;
   results?: SQLResult | null;
+  onToggleSchema?: () => void;
+  showSchema?: boolean;
 }
 
 const SQLEditor: React.FC<SQLEditorProps> = ({ 
@@ -35,6 +38,8 @@ const SQLEditor: React.FC<SQLEditorProps> = ({
   onToggleHistory,
   onLoadQuery,
   results,
+  onToggleSchema,
+  showSchema = false,
 }) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
@@ -83,6 +88,16 @@ const SQLEditor: React.FC<SQLEditorProps> = ({
             {showHistory ? 'Masquer historique' : 'Historique'}
           </button>
         )}
+        {onToggleSchema && (
+          <button
+            className={`schema-header-button${showSchema ? ' schema-header-button--open' : ''}`}
+            onClick={onToggleSchema}
+            title="Schéma de base de données"
+          >
+            <Database size={16} />
+            Schéma
+          </button>
+        )}
       </div>
       <div className="editor-body">
         <div className="editor-body-left">
@@ -100,6 +115,7 @@ const SQLEditor: React.FC<SQLEditorProps> = ({
                   minimap: { enabled: false },
                   fontSize: 14,
                   automaticLayout: true,
+                  wordWrap: 'on',
                 }}
               />
             </div>
