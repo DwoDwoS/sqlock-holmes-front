@@ -163,6 +163,13 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
   }
 }
 
+.actions {
+  @include m.mobile {
+    display: flex;
+    justify-content: center;
+  }
+}
+
 .editor-container {
   position: relative;
   margin-bottom: 20px;
