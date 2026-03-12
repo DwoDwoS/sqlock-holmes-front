@@ -44,6 +44,8 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border: 1px solid #e1e8ed;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
 
   &:hover {
     transform: translateY(-2px);
@@ -79,7 +81,8 @@
     text-align: center;
     font-weight: 600;
     transition: all v.$transition-base;
-    margin-top: 1rem;
+    margin-top: auto;
+    padding-top: 0.75rem;
     box-sizing: border-box;
     cursor: pointer;
     font-size: 1rem;
