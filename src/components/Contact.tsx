@@ -221,7 +221,7 @@ const Contact = () => {
 
             <button 
               type="submit" 
-              className="submit-button"
+              className="contact-submit-button"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
