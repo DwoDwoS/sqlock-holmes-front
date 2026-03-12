@@ -274,3 +274,35 @@ $blue-border: rgba(74, 144, 226, 0.3);
     @include m.scrollbar(rgba(74, 144, 226, 0.5));
   }
 }
+
+.cta-section {
+  text-align: center;
+}
+
+.cta-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 0.875rem 2.5rem;
+  background: transparent;
+  color: v.$color-white;
+  border: 2px solid $blue;
+  border-radius: v.$radius-md;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all v.$transition-base;
+
+  &:hover {
+    background: $blue;
+    color: v.$color-white;
+    box-shadow: 0 6px 25px rgba(74, 144, 226, 0.5);
+    transform: translateY(-3px);
+  }
+}

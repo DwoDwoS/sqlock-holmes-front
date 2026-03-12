@@ -102,6 +102,12 @@ describe('InvestigationPage', () => {
 
     await waitFor(() => {
       expect(screen.getAllByText('Le vol du musée').length).toBeGreaterThanOrEqual(1);
+    });
+
+    const intrigueTab = screen.getByText('Intrigue');
+    fireEvent.click(intrigueTab);
+
+    await waitFor(() => {
       expect(screen.getByText(/Un tableau de valeur inestimable/)).toBeInTheDocument();
     });
   });
