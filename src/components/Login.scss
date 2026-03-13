@@ -1,0 +1,141 @@
+@use '../styles/variables' as v;
+@use '../styles/mixins' as m;
+
+.login-page {
+  min-height: 100vh;
+  margin-top: -#{v.$navbar-height};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(v.$navbar-height + 2rem) 1.5rem 2rem;
+  background:
+    linear-gradient(135deg, rgba(26, 26, 26, 0.72) 0%, rgba(51, 51, 51, 0.65) 100%),
+    url('/homepage_board.webp') center / cover no-repeat;
+  background-attachment: fixed;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(22, 22, 30, 0.85);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: v.$radius-lg;
+  padding: 2.25rem 2rem 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  text-align: center;
+
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0 0 1.5rem;
+    color: v.$color-white;
+  }
+
+  form {
+    div {
+      margin-bottom: 1.1rem;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-weight: 500;
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    input {
+      width: 100%;
+      padding: 0.6rem 0.85rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: v.$radius-sm;
+      font-size: 0.95rem;
+      background: rgba(255, 255, 255, 0.06);
+      color: v.$color-text;
+      transition: border-color v.$transition-fast, background v.$transition-fast;
+      box-sizing: border-box;
+
+      &:focus {
+        outline: none;
+        border-color: v.$color-primary;
+        background: rgba(100, 108, 255, 0.08);
+      }
+    }
+
+    button[type='submit'] {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.25rem;
+      background: linear-gradient(135deg, v.$color-primary 0%, v.$color-primary-hover 100%);
+      color: white;
+      border: none;
+      border-radius: v.$radius-sm;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity v.$transition-base, transform v.$transition-base;
+
+      &:hover {
+        opacity: 0.88;
+        transform: translateY(-1px);
+      }
+    }
+  }
+
+  .error {
+    color: v.$color-danger-text;
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+    text-align: left;
+  }
+
+  .field-error {
+    color: v.$color-danger-text;
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+    text-align: left;
+  }
+}
+
+.login-card-logo {
+  width: 280px;
+  height: auto;
+  display: block;
+  margin: 0 auto 0.75rem;
+}
+
+.login-card-tagline {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 300;
+  margin: 0 0 1.75rem;
+  line-height: 1.5;
+}
+
+.login-card-footer {
+  margin-top: 1.25rem;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.55);
+
+  a {
+    color: v.$color-primary;
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+@include m.mobile {
+  .login-card {
+    padding: 1.75rem 1.25rem 1.5rem;
+  }
+
+  .login-card-logo {
+    width: 220px;
+  }
+}
