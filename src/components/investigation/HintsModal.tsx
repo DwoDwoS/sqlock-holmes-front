@@ -23,7 +23,16 @@ const HintsModal: React.FC<HintsModalProps> = ({ hints, show, onClose, revealedC
   return (
     <div className="hints-modal">
       <div className="hints-content">
-        <h3>Indices</h3>
+        <h3>
+          Indices
+          <span className="hints-info-icon" aria-label="Information sur les indices">
+            <span className="hints-info-badge">i</span>
+            <span className="hints-info-tooltip">
+              Les indices sont progressifs. Chaque indice révélé retire <strong>10 points</strong> de votre score final.<br />
+              Score maximum par enquête : <strong>150 points</strong>.
+            </span>
+          </span>
+        </h3>
         {revealedHints.length === 0 ? (
           <p>Aucun indice disponible pour le moment.</p>
         ) : (

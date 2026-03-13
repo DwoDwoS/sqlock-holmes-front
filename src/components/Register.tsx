@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import './Login.scss';
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -90,71 +91,80 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div>
-      <section className="hero-section">
-        <div className="hero-content">
-        <img src="sqlock-holmes-logo.webp" alt="Logo SQLock Holmes" className="navbar-logo" fetchPriority="high" width="400" height="217" />
-          <p className="hero-subtitle">Outil de résolution d'enquêtes en exécutant des requêtes SQL</p>
-        </div>
-      </section>
-      <div className="auth-container">
-      <h1>Inscrivez-vous !</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Nom d'utilisateur:</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            onBlur={handleUsernameBlur}
-            required
-          />
-          {fieldErrors.username && <p className="field-error">{fieldErrors.username}</p>}
-        </div>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            onBlur={handleEmailBlur}
-            required
-          />
-          {fieldErrors.email && <p className="field-error">{fieldErrors.email}</p>}
-        </div>
-        <div>
-          <label htmlFor="password">Mot de passe :</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            onBlur={handlePasswordBlur}
-            required
-          />
-          {fieldErrors.password && <p className="field-error">{fieldErrors.password}</p>}
-        </div>
-        <div>
-          <label htmlFor="confirmPassword">Confirmez le mot de passe :</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            onBlur={handleConfirmPasswordBlur}
-            required
-          />
-          {fieldErrors.confirmPassword && <p className="field-error">{fieldErrors.confirmPassword}</p>}
-        </div>
-        {error && <p className="error">{error}</p>}
-        <button type="submit">S'inscrire</button>
-      </form>
-      <p>
-       Vous avez déjà un compte ? <a href="/login">Connexion</a>
-      </p>
-    </div>
+    <div className="login-page">
+      <div className="login-card" style={{ maxWidth: '460px' }}>
+        <img
+          src="sqlock-holmes-logo.webp"
+          alt="Logo SQLock Holmes"
+          className="login-card-logo"
+          fetchPriority="high"
+          width="280"
+          height="152"
+        />
+        <p className="login-card-tagline">
+          Outil de résolution d'enquêtes en exécutant des requêtes SQL
+        </p>
+        <h1>Inscrivez-vous</h1>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="username">Nom d'utilisateur :</label>
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              onBlur={handleUsernameBlur}
+              required
+              autoComplete="username"
+            />
+            {fieldErrors.username && <p className="field-error">{fieldErrors.username}</p>}
+          </div>
+          <div>
+            <label htmlFor="email">Email :</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onBlur={handleEmailBlur}
+              required
+              autoComplete="email"
+            />
+            {fieldErrors.email && <p className="field-error">{fieldErrors.email}</p>}
+          </div>
+          <div>
+            <label htmlFor="password">Mot de passe :</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onBlur={handlePasswordBlur}
+              required
+              autoComplete="new-password"
+            />
+            {fieldErrors.password && <p className="field-error">{fieldErrors.password}</p>}
+          </div>
+          <div>
+            <label htmlFor="confirmPassword">Confirmez le mot de passe :</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              onBlur={handleConfirmPasswordBlur}
+              required
+              autoComplete="new-password"
+            />
+            {fieldErrors.confirmPassword && <p className="field-error">{fieldErrors.confirmPassword}</p>}
+          </div>
+          {error && <p className="error">{error}</p>}
+          <button type="submit">S'inscrire</button>
+        </form>
+        <p className="login-card-footer">
+          Vous avez déjà un compte ? <a href="/login">Connexion</a>
+        </p>
+      </div>
     </div>
   );
 };
