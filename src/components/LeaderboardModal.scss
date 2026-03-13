@@ -45,8 +45,9 @@
 }
 
 .leaderboard-modal-header {
+  position: relative;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   padding: 1.5rem;
   border-bottom: 2px solid rgba(255, 255, 255, 0.1);
@@ -58,11 +59,15 @@
 }
 
 .leaderboard-modal-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 1.75rem;
   font-weight: bold;
   color: v.$color-white;
   margin: 0;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
 }
 
 .leaderboard-modal-close {
@@ -113,15 +118,19 @@
 
   &:hover {
     color: v.$color-white;
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(v.$color-primary, 0.1);
+    border-color: rgba(100, 108, 255, 0.3);
   }
 
   &.active {
-    @include m.gradient-primary;
+    background-color: v.$color-primary;
     color: v.$color-white;
     border-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 12px rgba(100, 108, 255, 0.4);
+
+    &:hover {
+      background-color: v.$color-primary-hover;
+    }
   }
 }
 
