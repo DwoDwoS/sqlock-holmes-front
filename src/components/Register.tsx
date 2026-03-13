@@ -104,7 +104,7 @@ const Register: React.FC = () => {
         <p className="login-card-tagline">
           Outil de résolution d'enquêtes en exécutant des requêtes SQL
         </p>
-        <h1>Inscription</h1>
+        <h1>Inscrivez-vous</h1>
         <form onSubmit={handleSubmit}>
           <div>
             <label htmlFor="username">Nom d'utilisateur :</label>
