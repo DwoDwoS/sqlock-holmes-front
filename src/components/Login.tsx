@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import './Login.scss';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -20,43 +21,50 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div>
-      <section className="hero-section">
-        <div className="hero-content">
-        <img src="sqlock-holmes-logo.webp" alt="Logo SQLock Holmes" className="navbar-logo" fetchPriority="high" width="400" height="217" />
-          <p className="hero-subtitle">Outil de résolution d'enquêtes en exécutant des requêtes SQL</p>
-        </div>
-      </section>
-      <div className="auth-container">
-      <h1>Connexion</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Nom d'utilisateur :</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Mot de passe :</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        {error && <p className="error">{error}</p>}
-        <button type="submit">Connexion</button>
-      </form>
-      <p>
-        Pas encore de compte ? <a href="/register">Inscrivez-vous</a>
-      </p>
-    </div>
+    <div className="login-page">
+      <div className="login-card">
+        <img
+          src="sqlock-holmes-logo.webp"
+          alt="Logo SQLock Holmes"
+          className="login-card-logo"
+          fetchPriority="high"
+          width="280"
+          height="152"
+        />
+        <p className="login-card-tagline">
+          Outil de résolution d'enquêtes en exécutant des requêtes SQL
+        </p>
+        <h1>Connexion</h1>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="username">Nom d'utilisateur :</label>
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              autoComplete="username"
+            />
+          </div>
+          <div>
+            <label htmlFor="password">Mot de passe :</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              autoComplete="current-password"
+            />
+          </div>
+          {error && <p className="error">{error}</p>}
+          <button type="submit">Connexion</button>
+        </form>
+        <p className="login-card-footer">
+          Pas encore de compte ? <a href="/register">Inscrivez-vous</a>
+        </p>
+      </div>
     </div>
   );
 };
