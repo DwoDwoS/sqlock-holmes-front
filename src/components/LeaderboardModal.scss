@@ -70,8 +70,9 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: v.$color-white;
   font-size: 2rem;
+  line-height: 1;
   cursor: pointer;
-  padding: 0;
+  padding: 0 0 0.15rem 0;
   width: 2.5rem;
   height: 2.5rem;
   display: flex;
@@ -91,6 +92,10 @@
   padding: 1.5rem;
   overflow-y: auto;
   background: rgba(0, 0, 0, 0.2);
+
+  @include m.mobile {
+    padding: 1rem;
+  }
 }
 
 %tab-base {
@@ -149,6 +154,10 @@
   padding: 0.5rem;
   border-radius: 0.75rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
+
+  @include m.mobile {
+    flex-direction: column;
+  }
 }
 
 .leaderboard-view-btn {
@@ -237,13 +246,16 @@
   }
 
   &.top-three {
-    background: linear-gradient(
-      135deg,
-      rgba(255, 215, 0, 0.15) 0%,
-      rgba(255, 165, 0, 0.1) 100%
-    );
-    border-color: rgba(255, 215, 0, 0.3);
-    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  @include m.mobile {
+    padding: 0.75rem;
+
+    &:hover {
+      transform: none;
+    }
   }
 }
 
@@ -251,6 +263,50 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.leaderboard-entry-info {
+  min-width: 0;
+}
+
+.leaderboard-username {
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.leaderboard-stats {
+  margin: 0;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  word-break: break-word;
+}
+
+.leaderboard-entry-right {
+  flex-shrink: 0;
+  text-align: right;
+  margin-left: 0.5rem;
+}
+
+.leaderboard-score {
+  margin: 0;
+  font-weight: 700;
+  color: v.$color-white;
+}
+
+.leaderboard-date {
+  margin: 0;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.leaderboard-empty {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 2rem;
 }
 
 .leaderboard-rank-badge {
