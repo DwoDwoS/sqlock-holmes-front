@@ -97,11 +97,9 @@ const AppContent: React.FC = () => {
           <Route
             path="/about"
             element={
-              <ProtectedRoute>
-                <Layout isInvestigationsPage={false} isHomePage={false} isAboutPage={isAboutPage}>
-                  <About />
-                </Layout>
-              </ProtectedRoute>
+              <Layout isInvestigationsPage={false} isHomePage={false} isAboutPage={isAboutPage}>
+                <About />
+              </Layout>
             }
           />
           <Route
@@ -117,21 +115,17 @@ const AppContent: React.FC = () => {
           <Route
             path="/privacy"
             element={
-              <ProtectedRoute>
-                <Layout isInvestigationsPage={false} isHomePage={false}>
-                  <Privacy />
-                </Layout>
-              </ProtectedRoute>
+              <Layout isInvestigationsPage={false} isHomePage={false}>
+                <Privacy />
+              </Layout>
             }
           />
           <Route
             path="/terms"
             element={
-              <ProtectedRoute>
-                <Layout isInvestigationsPage={false} isHomePage={false}>
-                  <Terms />
-                </Layout>
-              </ProtectedRoute>
+              <Layout isInvestigationsPage={false} isHomePage={false}>
+                <Terms />
+              </Layout>
             }
           />
           <Route

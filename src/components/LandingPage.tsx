@@ -132,8 +132,6 @@ const LandingPage: React.FC = () => {
           <Link to="/privacy">Confidentialité</Link>
           <span aria-hidden="true"> · </span>
           <Link to="/terms">Conditions d'utilisation</Link>
-          <span aria-hidden="true"> · </span>
-          <Link to="/contact">Contact</Link>
         </nav>
         <p className="landing-footer-copy">© {new Date().getFullYear()} SQLock Holmes. Tous droits réservés.</p>
       </footer>

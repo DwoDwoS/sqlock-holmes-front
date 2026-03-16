@@ -8,7 +8,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
   const location = useLocation();
-  const { user, logout } = useAuth();
+  const { user, logout, isLoading } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -31,6 +31,34 @@ const Navbar = () => {
     setIsMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  if (!isLoading && !user) {
+    return (
+      <>
+        <nav className="navbar navbar--public" role="navigation" aria-label="Navigation principale">
+          <div className="navbar-container">
+            <ul className="navbar-links-public" role="menu">
+              <li role="menuitem"><Link to="/" className={isActive('/') ? 'active' : ''} onClick={handleNavClick}>Accueil</Link></li>
+              <li role="menuitem"><Link to="/about" className={isActive('/about') ? 'active' : ''} onClick={handleNavClick}>À propos</Link></li>
+            </ul>
+          </div>
+          <div className="navbar-right">
+            <Link to="/login" className="navbar-public-cta">Connexion</Link>
+            <Link to="/register" className="navbar-public-cta navbar-public-cta--primary">S'inscrire</Link>
+          </div>
+        </nav>
+
+        <nav className="mobile-navbar" role="navigation" aria-label="Navigation mobile">
+          <ul className="mobile-navbar-menu">
+            <li><Link to="/" aria-label="Accueil" className={isActive('/') ? 'active' : ''} onClick={handleNavClick}><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span></Link></li>
+            <li><Link to="/about" aria-label="À propos" className={isActive('/about') ? 'active' : ''} onClick={handleNavClick}><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></span></Link></li>
+            <li><Link to="/login" aria-label="Connexion" onClick={handleNavClick}><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg></span></Link></li>
+            <li><Link to="/register" aria-label="S'inscrire" onClick={handleNavClick}><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg></span></Link></li>
+          </ul>
+        </nav>
+      </>
+    );
+  }
 
   return (
     <>
@@ -107,7 +135,9 @@ const Navbar = () => {
         </ul>
       </nav>
 
-      <LeaderboardModal isOpen={isLeaderboardOpen} onClose={() => setIsLeaderboardOpen(false)} />
+      {isLeaderboardOpen && (
+        <LeaderboardModal isOpen={true} onClose={() => setIsLeaderboardOpen(false)} />
+      )}
     </>
   );
 };
