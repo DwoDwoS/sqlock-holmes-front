@@ -8,7 +8,7 @@ const LandingPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="landing-loading">
+      <div className="landing-loading" role="status" aria-live="polite">
         <div>Chargement...</div>
       </div>
     );
@@ -20,11 +20,13 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className="landing-page">
+      <a href="#main-content" className="landing-skip-link">Aller au contenu principal</a>
       <header className="landing-header">
         <div className="landing-header-logo">
           <img
             src="/sqlock-holmes-logo.webp"
-            alt="SQLock Holmes"
+            alt=""
+            aria-hidden="true"
             width="140"
             height="76"
           />
@@ -36,7 +38,7 @@ const LandingPage: React.FC = () => {
         </nav>
       </header>
 
-      <main>
+      <main id="main-content">
         <section className="landing-hero" aria-labelledby="hero-title">
           <div className="landing-hero-card">
             <img
@@ -69,8 +71,8 @@ const LandingPage: React.FC = () => {
 
         <section className="landing-features" aria-labelledby="features-title">
           <h2 id="features-title" className="landing-section-title">Comment ça fonctionne ?</h2>
-          <div className="landing-features-grid" role="list">
-            <article className="landing-feature-card" role="listitem">
+          <ul className="landing-features-grid">
+            <li className="landing-feature-card">
               <div className="landing-feature-icon" aria-hidden="true">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M14 18a2 2 0 0 0-4 0"/>
@@ -82,9 +84,9 @@ const LandingPage: React.FC = () => {
               </div>
               <h3>Choisissez une enquête</h3>
               <p>Parcourez notre catalogue d'affaires criminelles à résoudre. Chaque enquête vous plonge dans un scénario unique avec ses propres données.</p>
-            </article>
+            </li>
 
-            <article className="landing-feature-card" role="listitem">
+            <li className="landing-feature-card">
               <div className="landing-feature-icon" aria-hidden="true">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="m13 13.5 2-2.5-2-2.5"/>
@@ -95,9 +97,9 @@ const LandingPage: React.FC = () => {
               </div>
               <h3>Interrogez la base de données</h3>
               <p>Utilisez des requêtes SQL pour fouiller les indices, identifier les suspects et percer les mystères. Des indices sont disponibles si vous bloquez.</p>
-            </article>
+            </li>
 
-            <article className="landing-feature-card" role="listitem">
+            <li className="landing-feature-card">
               <div className="landing-feature-icon" aria-hidden="true">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
@@ -110,8 +112,8 @@ const LandingPage: React.FC = () => {
               </div>
               <h3>Grimpez au classement</h3>
               <p>Comparez vos performances à celles des autres détectives. Plus vous résolvez d'affaires rapidement et sans indices, plus vous montez dans le classement.</p>
-            </article>
-          </div>
+            </li>
+          </ul>
         </section>
 
         <section className="landing-cta" aria-labelledby="cta-title">

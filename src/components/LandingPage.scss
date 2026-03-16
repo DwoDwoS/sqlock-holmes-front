@@ -55,6 +55,40 @@
   &:hover {
     color: v.$color-white;
   }
+
+  &:focus-visible {
+    outline: 3px solid v.$color-primary;
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+}
+
+.landing-skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+
+  &:focus-visible {
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    height: auto;
+    padding: 0.75rem 1.5rem;
+    background: v.$color-bg-medium;
+    color: v.$color-white;
+    border: 2px solid v.$color-primary;
+    border-radius: v.$radius-sm;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    z-index: 9999;
+    outline: none;
+  }
 }
 
 .landing-btn-primary {
@@ -74,6 +108,11 @@
     color: v.$color-white;
     background: linear-gradient(135deg, v.$color-primary-hover 0%, color.adjust(v.$color-primary-hover, $lightness: -8%) 100%);
     transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 3px solid v.$color-white;
+    outline-offset: 3px;
   }
 }
 
@@ -96,6 +135,11 @@
     border-color: v.$color-white;
     background: rgba(255, 255, 255, 0.1);
   }
+
+  &:focus-visible {
+    outline: 3px solid v.$color-white;
+    outline-offset: 3px;
+  }
 }
 
 .landing-btn-outline {
@@ -116,6 +160,11 @@
     color: v.$color-white;
     border-color: v.$color-white;
     background: rgba(255, 255, 255, 0.12);
+  }
+
+  &:focus-visible {
+    outline: 3px solid v.$color-white;
+    outline-offset: 3px;
   }
 }
 
@@ -212,6 +261,8 @@
   gap: 1.5rem;
   max-width: 1100px;
   margin: 0 auto;
+  list-style: none;
+  padding: 0;
 }
 
 .landing-feature-card {
