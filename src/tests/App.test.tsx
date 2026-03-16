@@ -12,8 +12,9 @@ const renderWithProviders = (component: React.ReactElement) => {
 };
 
 describe('App', () => {
-  it('renders login page by default when not authenticated', async () => {
+  it('renders landing page by default when not authenticated', async () => {
     renderWithProviders(<App />);
-    expect(await screen.findByRole('heading', { name: /Connexion/i })).toBeInTheDocument();
+    // La route / affiche la LandingPage pour les visiteurs non connectés
+    expect(await screen.findByRole('link', { name: /connexion/i })).toBeInTheDocument();
   });
 });

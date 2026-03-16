@@ -14,7 +14,7 @@ const Login: React.FC = () => {
     e.preventDefault();
     try {
       await login(username, password);
-      navigate('/');
+      navigate('/home');
     } catch {
       setError('La connexion a échouée. Veuillez réessayer.');
     }

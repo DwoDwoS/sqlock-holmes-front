@@ -1,13 +1,16 @@
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
+import { AuthProvider } from '../contexts/AuthProvider';
 import Footer from '../components/Footer';
 
 const renderWithRouter = (component: React.ReactElement) => {
   return render(
-    <BrowserRouter>
-      {component}
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        {component}
+      </BrowserRouter>
+    </AuthProvider>
   );
 };
 
@@ -26,8 +29,9 @@ describe('Footer', () => {
 
   it('renders navigation links', () => {
     renderWithRouter(<Footer />);
+    // À propos est toujours visible ; Contact est masqué pour les visiteurs non connectés
     expect(screen.getByRole('link', { name: /à propos/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /contact/i })).toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /contact/i })).not.toBeInTheDocument();
   });
 
   it('renders tools links', () => {

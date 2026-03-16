@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
 import './Footer.scss';
 
 const Footer = () => {
+  const { user } = useAuth();
+
   return (
     <footer className="footer">
       <div className="footer-container">
@@ -14,7 +17,7 @@ const Footer = () => {
             <h4>Liens utiles</h4>
             <ul>
               <li><Link to="/about">À propos</Link></li>
-              <li><Link to="/contact">Contact</Link></li>
+              {user && <li><Link to="/contact">Contact</Link></li>}
             </ul>
           </div>
           <div className="footer-section">
