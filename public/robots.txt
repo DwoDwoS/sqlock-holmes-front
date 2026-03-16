@@ -3,10 +3,17 @@
 
 User-agent: *
 Allow: /
+Allow: /login
+Allow: /register
+Allow: /about
+Allow: /privacy
+Allow: /terms
+Disallow: /home
+Disallow: /investigations
+Disallow: /profile
+Disallow: /contact
+Disallow: /admin
 Disallow: /api/
 
 # Sitemap location
 Sitemap: https://sqlock-holmes.fr/sitemap.xml
-
-# Crawl-delay for politeness
-Crawl-delay: 1
