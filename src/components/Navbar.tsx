@@ -15,7 +15,7 @@ const Navbar = () => {
   };
 
   const isActive = (path: string) => {
-    if (path === '/' && location.pathname === '/') {
+    if (path === '/home' && location.pathname === '/home') {
       return true;
     }
     return location.pathname === path;
@@ -71,7 +71,7 @@ const Navbar = () => {
           </button>
         </div>
         <ul className={`navbar-menu ${isMenuOpen ? 'open' : ''}`} role="menu">
-          <li role="menuitem"><Link to="/" className={isActive('/') ? 'active' : ''} onClick={handleNavClick}>Accueil</Link></li>
+          <li role="menuitem"><Link to="/home" className={isActive('/home') ? 'active' : ''} onClick={handleNavClick}>Accueil</Link></li>
           <li role="menuitem"><Link to="/profile" className={isActive('/profile') ? 'active' : ''} onClick={handleNavClick}>Mon compte</Link></li>
           {user?.role === 'ADMIN' && (
             <li role="menuitem"><Link to="/admin" className={isActive('/admin') ? 'active' : ''} onClick={handleNavClick}>Admin</Link></li>
@@ -85,7 +85,7 @@ const Navbar = () => {
 
       <nav className="mobile-navbar" role="navigation" aria-label="Navigation mobile">
         <ul className="mobile-navbar-menu">
-          <li><Link to="/" aria-label="Accueil" className={isActive('/') ? 'active' : ''} onClick={handleNavClick}><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-house-icon lucide-house"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span></Link></li>
+          <li><Link to="/home" aria-label="Accueil" className={isActive('/home') ? 'active' : ''} onClick={handleNavClick}><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-house-icon lucide-house"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span></Link></li>
           <li><Link to="/investigations" aria-label="Enquêtes" className={isActive('/investigations') ? 'active' : ''} onClick={handleNavClick}><span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-search-code-icon lucide-search-code"><path d="m13 13.5 2-2.5-2-2.5"/><path d="m21 21-4.3-4.3"/><path d="M9 8.5 7 11l2 2.5"/><circle cx="11" cy="11" r="8"/></svg></span></Link></li>
           <li>
             <button onClick={() => setIsLeaderboardOpen(true)} aria-label="Classement" className="mobile-leaderboard-btn">

@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import './App.scss';
 
+const LandingPage = lazy(() => import('./components/LandingPage'));
 const Login = lazy(() => import('./components/Login'));
 const Register = lazy(() => import('./components/Register'));
 const Home = lazy(() => import('./components/Home'));
@@ -60,7 +61,7 @@ function App() {
 const AppContent: React.FC = () => {
   const location = useLocation();
   const isInvestigationsPage = location.pathname === '/investigations';
-  const isHomePage = location.pathname === '/';
+  const isHomePage = location.pathname === '/home';
   const isInvestigationPage = location.pathname.startsWith('/investigation/');
   const isProfilePage = location.pathname === '/profile';
   const isAboutPage = location.pathname === '/about';
@@ -70,10 +71,11 @@ const AppContent: React.FC = () => {
       <ScrollToTop />
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route
-            path="/"
+            path="/home"
             element={
               <ProtectedRoute>
                 <Layout isInvestigationsPage={false} isHomePage={isHomePage}>
