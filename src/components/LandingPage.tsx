@@ -24,7 +24,7 @@ const LandingPage: React.FC = () => {
       <header className="landing-header">
         <div className="landing-header-logo">
           <img
-            src="/sqlock-holmes-logo.webp"
+            src="/SQLock_Holmes_Logo.png"
             alt=""
             aria-hidden="true"
             width="140"
@@ -42,7 +42,7 @@ const LandingPage: React.FC = () => {
         <section className="landing-hero" aria-labelledby="hero-title">
           <div className="landing-hero-card">
             <img
-              src="/sqlock-holmes-logo.webp"
+              src="/SQLock_Holmes_Logo.png"
               alt="SQLock Holmes"
               className="landing-hero-logo"
               width="280"
