@@ -8,20 +8,69 @@
 
   h1 {
     text-align: center;
-    color: white;
+    color: #2b2310;
     margin-bottom: 0.5rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    text-shadow: none;
   }
 
   > p {
     text-align: center;
-    color: white;
+    color: #3a2e14;
     margin-bottom: 2rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    text-shadow: none;
   }
 
   @include m.mobile {
     padding-bottom: 5rem;
+  }
+}
+
+.investigations-header {
+  display: inline-block;
+  background: rgba(255, 238, 150, 0.92);
+  border: 1px solid rgba(200, 170, 60, 0.5);
+  border-radius: 3px;
+  padding: 1rem 2rem 0.85rem;
+  margin: 0 auto 2rem;
+  box-shadow:
+    2px 3px 8px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  text-align: center;
+  position: relative;
+  width: fit-content;
+  left: 50%;
+  transform: translateX(-50%);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 16px;
+    background: rgba(158, 23, 23, 0.7);
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  }
+
+  h1 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #2b2310;
+    margin: 0 0 0.35rem;
+    text-shadow: none;
+    font-family: 'Georgia', serif;
+    letter-spacing: 0.02em;
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: #4a3a18;
+    margin: 0;
+    text-shadow: none;
+    font-style: italic;
+    line-height: 1.5;
   }
 }
 

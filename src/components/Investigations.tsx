@@ -86,8 +86,10 @@ const Investigations: React.FC = () => {
 
   return (
     <div className="investigations-container">
-      <h1>Sélection des Enquêtes</h1>
-      <p>Choisissez une enquête à résoudre en utilisant vos compétences SQL. Survolez les enquêtes pour en connaître l'intrigue.</p>
+      <div className="investigations-header">
+        <h1>Sélection des Enquêtes</h1>
+        <p>Choisissez une enquête à résoudre en utilisant vos compétences SQL. Survolez les enquêtes pour en connaître l'intrigue.</p>
+      </div>
 
       {loading && <p>Chargement des données depuis le serveur...</p>}
 
