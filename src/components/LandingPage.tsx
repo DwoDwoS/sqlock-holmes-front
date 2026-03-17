@@ -22,15 +22,6 @@ const LandingPage: React.FC = () => {
     <div className="landing-page">
       <a href="#main-content" className="landing-skip-link">Aller au contenu principal</a>
       <header className="landing-header">
-        <div className="landing-header-logo">
-          <img
-            src="/sqlock-holmes-logo.webp"
-            alt=""
-            aria-hidden="true"
-            width="140"
-            height="76"
-          />
-        </div>
         <nav className="landing-header-nav" aria-label="Navigation principale">
           <Link to="/about" className="landing-nav-link">À propos</Link>
           <Link to="/login" className="landing-btn-secondary">Connexion</Link>
@@ -42,7 +33,7 @@ const LandingPage: React.FC = () => {
         <section className="landing-hero" aria-labelledby="hero-title">
           <div className="landing-hero-card">
             <img
-              src="/sqlock-holmes-logo.webp"
+              src="/SQLock_Holmes_Logo.webp"
               alt="SQLock Holmes"
               className="landing-hero-logo"
               width="280"
