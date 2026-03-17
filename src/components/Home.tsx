@@ -10,12 +10,12 @@ const Home = () => {
     <main className="home-page">
       <section className="home-card" aria-labelledby="home-heading">
         <img
-          src="sqlock-holmes-logo.webp"
+          src="SQLock_Holmes_Logo.png"
           alt="Logo SQLock Holmes"
           className="home-card-logo"
           fetchPriority="high"
-          width="240"
-          height="130"
+          width="440"
+          height="240"
         />
         <h1 id="home-heading">Bienvenue, Détective {user?.username} !</h1>
         <p>Vous êtes maintenant connecté à votre plateforme d'investigation numérique.</p>
