@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
 import { AuthProvider } from '../contexts/AuthProvider';
@@ -17,11 +17,12 @@ const renderWithProviders = (component: React.ReactElement) => {
   );
 };
 
-describe('Navbar', () => {
-  it('renders navbar with hamburger menu', () => {
+describe('Navbar (visiteur non connecté)', () => {
+  it('renders public navbar without hamburger menu', () => {
     renderWithProviders(<Navbar />);
-    const hamburgerButton = screen.getByRole('button', { name: /ouvrir le menu/i });
-    expect(hamburgerButton).toBeInTheDocument();
+    // La navbar publique n'a pas de bouton hamburger
+    expect(screen.queryByRole('button', { name: /ouvrir le menu/i })).not.toBeInTheDocument();
+    expect(screen.getByRole('navigation', { name: /navigation principale/i })).toBeInTheDocument();
   });
 
   it('renders mobile navbar', () => {
@@ -30,47 +31,31 @@ describe('Navbar', () => {
     expect(mobileNav).toBeInTheDocument();
   });
 
-  it('toggles menu when hamburger is clicked', () => {
+  it('renders public navigation links', () => {
     renderWithProviders(<Navbar />);
-    const hamburgerButton = screen.getByRole('button', { name: /ouvrir le menu/i });
-
-    // Menu should be closed initially
-    expect(hamburgerButton).toHaveAttribute('aria-expanded', 'false');
-
-    // Click to open
-    fireEvent.click(hamburgerButton);
-    expect(hamburgerButton).toHaveAttribute('aria-expanded', 'true');
-
-    // Click to close
-    fireEvent.click(hamburgerButton);
-    expect(hamburgerButton).toHaveAttribute('aria-expanded', 'false');
-  });
-
-  it('renders navigation links', () => {
-    renderWithProviders(<Navbar />);
-    // Check that links exist (may be duplicated between desktop and mobile nav)
     const accueilLinks = screen.getAllByRole('link', { name: /accueil/i });
-    const accountLinks = screen.getAllByRole('link', { name: /mon compte/i });
-    const investigationsLinks = screen.getAllByRole('link', { name: /enquêtes/i });
-    const logoutLinks = screen.getAllByRole('link', { name: /déconnexion/i });
+    const aboutLinks = screen.getAllByRole('link', { name: /à propos/i });
+    const loginLinks = screen.getAllByRole('link', { name: /connexion/i });
+    const registerLinks = screen.getAllByRole('link', { name: /s'inscrire/i });
 
     expect(accueilLinks.length).toBeGreaterThan(0);
-    expect(accountLinks.length).toBeGreaterThan(0);
-    expect(investigationsLinks.length).toBeGreaterThan(0);
-    expect(logoutLinks.length).toBeGreaterThan(0);
+    expect(aboutLinks.length).toBeGreaterThan(0);
+    expect(loginLinks.length).toBeGreaterThan(0);
+    expect(registerLinks.length).toBeGreaterThan(0);
+  });
+
+  it('does not render authenticated links', () => {
+    renderWithProviders(<Navbar />);
+    expect(screen.queryByRole('link', { name: /mon compte/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /enquêtes/i })).not.toBeInTheDocument();
   });
 
   it('renders mobile navigation icons', () => {
     renderWithProviders(<Navbar />);
-    // Check that mobile navigation links exist by aria-label
     const homeLinks = screen.getAllByRole('link', { name: 'Accueil' });
-    const accountLinks = screen.getAllByRole('link', { name: 'Mon compte' });
-    const investigationsLinks = screen.getAllByRole('link', { name: 'Enquêtes' });
-    const logoutLinks = screen.getAllByRole('link', { name: 'Déconnexion' });
+    const aboutLinks = screen.getAllByRole('link', { name: 'À propos' });
 
     expect(homeLinks.length).toBeGreaterThan(0);
-    expect(accountLinks.length).toBeGreaterThan(0);
-    expect(investigationsLinks.length).toBeGreaterThan(0);
-    expect(logoutLinks.length).toBeGreaterThan(0);
+    expect(aboutLinks.length).toBeGreaterThan(0);
   });
 });

@@ -14,7 +14,7 @@ const Login: React.FC = () => {
     e.preventDefault();
     try {
       await login(username, password);
-      navigate('/');
+      navigate('/home');
     } catch {
       setError('La connexion a échouée. Veuillez réessayer.');
     }
@@ -24,7 +24,7 @@ const Login: React.FC = () => {
     <div className="login-page">
       <div className="login-card">
         <img
-          src="sqlock-holmes-logo.webp"
+          src="SQLock_Holmes_Logo.webp"
           alt="Logo SQLock Holmes"
           className="login-card-logo"
           fetchPriority="high"

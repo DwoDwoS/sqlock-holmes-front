@@ -18,7 +18,7 @@
     <meta property="og:url" content="https://sqlock-holmes.fr/" />
     <meta property="og:title" content="SQLock Holmes - Apprenez SQL en résolvant des enquêtes" />
     <meta property="og:description" content="Plongez dans des enquêtes policières captivantes et apprenez SQL de manière ludique. Résolvez des mystères en interrogeant des bases de données réelles." />
-    <meta property="og:image" content="https://sqlock-holmes.fr/og-image.png" />
+    <meta property="og:image" content="https://sqlock-holmes.fr/sqlock-holmes-logo.webp" />
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:site_name" content="SQLock Holmes" />
     
@@ -27,7 +27,7 @@
     <meta property="twitter:url" content="https://sqlock-holmes.fr/" />
     <meta property="twitter:title" content="SQLock Holmes - Apprenez SQL en résolvant des enquêtes" />
     <meta property="twitter:description" content="Plongez dans des enquêtes policières captivantes et apprenez SQL de manière ludique." />
-    <meta property="twitter:image" content="https://sqlock-holmes.fr/twitter-image.png" />
+    <meta property="twitter:image" content="https://sqlock-holmes.fr/sqlock-holmes-logo.webp" />
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/sqlock-favicon.png" />
@@ -41,6 +41,28 @@
     <!-- Performance Hints -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="preload" href="/sqlock-holmes-logo.webp" as="image" type="image/webp" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "SQLock Holmes",
+      "url": "https://sqlock-holmes.fr/",
+      "description": "Plateforme d'apprentissage SQL interactive : résolvez des enquêtes policières en écrivant des requêtes SQL.",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "fr",
+      "isAccessibleForFree": true,
+      "logo": "https://sqlock-holmes.fr/sqlock-holmes-logo.webp",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>

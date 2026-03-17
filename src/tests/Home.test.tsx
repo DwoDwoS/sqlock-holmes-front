@@ -34,11 +34,14 @@ describe('Home', () => {
     expect(screen.getByText(/utilisez les outils/i)).toBeInTheDocument();
   });
 
-  it('renders feature cards', () => {
+  it('renders logo', () => {
     renderWithProviders(<Home />);
-    expect(screen.getByText('Statistiques')).toBeInTheDocument();
-    expect(screen.getByText('Mon compte')).toBeInTheDocument();
-    expect(screen.getByText('Enquêtes SQL')).toBeInTheDocument();
+    expect(screen.getByAltText(/logo sqlock holmes/i)).toBeInTheDocument();
+  });
+
+  it('renders about link', () => {
+    renderWithProviders(<Home />);
+    expect(screen.getByRole('link', { name: /à propos/i })).toBeInTheDocument();
   });
 
   it('renders action buttons', () => {

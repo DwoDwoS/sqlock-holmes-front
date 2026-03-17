@@ -34,9 +34,12 @@ api.interceptors.response.use(
     const isSilentCall = isAuthCheck || isStartInvestigation;
     
     if (error.response?.status === 401 && !isSilentCall) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '/login';
+      const token = localStorage.getItem('token');
+      if (token) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/login';
+      }
     }
 
     return Promise.reject(error);
