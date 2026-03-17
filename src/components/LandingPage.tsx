@@ -22,15 +22,6 @@ const LandingPage: React.FC = () => {
     <div className="landing-page">
       <a href="#main-content" className="landing-skip-link">Aller au contenu principal</a>
       <header className="landing-header">
-        <div className="landing-header-logo">
-          <img
-            src="/SQLock_Holmes_Logo.webp"
-            alt=""
-            aria-hidden="true"
-            width="140"
-            height="76"
-          />
-        </div>
         <nav className="landing-header-nav" aria-label="Navigation principale">
           <Link to="/about" className="landing-nav-link">À propos</Link>
           <Link to="/login" className="landing-btn-secondary">Connexion</Link>
