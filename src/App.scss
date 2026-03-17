@@ -92,7 +92,24 @@
   }
 
   &.investigations-background {
-    background: url('/investigations-board.webp') no-repeat center center / cover;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      background: url('/investigations-board.webp') no-repeat center center / cover;
+      filter: blur(4px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    main,
+    footer {
+      position: relative;
+      z-index: 1;
+    }
   }
 
   &.home-background {
