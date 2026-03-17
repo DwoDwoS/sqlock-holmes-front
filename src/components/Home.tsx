@@ -10,7 +10,7 @@ const Home = () => {
     <main className="home-page">
       <section className="home-card" aria-labelledby="home-heading">
         <img
-          src="SQLock_Holmes_Logo.png"
+          src="SQLock_Holmes_Logo.webp"
           alt="Logo SQLock Holmes"
           className="home-card-logo"
           fetchPriority="high"

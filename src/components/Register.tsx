@@ -94,7 +94,7 @@ const Register: React.FC = () => {
     <div className="login-page">
       <div className="login-card" style={{ maxWidth: '460px' }}>
         <img
-          src="SQLock_Holmes_Logo.png"
+          src="SQLock_Holmes_Logo.webp"
           alt="Logo SQLock Holmes"
           className="login-card-logo"
           fetchPriority="high"
