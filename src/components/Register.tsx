@@ -86,7 +86,12 @@ const Register: React.FC = () => {
       await register(username, email, password);
       navigate('/login');
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "L'inscription a échoué. Veuillez réessayer.");
+      const message = err instanceof Error ? err.message.toLowerCase() : '';
+      const isConflict = message.includes('username') || message.includes('email') || message.includes('exist') || message.includes('déjà') || message.includes('conflict');
+      setError(isConflict
+        ? 'Un compte avec cet identifiant ou cet email existe déjà.'
+        : "L'inscription a échoué. Veuillez réessayer."
+      );
     }
   };
 
