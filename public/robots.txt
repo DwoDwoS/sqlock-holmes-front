@@ -8,10 +8,8 @@ Allow: /register
 Allow: /about
 Allow: /privacy
 Allow: /terms
-Disallow: /home
 Disallow: /investigations
 Disallow: /profile
-Disallow: /contact
 Disallow: /admin
 Disallow: /api/
 
