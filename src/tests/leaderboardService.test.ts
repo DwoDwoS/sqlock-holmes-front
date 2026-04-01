@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeAll, beforeEach, afterEach } from 'vitest';
+import type { InternalAxiosRequestConfig } from 'axios';
 import type { LeaderboardEntry, GlobalLeaderboardEntry } from '../types/leaderboard';
 
 // Use vi.hoisted to create the mock in the correct scope
@@ -24,7 +25,7 @@ vi.mock('axios', () => ({
 import { leaderboardService } from '../services/leaderboardService';
 
 describe('leaderboardService', () => {
-  let requestInterceptor: (config: any) => any;
+  let requestInterceptor: (config: InternalAxiosRequestConfig) => InternalAxiosRequestConfig;
 
   const mockLeaderboardEntry: LeaderboardEntry = {
     username: 'testuser',
@@ -48,7 +49,7 @@ describe('leaderboardService', () => {
   };
 
   beforeAll(() => {
-    requestInterceptor = requestUse.mock.calls[0]?.[0] as (config: any) => any;
+    requestInterceptor = requestUse.mock.calls[0]?.[0] as (config: InternalAxiosRequestConfig) => InternalAxiosRequestConfig;
   });
 
   beforeEach(() => {
@@ -78,7 +79,7 @@ describe('leaderboardService', () => {
 
     it('should include auth token in headers when available', () => {
       localStorage.setItem('token', 'test-token');
-      const config = { headers: {} };
+      const config = { headers: {} } as unknown as InternalAxiosRequestConfig;
       const result = requestInterceptor(config);
       expect(result.headers.Authorization).toBe('Bearer test-token');
     });
@@ -121,7 +122,7 @@ describe('leaderboardService', () => {
 
     it('should include auth token when available', () => {
       localStorage.setItem('token', 'global-token');
-      const config = { headers: {} };
+      const config = { headers: {} } as unknown as InternalAxiosRequestConfig;
       const result = requestInterceptor(config);
       expect(result.headers.Authorization).toBe('Bearer global-token');
     });
@@ -133,7 +134,7 @@ describe('leaderboardService', () => {
     });
 
     it('should work without auth token', () => {
-      const config = { headers: {} };
+      const config = { headers: {} } as unknown as InternalAxiosRequestConfig;
       const result = requestInterceptor(config);
       expect(result.headers.Authorization).toBeUndefined();
     });
@@ -157,7 +158,7 @@ describe('leaderboardService', () => {
 
     it('should require authentication token', () => {
       localStorage.setItem('token', 'personal-token');
-      const config = { headers: {} };
+      const config = { headers: {} } as unknown as InternalAxiosRequestConfig;
       const result = requestInterceptor(config);
       expect(result.headers.Authorization).toBe('Bearer personal-token');
     });
