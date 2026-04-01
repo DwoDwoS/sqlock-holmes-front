@@ -6,7 +6,7 @@ const Terms: React.FC = () => {
     <div className="terms-container">
       <div className="terms-hero">
         <h1>Conditions Générales d'Utilisation</h1>
-        <p className="hero-subtitle">Dernière mise à jour : 3 mars 2026</p>
+        <p className="hero-subtitle">Dernière mise à jour : 18 mars 2026</p>
       </div>
 
       <div className="terms-content">

@@ -36,8 +36,8 @@ const LoadingFallback = () => (
   </div>
 );
 
-const Layout: React.FC<{ children: React.ReactNode; isInvestigationsPage: boolean; isHomePage: boolean; isInvestigationPage?: boolean; isProfilePage?: boolean; isAboutPage?: boolean }> = ({ children, isInvestigationsPage, isHomePage, isInvestigationPage = false, isProfilePage = false, isAboutPage = false }) => (
-  <div className={`layout ${isHomePage ? 'home-background' : ''} ${isInvestigationsPage ? 'investigations-background' : ''} ${isProfilePage ? 'profile-background' : ''} ${isAboutPage ? 'about-background' : ''}`}>
+const Layout: React.FC<{ children: React.ReactNode; isInvestigationsPage: boolean; isHomePage: boolean; isInvestigationPage?: boolean; isProfilePage?: boolean; isAboutPage?: boolean; isContactPage?: boolean; isPrivacyPage?: boolean; isTermsPage?: boolean }> = ({ children, isInvestigationsPage, isHomePage, isInvestigationPage = false, isProfilePage = false, isAboutPage = false, isContactPage = false, isPrivacyPage = false, isTermsPage = false }) => (
+  <div className={`layout ${isHomePage ? 'home-background' : ''} ${isInvestigationsPage ? 'investigations-background' : ''} ${isProfilePage ? 'profile-background' : ''} ${isAboutPage ? 'about-background' : ''} ${isContactPage ? 'contact-background' : ''} ${isPrivacyPage ? 'privacy-background' : ''} ${isTermsPage ? 'terms-background' : ''}`}>
     <Navbar />
     <main style={{ paddingTop: isHomePage || isInvestigationPage || isAboutPage ? '0' : '90px', paddingBottom: isHomePage || isInvestigationPage || isAboutPage ? '0' : '100px', flex: 1 }}>
       {children}
@@ -65,6 +65,9 @@ const AppContent: React.FC = () => {
   const isInvestigationPage = location.pathname.startsWith('/investigation/');
   const isProfilePage = location.pathname === '/profile';
   const isAboutPage = location.pathname === '/about';
+  const isContactPage = location.pathname === '/contact';
+  const isPrivacyPage = location.pathname === '/privacy';
+  const isTermsPage = location.pathname === '/terms';
 
   return (
     <div className="App">
@@ -106,7 +109,7 @@ const AppContent: React.FC = () => {
             path="/contact"
             element={
               <ProtectedRoute>
-                <Layout isInvestigationsPage={false} isHomePage={false}>
+                <Layout isInvestigationsPage={false} isHomePage={false} isContactPage={isContactPage}>
                   <Contact />
                 </Layout>
               </ProtectedRoute>
@@ -115,7 +118,7 @@ const AppContent: React.FC = () => {
           <Route
             path="/privacy"
             element={
-              <Layout isInvestigationsPage={false} isHomePage={false}>
+              <Layout isInvestigationsPage={false} isHomePage={false} isPrivacyPage={isPrivacyPage}>
                 <Privacy />
               </Layout>
             }
@@ -123,7 +126,7 @@ const AppContent: React.FC = () => {
           <Route
             path="/terms"
             element={
-              <Layout isInvestigationsPage={false} isHomePage={false}>
+              <Layout isInvestigationsPage={false} isHomePage={false} isTermsPage={isTermsPage}>
                 <Terms />
               </Layout>
             }

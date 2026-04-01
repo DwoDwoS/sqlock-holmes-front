@@ -6,7 +6,7 @@ const Privacy: React.FC = () => {
     <div className="privacy-container">
       <div className="privacy-hero">
         <h1>Politique de Confidentialité</h1>
-        <p className="hero-subtitle">Dernière mise à jour : 3 mars 2026</p>
+        <p className="hero-subtitle">Dernière mise à jour : 18 mars 2026</p>
       </div>
 
       <div className="privacy-content">
