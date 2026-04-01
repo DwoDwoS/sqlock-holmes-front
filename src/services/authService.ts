@@ -32,13 +32,20 @@ export const authService = {
   },
 
   register: async (username: string, email: string, password: string): Promise<AuthResponse> => {
-    const response = await api.post('/users/register', { username, email, password });
-    return response.data;
+    try {
+      const response = await api.post('/users/register', { username, email, password });
+      return response.data;
+    } catch (error) {
+      const axiosError = error as { response?: { data?: { message?: string; error?: string } } };
+      const message = axiosError.response?.data?.message || axiosError.response?.data?.error;
+      if (message) throw new Error(message);
+      throw error;
+    }
   },
 
   getCurrentUser: async (): Promise<AuthResponse> => {
     const response = await api.get('/users/me', {
-      validateStatus: () => true, // Accepte tous les statuts pour éviter les logs d'erreur
+      validateStatus: () => true,
     });
     
     if (response.status !== 200) {
