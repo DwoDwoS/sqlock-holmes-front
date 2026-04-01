@@ -100,7 +100,7 @@ const LeaderboardModal: React.FC<LeaderboardModalProps> = ({ isOpen, onClose }) 
                   ) : (
                     (data as import('../types/leaderboard').GlobalLeaderboardEntry[]).map((entry, index) => (
                       <div
-                        key={entry.username}
+                        key={`${entry.username}-${index}`}
                         className={`leaderboard-entry ${index < 3 ? 'top-three' : ''}`}
                       >
                         <div className="leaderboard-entry-left">
