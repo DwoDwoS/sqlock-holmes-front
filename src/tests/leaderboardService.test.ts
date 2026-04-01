@@ -1,27 +1,31 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeAll, beforeEach, afterEach } from 'vitest';
 import type { LeaderboardEntry, GlobalLeaderboardEntry } from '../types/leaderboard';
 
 // Use vi.hoisted to create the mock in the correct scope
-const { mockGet } = vi.hoisted(() => {
-  return {
-    mockGet: vi.fn(),
-  };
-});
+const { mockGet, requestUse, responseUse } = vi.hoisted(() => ({
+  mockGet: vi.fn(),
+  requestUse: vi.fn(),
+  responseUse: vi.fn(),
+}));
 
 // Mock axios before importing leaderboardService
-vi.mock('axios', () => {
-  return {
-    default: {
-      create: vi.fn(() => ({
-        get: mockGet,
-      })),
-    },
-  };
-});
+vi.mock('axios', () => ({
+  default: {
+    create: vi.fn(() => ({
+      get: mockGet,
+      interceptors: {
+        request: { use: requestUse },
+        response: { use: responseUse },
+      },
+    })),
+  },
+}));
 
 import { leaderboardService } from '../services/leaderboardService';
 
 describe('leaderboardService', () => {
+  let requestInterceptor: (config: any) => any;
+
   const mockLeaderboardEntry: LeaderboardEntry = {
     username: 'testuser',
     score: 95,
@@ -42,6 +46,10 @@ describe('leaderboardService', () => {
     totalHintsUsed: 10,
     rank: 1,
   };
+
+  beforeAll(() => {
+    requestInterceptor = requestUse.mock.calls[0]?.[0] as (config: any) => any;
+  });
 
   beforeEach(() => {
     localStorage.clear();
@@ -68,19 +76,11 @@ describe('leaderboardService', () => {
       );
     });
 
-    it('should include auth token in headers when available', async () => {
+    it('should include auth token in headers when available', () => {
       localStorage.setItem('token', 'test-token');
-      const mockData = [mockLeaderboardEntry];
-      mockGet.mockResolvedValue({ data: mockData });
-
-      await leaderboardService.getInvestigationLeaderboard(1);
-
-      expect(mockGet).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.objectContaining({
-          headers: { Authorization: 'Bearer test-token' },
-        })
-      );
+      const config = { headers: {} };
+      const result = requestInterceptor(config);
+      expect(result.headers.Authorization).toBe('Bearer test-token');
     });
 
     it('should throw error when fetch fails', async () => {
@@ -119,18 +119,11 @@ describe('leaderboardService', () => {
       );
     });
 
-    it('should include auth token when available', async () => {
+    it('should include auth token when available', () => {
       localStorage.setItem('token', 'global-token');
-      mockGet.mockResolvedValue({ data: [] });
-
-      await leaderboardService.getGlobalLeaderboard();
-
-      expect(mockGet).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.objectContaining({
-          headers: { Authorization: 'Bearer global-token' },
-        })
-      );
+      const config = { headers: {} };
+      const result = requestInterceptor(config);
+      expect(result.headers.Authorization).toBe('Bearer global-token');
     });
 
     it('should throw error on failure', async () => {
@@ -139,17 +132,10 @@ describe('leaderboardService', () => {
       await expect(leaderboardService.getGlobalLeaderboard()).rejects.toThrow();
     });
 
-    it('should work without auth token', async () => {
-      mockGet.mockResolvedValue({ data: [] });
-
-      await leaderboardService.getGlobalLeaderboard();
-
-      expect(mockGet).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.objectContaining({
-          headers: {},
-        })
-      );
+    it('should work without auth token', () => {
+      const config = { headers: {} };
+      const result = requestInterceptor(config);
+      expect(result.headers.Authorization).toBeUndefined();
     });
   });
 
@@ -169,18 +155,11 @@ describe('leaderboardService', () => {
       );
     });
 
-    it('should require authentication token', async () => {
+    it('should require authentication token', () => {
       localStorage.setItem('token', 'personal-token');
-      mockGet.mockResolvedValue({ data: [] });
-
-      await leaderboardService.getPersonalInvestigationLeaderboard(3);
-
-      expect(mockGet).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.objectContaining({
-          headers: { Authorization: 'Bearer personal-token' },
-        })
-      );
+      const config = { headers: {} };
+      const result = requestInterceptor(config);
+      expect(result.headers.Authorization).toBe('Bearer personal-token');
     });
 
     it('should throw error when request fails', async () => {
