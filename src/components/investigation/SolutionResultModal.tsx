@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react';
 import './SolutionResultModal.scss';
 
+const CONFETTI_PIECES = Array.from({ length: 20 }, (_, i) => ({
+  left: `${(i * 37 + 13) % 100}%`,
+  animationDelay: `${(i * 0.17) % 0.8}s`,
+  animationDuration: `${1.5 + ((i * 0.31) % 1.5)}s`,
+}));
+
 interface SolutionResultModalProps {
   show: boolean;
   success: boolean;
@@ -8,18 +14,13 @@ interface SolutionResultModalProps {
   onClose: () => void;
 }
 
-const SolutionResultModal = ({ show, success, message, onClose }: SolutionResultModalProps) => {
+const SolutionResultInner = ({ success, message, onClose }: Omit<SolutionResultModalProps, 'show'>) => {
   const [animate, setAnimate] = useState(false);
 
   useEffect(() => {
-    if (show) {
-      const timer = setTimeout(() => setAnimate(true), 50);
-      return () => clearTimeout(timer);
-    }
-    setAnimate(false);
-  }, [show]);
-
-  if (!show) return null;
+    const timer = setTimeout(() => setAnimate(true), 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="solution-result-overlay" onClick={onClose}>
@@ -34,12 +35,8 @@ const SolutionResultModal = ({ show, success, message, onClose }: SolutionResult
             <h3 className="solution-result-title">Enquete resolue !</h3>
             <p className="solution-result-message">{message || 'Felicitations, detective ! Vous avez resolu cette affaire.'}</p>
             <div className="solution-result-confetti" aria-hidden="true">
-              {Array.from({ length: 20 }, (_, i) => (
-                <span key={i} className="confetti-piece" style={{
-                  left: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 0.8}s`,
-                  animationDuration: `${1.5 + Math.random() * 1.5}s`,
-                }} />
+              {CONFETTI_PIECES.map((style, i) => (
+                <span key={i} className="confetti-piece" style={style} />
               ))}
             </div>
           </>
@@ -57,6 +54,11 @@ const SolutionResultModal = ({ show, success, message, onClose }: SolutionResult
       </div>
     </div>
   );
+};
+
+const SolutionResultModal = ({ show, ...props }: SolutionResultModalProps) => {
+  if (!show) return null;
+  return <SolutionResultInner {...props} />;
 };
 
 export default SolutionResultModal;
