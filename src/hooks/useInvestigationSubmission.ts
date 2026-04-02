@@ -3,6 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { submitSolution } from '../services/investigationService';
 import { useLeaderboardRefresh } from '../contexts/LeaderboardRefreshContext';
 
+export interface SolutionResult {
+  success: boolean;
+  message: string;
+}
+
 export const useInvestigationSubmission = (investigationId: string | undefined) => {
   const navigate = useNavigate();
   const { triggerRefresh } = useLeaderboardRefresh();
@@ -10,6 +15,7 @@ export const useInvestigationSubmission = (investigationId: string | undefined) 
   const [motive, setMotive] = useState('');
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [solutionResult, setSolutionResult] = useState<SolutionResult | null>(null);
 
   const parseSqlSolution = (sql: string) => {
     const culpritMatch = sql.match(/solution_culprit\s*=\s*['"]([^'"]+)['"]/i);
@@ -49,21 +55,37 @@ export const useInvestigationSubmission = (investigationId: string | undefined) 
     try {
       const data = await submitSolution(parseInt(investigationId), submissionData.culprit, submissionData.motive);
 
+      setShowSubmitModal(false);
+
       if (data.success) {
-        setShowSubmitModal(false);
         setCulprit('');
         setMotive('');
         triggerRefresh();
-        navigate('/investigations');
-        alert(data.message || 'Solution soumise avec succès !');
-      } else {
-        alert(data.message || 'Erreur lors de la soumission.');
       }
+
+      setSolutionResult({
+        success: data.success,
+        message: data.message || (data.success
+          ? 'Felicitations, detective ! Vous avez resolu cette affaire.'
+          : 'Ce n\'est pas la bonne piste. Continuez a chercher des indices !'),
+      });
     } catch (error) {
       console.error('Erreur lors de la soumission:', error);
-      alert('Erreur lors de la soumission de la solution.');
+      setShowSubmitModal(false);
+      setSolutionResult({
+        success: false,
+        message: 'Erreur lors de la soumission de la solution.',
+      });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResultClose = () => {
+    const wasSuccess = solutionResult?.success;
+    setSolutionResult(null);
+    if (wasSuccess) {
+      navigate('/investigations');
     }
   };
 
@@ -80,5 +102,7 @@ export const useInvestigationSubmission = (investigationId: string | undefined) 
     handleSubmit,
     openSubmitModal,
     closeSubmitModal,
+    solutionResult,
+    handleResultClose,
   };
 };
