@@ -13,6 +13,7 @@ const LeaderboardModal: React.FC<LeaderboardModalProps> = ({ isOpen, onClose }) 
   const [viewMode, setViewMode] = useState<'global' | 'personal'>('global');
   const [selectedInvestigation, setSelectedInvestigation] = useState<number | null>(null);
   const [investigations, setInvestigations] = useState<{id: number, title: string}[]>([]);
+  const [showScoringInfo, setShowScoringInfo] = useState(false);
   const hasInitializedRef = useRef(false);
   
   const { data, loading } = useLeaderboard({ 
@@ -73,17 +74,40 @@ const LeaderboardModal: React.FC<LeaderboardModalProps> = ({ isOpen, onClose }) 
             </div>
             
             {viewMode === 'personal' && investigations.length > 0 && (
-              <select 
-                value={selectedInvestigation ?? ''} 
-                onChange={(e) => setSelectedInvestigation(Number(e.target.value))}
-                className="leaderboard-investigation-select"
-              >
-                {investigations.map(inv => (
-                  <option key={inv.id} value={inv.id}>
-                    {inv.title}
-                  </option>
-                ))}
-              </select>
+              <div className="leaderboard-select-wrapper">
+                <select
+                  value={selectedInvestigation ?? ''}
+                  onChange={(e) => setSelectedInvestigation(Number(e.target.value))}
+                  className="leaderboard-investigation-select"
+                >
+                  {investigations.map(inv => (
+                    <option key={inv.id} value={inv.id}>
+                      {inv.title}
+                    </option>
+                  ))}
+                </select>
+                <div className="leaderboard-scoring-info">
+                  <button
+                    className="leaderboard-scoring-info-btn"
+                    onClick={() => setShowScoringInfo(!showScoringInfo)}
+                    type="button"
+                  >
+                    i
+                  </button>
+                  {showScoringInfo && (
+                    <div className="leaderboard-scoring-tooltip">
+                      <p><strong>Calcul des points :</strong></p>
+                      <ul>
+                        <li><span className="penalty">-1 point</span> par requête utilisée</li>
+                        <li><span className="penalty">-10 points</span> par indice révélé</li>
+                      </ul>
+                      <p className="leaderboard-scoring-tip">
+                        Consultez le schéma de base de données (à droite) pour éviter les requêtes inutiles.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
             )}
           </div>
 

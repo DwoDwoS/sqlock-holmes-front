@@ -54,6 +54,13 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   }
 
+  .investigations-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
   h1 {
     font-size: 1.6rem;
     font-weight: 800;
@@ -71,6 +78,103 @@
     text-shadow: none;
     font-style: italic;
     line-height: 1.5;
+  }
+}
+
+.scoring-info {
+  position: relative;
+  flex-shrink: 0;
+  margin-bottom: 0.35rem;
+}
+
+.scoring-info-btn {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  border: 1.5px solid #8b7765;
+  background: rgba(139, 119, 101, 0.1);
+  color: #4a3a18;
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-style: italic;
+  font-family: 'Georgia', serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(139, 119, 101, 0.25);
+    border-color: #4a3a18;
+  }
+}
+
+.scoring-tooltip {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 0.5rem);
+  transform: translateX(-50%);
+  width: 18rem;
+  padding: 1rem;
+  background: #f8f5ee;
+  background-image:
+    linear-gradient(90deg, rgba(139, 119, 101, 0.08) 1px, transparent 1px),
+    linear-gradient(rgba(139, 119, 101, 0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
+  border: 1px solid rgba(139, 119, 101, 0.3);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  animation: tooltipFadeIn 0.2s ease;
+
+  @keyframes tooltipFadeIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(-4px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+
+  p {
+    margin: 0 0 0.5rem;
+    font-size: 0.85rem;
+    color: #2b2310;
+    font-style: normal;
+    text-align: left;
+  }
+
+  ul {
+    margin: 0 0 0.75rem;
+    padding-left: 1.25rem;
+    list-style: disc;
+
+    li {
+      font-size: 0.85rem;
+      color: #4a3a18;
+      margin-bottom: 0.25rem;
+      text-align: left;
+    }
+  }
+
+  .penalty {
+    color: #a0302b;
+    font-weight: 600;
+  }
+
+  .scoring-tip {
+    font-size: 0.8rem;
+    color: #8b7765;
+    font-style: italic;
+    margin-bottom: 0;
+  }
+
+  @include m.mobile {
+    left: auto;
+    right: -1rem;
+    transform: none;
+
+    @keyframes tooltipFadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
   }
 }
 
