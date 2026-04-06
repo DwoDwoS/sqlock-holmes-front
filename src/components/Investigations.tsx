@@ -7,6 +7,7 @@ import type { Investigation } from '../types/investigation';
 
 const Investigations: React.FC = () => {
   const navigate = useNavigate();
+  const [showScoringInfo, setShowScoringInfo] = useState(false);
   const [investigations, setInvestigations] = useState<Investigation[]>([
     {
       id: 1,
@@ -87,7 +88,31 @@ const Investigations: React.FC = () => {
   return (
     <div className="investigations-container">
       <div className="investigations-header">
-        <h1>Sélection des Enquêtes</h1>
+        <div className="investigations-title-row">
+          <h1>Sélection des Enquêtes</h1>
+          <div className="scoring-info">
+            <button
+              className="scoring-info-btn"
+              onClick={() => setShowScoringInfo(!showScoringInfo)}
+              type="button"
+              aria-label="Informations sur le calcul des points"
+            >
+              i
+            </button>
+            {showScoringInfo && (
+              <div className="scoring-tooltip">
+                <p><strong>Calcul des points :</strong></p>
+                <ul>
+                  <li><span className="penalty">-1 point</span> par requête utilisée</li>
+                  <li><span className="penalty">-10 points</span> par indice révélé</li>
+                </ul>
+                <p className="scoring-tip">
+                  Un schéma de base de données est disponible à droite de chaque enquête pour éviter les requêtes inutiles.
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
         <p>Choisissez une enquête à résoudre en utilisant vos compétences SQL. Survolez les enquêtes pour en connaître l'intrigue.</p>
       </div>
 
