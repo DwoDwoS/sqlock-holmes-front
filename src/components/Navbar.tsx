@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import LeaderboardModal from './LeaderboardModal';
@@ -7,8 +7,26 @@ import './Navbar.scss';
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
+  const menuRef = useRef<HTMLUListElement>(null);
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
   const { user, logout, isLoading } = useAuth();
+
+  useEffect(() => {
+    if (!isMenuOpen) return;
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        menuRef.current && !menuRef.current.contains(e.target as Node) &&
+        hamburgerRef.current && !hamburgerRef.current.contains(e.target as Node)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isMenuOpen]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -65,6 +83,7 @@ const Navbar = () => {
       <nav className="navbar" role="navigation" aria-label="Navigation principale">
         <div className="navbar-container">
           <button
+            ref={hamburgerRef}
             className={`hamburger ${isMenuOpen ? 'open' : ''}`}
             onClick={toggleMenu}
             aria-expanded={isMenuOpen}
@@ -98,7 +117,7 @@ const Navbar = () => {
             <span className="leaderboard-text">  Classement</span>
           </button>
         </div>
-        <ul className={`navbar-menu ${isMenuOpen ? 'open' : ''}`} role="menu">
+        <ul ref={menuRef} className={`navbar-menu ${isMenuOpen ? 'open' : ''}`} role="menu">
           <li role="menuitem"><Link to="/home" className={isActive('/home') ? 'active' : ''} onClick={handleNavClick}>Accueil</Link></li>
           <li role="menuitem"><Link to="/profile" className={isActive('/profile') ? 'active' : ''} onClick={handleNavClick}>Mon compte</Link></li>
           {user?.role === 'ADMIN' && (
