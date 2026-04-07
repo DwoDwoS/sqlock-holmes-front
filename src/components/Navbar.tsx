@@ -117,6 +117,7 @@ const Navbar = () => {
             <span className="leaderboard-text">  Classement</span>
           </button>
         </div>
+        {isMenuOpen && <div className="navbar-overlay" onClick={() => setIsMenuOpen(false)} />}
         <ul ref={menuRef} className={`navbar-menu ${isMenuOpen ? 'open' : ''}`} role="menu">
           <li role="menuitem"><Link to="/home" className={isActive('/home') ? 'active' : ''} onClick={handleNavClick}>Accueil</Link></li>
           <li role="menuitem"><Link to="/profile" className={isActive('/profile') ? 'active' : ''} onClick={handleNavClick}>Mon compte</Link></li>
