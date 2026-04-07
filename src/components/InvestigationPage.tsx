@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { Database } from 'lucide-react';
 import { SQLService } from '../services/sqlService';
-import { InvestigationHeader, SQLEditor, HintsModal, Actions, SubmitSolutionModal } from './investigation';
+import { InvestigationHeader, SQLEditor, HintsModal, Actions, SubmitSolutionModal, SolutionResultModal } from './investigation';
 import type { QueryHistoryEntry } from './investigation/SQLEditor';
 import { useInvestigationSubmission } from '../hooks/useInvestigationSubmission';
 import { useInvestigationData } from '../hooks/useInvestigationData';
@@ -37,6 +37,8 @@ const InvestigationPage: React.FC = () => {
     handleSubmit,
     openSubmitModal,
     closeSubmitModal,
+    solutionResult,
+    handleResultClose,
   } = useInvestigationSubmission(id);
 
   const handleExecuteSQL = async (queryOverride?: string) => {
@@ -147,6 +149,15 @@ const InvestigationPage: React.FC = () => {
           loading={submitLoading}
           onSubmit={() => handleSubmit(sqlCode)}
         />
+
+        {solutionResult && (
+          <SolutionResultModal
+            show={!!solutionResult}
+            success={solutionResult.success}
+            message={solutionResult.message}
+            onClose={handleResultClose}
+          />
+        )}
 
         <Actions onBack={() => navigate('/investigations')} />
         <button

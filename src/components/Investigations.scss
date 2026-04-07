@@ -201,8 +201,8 @@
   flex-direction: column;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+    border-color: #c0c8d0;
   }
 
   &.status-completed {
@@ -263,23 +263,10 @@
   &.status-completed:hover .primary-button {
     background-color: #218838;
     border-color: #1e7e34;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
   }
 
   &:hover .primary-button {
-    background-color: #333;
-    color: white;
     border-color: #0056b3;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-
-  &:hover .investigation-description,
-  &:focus-within .investigation-description {
-    opacity: 1;
-    max-height: 300px;
-    transform: translateY(-4px);
   }
 }
 
@@ -411,43 +398,19 @@
   color: #5a6c7d;
   line-height: 1.6;
   margin-bottom: 1.5rem;
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-  transition: opacity 0.3s ease, max-height 0.3s ease, transform 0.3s ease;
   background: #f8f5ee;
   background-image:
     linear-gradient(90deg, rgba(139, 119, 101, 0.1) 1px, transparent 1px),
     linear-gradient(rgba(139, 119, 101, 0.1) 1px, transparent 1px);
   background-size: 20px 20px;
-  padding: 1.5rem;
+  padding: 1rem 1.5rem;
   border-radius: v.$radius-md;
   box-shadow:
     0 2px 4px rgba(0, 0, 0, 0.1),
     inset 0 0 40px rgba(139, 119, 101, 0.05);
   border: 1px solid rgba(139, 119, 101, 0.2);
-  position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0.3) 0%,
-      transparent 50%,
-      rgba(0, 0, 0, 0.02) 100%
-    );
-    pointer-events: none;
-    border-radius: v.$radius-md;
-  }
 
   p {
-    position: relative;
-    z-index: 1;
     margin: 0;
     text-shadow: none;
   }
