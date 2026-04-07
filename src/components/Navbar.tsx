@@ -30,9 +30,11 @@ const Navbar = () => {
       }
     };
 
+    document.body.style.overflow = 'hidden';
     document.addEventListener('mousedown', handleClickOutside);
     document.addEventListener('keydown', handleKeyDown);
     return () => {
+      document.body.style.overflow = '';
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleKeyDown);
     };
