@@ -186,24 +186,14 @@
     &.active {
       background: linear-gradient(
         135deg,
-        rgba(102, 126, 234, 0.2) 0%,
-        rgba(118, 75, 162, 0.2) 100%
+        rgba(102, 126, 234, 0.35) 0%,
+        rgba(118, 75, 162, 0.3) 100%
       );
-      color: v.$color-indigo;
+      color: v.$color-white;
       font-weight: bold;
       padding-left: 1.5rem;
-
-      &::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 4px;
-        height: 60%;
-        background: linear-gradient(180deg, v.$color-indigo 0%, v.$color-purple 100%);
-        border-radius: 0 3px 3px 0;
-      }
+      border-left: 4px solid v.$color-indigo;
+      box-shadow: inset 0 0 12px rgba(102, 126, 234, 0.15);
     }
 
     &:focus {
