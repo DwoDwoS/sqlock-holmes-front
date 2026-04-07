@@ -152,13 +152,19 @@
   min-width: 200px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   z-index: v.$z-navbar + 1;
-  display: none;
+  display: flex;
   flex-direction: column;
   margin: 0;
   padding: 0;
+  opacity: 0;
+  transform: translateY(-8px);
+  visibility: hidden;
+  transition: opacity v.$transition-fast, transform v.$transition-fast, visibility v.$transition-fast;
 
   &.open {
-    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
   }
 
   li {
