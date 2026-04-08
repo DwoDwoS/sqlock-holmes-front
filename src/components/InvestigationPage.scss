@@ -1083,6 +1083,121 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
   }
 }
 
+.option-section {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &.option-active {
+    border-color: #ad8762;
+    box-shadow: 0 0 0 2px rgba(173, 135, 98, 0.25);
+  }
+}
+
+.option-instructions {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+
+  code {
+    background: #f0ede8;
+    padding: 0.15rem 0.35rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #6b3a1f;
+  }
+}
+
+.sql-example {
+  background: #f0ede8;
+  border: 1px solid #d4c9b8;
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.75rem;
+
+  .sql-example-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #8b7765;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  pre {
+    margin: 0.25rem 0 0;
+    font-size: 0.8rem;
+    color: #4a3a18;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+}
+
+.sql-preview-section {
+  .sql-preview-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #8b7765;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+}
+
+.sql-preview {
+  background: #f9f6f1;
+  border: 1px solid #d4c9b8;
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  margin: 0.25rem 0 0.5rem;
+  font-size: 0.8rem;
+  color: #333;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 6rem;
+  overflow-y: auto;
+}
+
+.sql-parsed-result {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  padding: 0.5rem 0.65rem;
+  border-radius: 4px;
+
+  code {
+    background: rgba(0, 0, 0, 0.06);
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+    font-size: 0.75rem;
+  }
+}
+
+.sql-parsed-icon {
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.sql-parsed-success {
+  background: #d4edda;
+  color: #155724;
+
+  .sql-parsed-icon { color: #28a745; }
+}
+
+.sql-parsed-error {
+  background: #f8d7da;
+  color: #721c24;
+
+  .sql-parsed-icon { color: #dc3545; }
+}
+
+.option-priority-note {
+  font-size: 0.8rem;
+  color: #6b5b3e;
+  font-style: italic;
+  text-align: center;
+  margin: 0;
+}
+
 .modal-actions {
   display: flex;
   justify-content: flex-end;
