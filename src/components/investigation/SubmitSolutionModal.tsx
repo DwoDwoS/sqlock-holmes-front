@@ -105,7 +105,10 @@ const SubmitSolutionModal = ({
                 ) : (
                   <div className="sql-parsed-result sql-parsed-error">
                     <span className="sql-parsed-icon">&#10007;</span>
-                    Alias <code>solution_culprit</code> et/ou <code>solution_motive</code> non détectés.
+                    <span>
+                      Alias non détectés :<br />
+                      <code>solution_culprit</code> et/ou <code>solution_motive</code>
+                    </span>
                   </div>
                 )}
               </div>
