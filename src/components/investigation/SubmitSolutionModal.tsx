@@ -44,9 +44,15 @@ const SubmitSolutionModal = ({
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <h3>Confirmer la soumission</h3>
-        <p>Choisissez votre méthode de soumission :</p>
+      <div className="submit-folder" onClick={(e) => e.stopPropagation()}>
+        <div className="submit-folder-tab">DOSSIER</div>
+        <div className="submit-folder-staple" />
+        <div className="submit-folder-content">
+          <div className="submit-folder-header">
+            <div className="submit-folder-stamp">CLASSIFIED</div>
+            <h3>Soumission de preuves</h3>
+            <p>Choisissez votre méthode de soumission :</p>
+          </div>
 
         <div className="submission-options">
           <div className={`option-section ${hasOption1 ? 'option-active' : ''}`}>
@@ -121,6 +127,7 @@ const SubmitSolutionModal = ({
           >
             {loading ? 'Soumission...' : 'Soumettre'}
           </button>
+        </div>
         </div>
       </div>
     </div>
