@@ -59,7 +59,8 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
 }
 
 .fbi-folder {
-  margin-bottom: 30px;
+  max-width: 600px;
+  margin: 0 auto 30px;
 
   &__tabs {
     display: flex;
@@ -973,22 +974,172 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
   z-index: v.$z-modal;
 }
 
-.modal-content {
-  background-color: #ad8762;
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 500px;
-  width: 90%;
+.submit-folder {
+  position: relative;
+  max-width: 540px;
+  width: 92%;
+  max-height: 85vh;
+  background: #c4a56e;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 28px,
+      rgba(139, 119, 101, 0.06) 28px,
+      rgba(139, 119, 101, 0.06) 29px
+    );
+  border-radius: 2px 12px 4px 4px;
+  box-shadow:
+    4px 6px 20px rgba(0, 0, 0, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.1);
+  animation: folderOpen 0.35s ease-out;
+
+  @keyframes folderOpen {
+    from {
+      opacity: 0;
+      transform: perspective(600px) rotateX(-8deg) translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: perspective(600px) rotateX(0deg) translateY(0);
+    }
+  }
+
+  @include m.mobile {
+    width: 96%;
+    max-height: 90vh;
+    border-radius: 2px 8px 4px 4px;
+  }
+}
+
+.submit-folder-tab {
+  position: absolute;
+  top: -22px;
+  left: 30px;
+  background: #b89555;
+  color: #4a3520;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  padding: 4px 18px 6px;
+  border-radius: 4px 4px 0 0;
+  box-shadow:
+    0 -2px 4px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  font-family: 'Courier New', monospace;
+
+  @include m.mobile {
+    left: 16px;
+    font-size: 0.6rem;
+    padding: 3px 12px 5px;
+  }
+}
+
+.submit-folder-staple {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 6px;
+  background: linear-gradient(180deg, #d0d0d0 0%, #a0a0a0 50%, #b8b8b8 100%);
+  border-radius: 1px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    width: 2px;
+    height: 5px;
+    background: #a0a0a0;
+    border-radius: 0 0 1px 1px;
+  }
+  &::before { left: 4px; }
+  &::after  { right: 4px; }
+
+  @include m.mobile {
+    width: 24px;
+    height: 5px;
+  }
+}
+
+.submit-folder-content {
+  padding: 28px 24px 20px;
   max-height: 80vh;
   overflow-y: auto;
+  @include m.scrollbar;
 
-  h3, h4 {
-    margin-top: 0;
+  @include m.mobile {
+    padding: 20px 14px 16px;
+    max-height: 85vh;
+  }
+
+  @include m.phone-xs {
+    padding: 16px 10px 12px;
+  }
+}
+
+.submit-folder-header {
+  position: relative;
+  text-align: center;
+  margin-bottom: 0.5rem;
+
+  h3 {
+    margin: 0 0 0.25rem;
+    font-family: 'Courier New', monospace;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #2b1a0e;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+
+    @include m.mobile {
+      font-size: 1rem;
+    }
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #5a4228;
+
+    @include m.mobile {
+      font-size: 0.8rem;
+    }
+  }
+}
+
+.submit-folder-stamp {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: rgba(160, 30, 20, 0.55);
+  border: 2.5px solid rgba(160, 30, 20, 0.45);
+  padding: 2px 10px;
+  transform: rotate(12deg);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border-radius: 3px;
+  pointer-events: none;
+
+  @include m.mobile {
+    font-size: 0.6rem;
+    padding: 1px 6px;
+    right: 4px;
+    top: -4px;
   }
 }
 
 .submission-options {
-  margin: 20px 0;
+  margin: 16px 0;
 }
 
 .option-section {
@@ -998,6 +1149,12 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
   border: 1px solid #dee2e6;
   border-radius: 5px;
   color: #333;
+
+  h4 {
+    @include m.mobile {
+      font-size: 0.9rem;
+    }
+  }
 
   input[type="text"] {
     background-color: #f0ede8;
@@ -1019,6 +1176,16 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
       outline: 2px solid #ad8762;
       border-color: #ad8762;
     }
+
+    @include m.mobile {
+      font-size: 13px;
+      padding: 7px 8px;
+    }
+  }
+
+  @include m.mobile {
+    padding: 12px;
+    margin-bottom: 14px;
   }
 }
 
@@ -1066,6 +1233,14 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
     z-index: 9999;
     white-space: normal;
 
+    @include m.mobile {
+      width: 200px;
+      font-size: 11px;
+      left: auto;
+      right: 0;
+      transform: none;
+    }
+
     &::after {
       content: '';
       position: absolute;
@@ -1083,9 +1258,182 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
   }
 }
 
+.option-section {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &.option-active {
+    border-color: #ad8762;
+    box-shadow: 0 0 0 2px rgba(173, 135, 98, 0.25);
+  }
+}
+
+.option-instructions {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+
+  code {
+    background: #f0ede8;
+    padding: 0.15rem 0.35rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #6b3a1f;
+  }
+
+  @include m.mobile {
+    font-size: 0.8rem;
+  }
+}
+
+.sql-example {
+  background: #f0ede8;
+  border: 1px solid #d4c9b8;
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.75rem;
+
+  .sql-example-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #8b7765;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  pre {
+    margin: 0.25rem 0 0;
+    font-size: 0.8rem;
+    color: #4a3a18;
+    white-space: pre-wrap;
+    word-break: break-word;
+
+    @include m.mobile {
+      font-size: 0.7rem;
+    }
+  }
+
+  @include m.mobile {
+    padding: 0.4rem 0.6rem;
+  }
+}
+
+.sql-preview-section {
+  .sql-preview-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #8b7765;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+}
+
+.sql-preview {
+  background: #f9f6f1;
+  border: 1px solid #d4c9b8;
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  margin: 0.25rem 0 0.5rem;
+  font-size: 0.8rem;
+  color: #333;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 6rem;
+  overflow-y: auto;
+}
+
+.sql-parsed-result {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  padding: 0.5rem 0.65rem;
+  border-radius: 4px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+
+  code {
+    background: rgba(0, 0, 0, 0.06);
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+    font-size: 0.75rem;
+  }
+}
+
+.sql-parsed-icon {
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.sql-parsed-success {
+  background: #d4edda;
+  color: #155724;
+
+  .sql-parsed-icon { color: #28a745; }
+}
+
+.sql-parsed-error {
+  background: #f8d7da;
+  color: #721c24;
+
+  .sql-parsed-icon { color: #dc3545; }
+}
+
+.option-priority-note {
+  font-size: 0.8rem;
+  color: #6b5b3e;
+  font-style: italic;
+  text-align: center;
+  margin: 0;
+}
+
 .modal-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 16px;
-  margin-top: 24px;
+  gap: 12px;
+  margin-top: 20px;
+
+  button {
+    padding: 0.55rem 1.25rem;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1.5px solid #5a4228;
+    background: #f0ede8;
+    color: #4a3520;
+
+    &:hover {
+      background: #e4ddd2;
+    }
+
+    &:last-child {
+      background: #5a3a1e;
+      color: #f5ede0;
+      border-color: #5a3a1e;
+
+      &:hover:not(:disabled) {
+        background: #4a2c14;
+      }
+
+      &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+    }
+
+    @include m.mobile {
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+    }
+  }
+
+  @include m.mobile {
+    gap: 8px;
+    margin-top: 14px;
+  }
 }

@@ -1,5 +1,5 @@
 import './Investigations.scss';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getInvestigations, restartInvestigation } from '../services/investigationService';
 import { getDifficultyClass } from '../utils/formatters';
@@ -8,6 +8,20 @@ import type { Investigation } from '../types/investigation';
 const Investigations: React.FC = () => {
   const navigate = useNavigate();
   const [showScoringInfo, setShowScoringInfo] = useState(false);
+  const scoringRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!showScoringInfo) return;
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (scoringRef.current && !scoringRef.current.contains(e.target as Node)) {
+        setShowScoringInfo(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showScoringInfo]);
   const [investigations, setInvestigations] = useState<Investigation[]>([
     {
       id: 1,
@@ -90,7 +104,7 @@ const Investigations: React.FC = () => {
       <div className="investigations-header">
         <div className="investigations-title-row">
           <h1>Sélection des Enquêtes</h1>
-          <div className="scoring-info">
+          <div className="scoring-info" ref={scoringRef}>
             <button
               className="scoring-info-btn"
               onClick={() => setShowScoringInfo(!showScoringInfo)}

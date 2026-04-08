@@ -18,12 +18,20 @@ export const useInvestigationSubmission = (investigationId: string | undefined) 
   const [solutionResult, setSolutionResult] = useState<SolutionResult | null>(null);
 
   const parseSqlSolution = (sql: string) => {
-    const culpritMatch = sql.match(/solution_culprit\s*=\s*['"]([^'"]+)['"]/i);
-    const motiveMatch = sql.match(/solution_motive\s*=\s*['"]([^'"]+)['"]/i);
+    const aliasCulprit = sql.match(/['"]([^'"]+)['"]\s+AS\s+solution_culprit/i);
+    const aliasMotive = sql.match(/['"]([^'"]+)['"]\s+AS\s+solution_motive/i);
 
-    if (culpritMatch && motiveMatch) {
-      return { culprit: culpritMatch[1], motive: motiveMatch[1] };
+    if (aliasCulprit && aliasMotive) {
+      return { culprit: aliasCulprit[1], motive: aliasMotive[1] };
     }
+
+    const assignCulprit = sql.match(/solution_culprit\s*=\s*['"]([^'"]+)['"]/i);
+    const assignMotive = sql.match(/solution_motive\s*=\s*['"]([^'"]+)['"]/i);
+
+    if (assignCulprit && assignMotive) {
+      return { culprit: assignCulprit[1], motive: assignMotive[1] };
+    }
+
     return null;
   };
 

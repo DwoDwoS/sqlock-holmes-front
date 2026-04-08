@@ -10,6 +10,22 @@ interface SubmitSolutionModalProps {
   onSubmit: () => void;
 }
 
+const parseSqlPreview = (sql: string) => {
+  const aliasCulprit = sql.match(/['"]([^'"]+)['"]\s+AS\s+solution_culprit/i);
+  const aliasMotive = sql.match(/['"]([^'"]+)['"]\s+AS\s+solution_motive/i);
+  if (aliasCulprit && aliasMotive) {
+    return { culprit: aliasCulprit[1], motive: aliasMotive[1] };
+  }
+
+  const assignCulprit = sql.match(/solution_culprit\s*=\s*['"]([^'"]+)['"]/i);
+  const assignMotive = sql.match(/solution_motive\s*=\s*['"]([^'"]+)['"]/i);
+  if (assignCulprit && assignMotive) {
+    return { culprit: assignCulprit[1], motive: assignMotive[1] };
+  }
+
+  return null;
+};
+
 const SubmitSolutionModal = ({
   show,
   onClose,
@@ -23,15 +39,24 @@ const SubmitSolutionModal = ({
 }: SubmitSolutionModalProps) => {
   if (!show) return null;
 
+  const sqlParsed = sqlCode.trim() ? parseSqlPreview(sqlCode) : null;
+  const hasOption1 = culprit.trim() && motive.trim();
+
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <h3>Confirmer la soumission</h3>
-        <p>Choisissez votre méthode de soumission :</p>
+      <div className="submit-folder" onClick={(e) => e.stopPropagation()}>
+        <div className="submit-folder-tab">DOSSIER</div>
+        <div className="submit-folder-staple" />
+        <div className="submit-folder-content">
+          <div className="submit-folder-header">
+            <div className="submit-folder-stamp">CLASSIFIED</div>
+            <h3>Soumission de preuves</h3>
+            <p>Choisissez votre méthode de soumission :</p>
+          </div>
 
         <div className="submission-options">
-          <div className="option-section">
-            <h4>Option 1 : Champs simples (pour débutants)</h4>
+          <div className={`option-section ${hasOption1 ? 'option-active' : ''}`}>
+            <h4>Option 1 : Champs simples</h4>
             <label>
               Nom du coupable :
               <input
@@ -58,21 +83,54 @@ const SubmitSolutionModal = ({
             </label>
           </div>
 
-          <div className="option-section">
+          <div className={`option-section ${!hasOption1 && sqlParsed ? 'option-active' : ''}`}>
             <h4>Option 2 : Requête SQL (avancé)</h4>
-            <p>Ou utilisez directement votre requête SQL :</p>
-            <pre className="sql-preview">{sqlCode}</pre>
+            <p className="option-instructions">
+              Écrivez dans l'éditeur SQL une requête contenant vos réponses avec les alias
+              <code>solution_culprit</code> et <code>solution_motive</code>.
+            </p>
+            <div className="sql-example">
+              <span className="sql-example-label">Exemple :</span>
+              <pre>SELECT 'Jean Dupont' AS solution_culprit, 'vengeance' AS solution_motive</pre>
+            </div>
+            {sqlCode.trim() && (
+              <div className="sql-preview-section">
+                <span className="sql-preview-label">Votre requête actuelle :</span>
+                <pre className="sql-preview">{sqlCode}</pre>
+                {sqlParsed ? (
+                  <div className="sql-parsed-result sql-parsed-success">
+                    <span className="sql-parsed-icon">&#10003;</span>
+                    Détecté : <strong>{sqlParsed.culprit}</strong> &mdash; <em>{sqlParsed.motive}</em>
+                  </div>
+                ) : (
+                  <div className="sql-parsed-result sql-parsed-error">
+                    <span className="sql-parsed-icon">&#10007;</span>
+                    <span>
+                      Alias non détectés :<br />
+                      <code>solution_culprit</code> et/ou <code>solution_motive</code>
+                    </span>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
+
+        {hasOption1 && sqlParsed && (
+          <p className="option-priority-note">
+            Les champs simples (option 1) seront utilisés en priorité.
+          </p>
+        )}
 
         <div className="modal-actions">
           <button onClick={onClose}>Annuler</button>
           <button
             onClick={onSubmit}
-            disabled={loading || (!culprit.trim() && !motive.trim() && !sqlCode.trim())}
+            disabled={loading || (!hasOption1 && !sqlParsed)}
           >
             {loading ? 'Soumission...' : 'Soumettre'}
           </button>
+        </div>
         </div>
       </div>
     </div>
