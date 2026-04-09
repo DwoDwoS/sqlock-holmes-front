@@ -46,6 +46,30 @@ const Investigations: React.FC = () => {
       difficulty: 'Difficile',
       status: 'Disponible',
       databaseId: 'manor_db'
+    },
+    {
+      id: 4,
+      title: 'Le Poison du Chef',
+      description: 'Un client prestigieux, le critique gastronomique Philippe Renard, a été hospitalisé après un dîner au restaurant étoilé "Le Cygne Doré". Les analyses révèlent un empoisonnement volontaire. Analysez les données pour trouver qui a empoisonné le critique.',
+      difficulty: 'Facile',
+      status: 'Disponible',
+      databaseId: 'poison_db'
+    },
+    {
+      id: 5,
+      title: 'Fuite de Données',
+      description: 'La startup MedSecure découvre que les dossiers patients de 50 000 utilisateurs ont été vendus sur le dark web. La fuite vient de l\'intérieur. Croisez les connexions VPN, les accès aux fichiers et les mouvements financiers pour identifier le traître.',
+      difficulty: 'Moyen',
+      status: 'Disponible',
+      databaseId: 'dataleak_db'
+    },
+    {
+      id: 6,
+      title: 'Le Mystère du Train de Nuit',
+      description: 'Henri Castellan, riche collectionneur, a disparu du train de nuit Paris-Nice. Son compartiment a été retrouvé vide, la fenêtre ouverte, et son diamant de 2 millions d\'euros a été volé. Suicide ? Enlèvement ? La vérité est bien plus tordue.',
+      difficulty: 'Difficile',
+      status: 'Disponible',
+      databaseId: 'train_db'
     }
   ]);
   const [loading, setLoading] = useState(true);
@@ -138,6 +162,9 @@ const Investigations: React.FC = () => {
           if (investigation.id === 1) backgroundClass = 'investigation-museum';
           else if (investigation.id === 2) backgroundClass = 'investigation-corporate';
           else if (investigation.id === 3) backgroundClass = 'investigation-manor';
+          else if (investigation.id === 4) backgroundClass = 'investigation-restaurant';
+          else if (investigation.id === 5) backgroundClass = 'investigation-dataleak';
+          else if (investigation.id === 6) backgroundClass = 'investigation-train';
           
           return (
             <div key={investigation.id} className={`investigation-card ${backgroundClass} ${investigation.status === 'Disponible' ? 'status-available' : 'status-unavailable'} ${investigation.status === 'Terminée' ? 'status-completed' : ''}`}>
