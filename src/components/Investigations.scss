@@ -309,6 +309,45 @@
   .badge-resolved { background-color: #28a745; color: white; }
 }
 
+.investigation-restaurant {
+  background-image: url('/poison-restaurant.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+
+  .investigation-header h2 { color: white; text-shadow: none; }
+  .investigation-description { background: #f8f5ee; }
+  .badge { background-color: rgba(255, 255, 255, 0.9); color: #2c3e50; text-shadow: none; }
+  .badge-resolved { background-color: #28a745; color: white; }
+}
+
+.investigation-dataleak {
+  background-image: url('/data-leak.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+
+  .investigation-header h2 { color: white; text-shadow: none; }
+  .investigation-description { background: #f8f5ee; }
+  .badge { background-color: rgba(255, 255, 255, 0.9); color: #2c3e50; text-shadow: none; }
+  .badge-resolved { background-color: #28a745; color: white; }
+}
+
+.investigation-train {
+  background-image: url('/train-mystery.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+
+  .investigation-header h2 { color: white; text-shadow: none; }
+  .investigation-description { background: #f8f5ee; }
+  .badge { background-color: rgba(255, 255, 255, 0.9); color: #2c3e50; text-shadow: none; }
+  .badge-resolved { background-color: #28a745; color: white; }
+}
+
 .investigation-header {
   display: flex;
   justify-content: space-between;

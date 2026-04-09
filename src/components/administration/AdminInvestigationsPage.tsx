@@ -67,6 +67,36 @@ const AdminInvestigationsPage: React.FC = () => {
             createdAt: '2024-02-01',
             completions: 12
           },
+          {
+            id: 4,
+            title: 'Le Poison du Chef',
+            description: 'Un critique gastronomique empoisonné au restaurant "Le Cygne Doré".',
+            difficulty: 'Facile',
+            databaseId: 'poison_db',
+            isActive: true,
+            createdAt: '2024-03-01',
+            completions: 0
+          },
+          {
+            id: 5,
+            title: 'Fuite de Données',
+            description: 'Des dossiers patients vendus sur le dark web. La fuite vient de l\'intérieur.',
+            difficulty: 'Moyen',
+            databaseId: 'dataleak_db',
+            isActive: true,
+            createdAt: '2024-03-01',
+            completions: 0
+          },
+          {
+            id: 6,
+            title: 'Le Mystère du Train de Nuit',
+            description: 'Un collectionneur disparu du train de nuit Paris-Nice.',
+            difficulty: 'Difficile',
+            databaseId: 'train_db',
+            isActive: true,
+            createdAt: '2024-03-01',
+            completions: 0
+          },
         ]);
         setLoading(false);
       } catch (error) {
