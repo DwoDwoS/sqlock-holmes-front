@@ -203,6 +203,31 @@
   }
 }
 
+.leaderboard-button {
+  background: none;
+  border: none;
+  color: v.$color-white;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  padding: 0.45rem 0.75rem;
+  border-radius: v.$radius-sm;
+  font-size: 0.9rem;
+  transition: color v.$transition-fast, background v.$transition-fast;
+
+  &:hover {
+    border-color: transparent;
+    background: rgba(255, 255, 255, 0.08);
+    color: v.$color-white;
+  }
+
+  &:focus-visible {
+    outline: 2px solid v.$color-white;
+    outline-offset: 2px;
+  }
+}
+
 .navbar-overlay {
   position: fixed;
   inset: 0;
