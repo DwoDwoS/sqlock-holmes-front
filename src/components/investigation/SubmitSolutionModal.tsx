@@ -42,6 +42,14 @@ const SubmitSolutionModal = ({
   const sqlParsed = sqlCode.trim() ? parseSqlPreview(sqlCode) : null;
   const hasOption1 = culprit.trim() && motive.trim();
 
+  const motiveKeywords = motive.trim().split(/[\s,;]+/).filter(Boolean);
+  const hasEnoughKeywordsOption1 = motiveKeywords.length >= 3;
+
+  const sqlMotiveKeywords = sqlParsed
+    ? sqlParsed.motive.trim().split(/[\s,;]+/).filter(Boolean)
+    : [];
+  const hasEnoughKeywordsSql = sqlMotiveKeywords.length >= 3;
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="submit-folder" onClick={(e) => e.stopPropagation()}>
@@ -71,7 +79,7 @@ const SubmitSolutionModal = ({
               <span className="info-tooltip">
                 <span className="info-icon">i</span>
                 <span className="tooltip-text">
-                  Indiquez des mots-clés ou une courte phrase expliquant la raison pour laquelle le ou la suspect(e) a commis ce crime (ex: jalousie, vengeance, financier, héritage, etc.)
+                  Le système attend un minimum de 3 mots-clés expliquant la raison pour laquelle le ou la suspect(e) a commis ce crime (ex: jalousie, vengeance, financier, héritage, etc.) Pensez à mettre le montant du larcin si c'est une question d'argent.
                 </span>
               </span>
               <input
@@ -81,6 +89,11 @@ const SubmitSolutionModal = ({
                 placeholder="Ex: Motif du crime avec explication détaillée"
               />
             </label>
+            {motive.trim() && !hasEnoughKeywordsOption1 && (
+              <p className="keyword-warning">
+                ⚠ Attention : votre motif ne contient que {motiveKeywords.length} mot{motiveKeywords.length > 1 ? 's' : ''}-clé{motiveKeywords.length > 1 ? 's' : ''}. Minimum 3 attendus.
+              </p>
+            )}
           </div>
 
           <div className={`option-section ${!hasOption1 && sqlParsed ? 'option-active' : ''}`}>
@@ -98,10 +111,17 @@ const SubmitSolutionModal = ({
                 <span className="sql-preview-label">Votre requête actuelle :</span>
                 <pre className="sql-preview">{sqlCode}</pre>
                 {sqlParsed ? (
+                  <>
                   <div className="sql-parsed-result sql-parsed-success">
                     <span className="sql-parsed-icon">&#10003;</span>
                     Détecté : <strong>{sqlParsed.culprit}</strong> &mdash; <em>{sqlParsed.motive}</em>
                   </div>
+                  {!hasEnoughKeywordsSql && (
+                    <p className="keyword-warning">
+                      ⚠ Attention : le motif détecté ne contient que {sqlMotiveKeywords.length} mot{sqlMotiveKeywords.length > 1 ? 's' : ''}-clé{sqlMotiveKeywords.length > 1 ? 's' : ''}. Minimum 3 attendus.
+                    </p>
+                  )}
+                  </>
                 ) : (
                   <div className="sql-parsed-result sql-parsed-error">
                     <span className="sql-parsed-icon">&#10007;</span>
