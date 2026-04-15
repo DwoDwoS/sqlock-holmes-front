@@ -649,6 +649,12 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
   }
 }
 
+@keyframes schema-trigger-glow {
+  0%   { box-shadow: -4px 0 20px rgba(0, 0, 0, 0.4); border-color: rgba(34, 211, 238, 0.35); }
+  50%  { box-shadow: -4px 0 26px rgba(34, 211, 238, 0.6), 0 0 20px rgba(34, 211, 238, 0.45); border-color: rgba(34, 211, 238, 0.9); }
+  100% { box-shadow: -4px 0 20px rgba(0, 0, 0, 0.4); border-color: rgba(34, 211, 238, 0.35); }
+}
+
 .schema-float-trigger {
   position: fixed;
   right: 0;
@@ -669,8 +675,15 @@ $btn-hover-border: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(10px);
   transition: padding v.$transition-base, background v.$transition-fast;
   box-shadow: -4px 0 20px rgba(0, 0, 0, 0.4);
+  &:not(.schema-float-trigger--open) {
+    animation: schema-trigger-glow 2.2s ease-in-out 0.6s infinite;
+  }
 
-  &:hover,
+  &:hover {
+    background: rgba(34, 211, 238, 0.15);
+    padding-right: 20px;
+  }
+
   &--open {
     background: rgba(34, 211, 238, 0.15);
     padding-right: 20px;
