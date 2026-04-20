@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { Database } from 'lucide-react';
@@ -8,6 +8,7 @@ import type { QueryHistoryEntry } from './investigation/SQLEditor';
 import { useInvestigationSubmission } from '../hooks/useInvestigationSubmission';
 import { useInvestigationData } from '../hooks/useInvestigationData';
 import { useHints } from '../hooks/useHints';
+import { useCurrentSql } from '../hooks/useCurrentSql';
 import { getDefaultQuery } from '../utils/investigationUtils';
 import type { SQLResult } from '../types/investigation';
 import './InvestigationPage.scss';
@@ -20,6 +21,12 @@ const InvestigationPage: React.FC = () => {
   const { investigation, error: dataError } = useInvestigationData(id);
   const { hints, hintCount, loadHints, unlockNextHint } = useHints(investigationId);
   const [sqlCode, setSqlCode] = useState<string>(getDefaultQuery(investigationId));
+  const { setCurrentSql } = useCurrentSql();
+
+  useEffect(() => {
+    setCurrentSql(sqlCode);
+    return () => setCurrentSql(null);
+  }, [sqlCode, setCurrentSql]);
   const [results, setResults] = useState<SQLResult | null>(null);
   const [showHints, setShowHints] = useState(false);
   const [loading, setLoading] = useState(false);
