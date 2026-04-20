@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthProvider';
 import { LeaderboardRefreshProvider } from './contexts/LeaderboardRefreshContext';
+import { CurrentSqlProvider } from './contexts/CurrentSqlProvider';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -23,6 +24,7 @@ const AdminSettingsPage = lazy(() => import('./components/administration/AdminSe
 const Investigations = lazy(() => import('./components/Investigations'));
 const InvestigationPage = lazy(() => import('./components/InvestigationPage'));
 const ProtectedRoute = lazy(() => import('./components/ProtectedRoute'));
+const WatsonChatbox = lazy(() => import('./components/WatsonChatbox'));
 
 const LoadingFallback = () => (
   <div style={{ 
@@ -50,9 +52,11 @@ function App() {
   return (
     <AuthProvider>
       <LeaderboardRefreshProvider>
-        <Router>
-          <AppContent />
-        </Router>
+        <CurrentSqlProvider>
+          <Router>
+            <AppContent />
+          </Router>
+        </CurrentSqlProvider>
       </LeaderboardRefreshProvider>
     </AuthProvider>
   );
@@ -68,6 +72,10 @@ const AppContent: React.FC = () => {
   const isContactPage = location.pathname === '/contact';
   const isPrivacyPage = location.pathname === '/privacy';
   const isTermsPage = location.pathname === '/terms';
+
+  const investigationMatch = location.pathname.match(/^\/investigation\/(\d+)/);
+  const currentInvestigationId = investigationMatch ? Number(investigationMatch[1]) : undefined;
+  const hideWatson = ['/', '/login', '/register'].includes(location.pathname);
 
   return (
     <div className="App">
@@ -193,6 +201,11 @@ const AppContent: React.FC = () => {
           />
         </Routes>
       </Suspense>
+      {!hideWatson && (
+        <Suspense fallback={null}>
+          <WatsonChatbox investigationId={currentInvestigationId} />
+        </Suspense>
+      )}
     </div>
   );
 };
