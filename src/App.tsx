@@ -11,6 +11,7 @@ import './App.scss';
 const LandingPage = lazy(() => import('./components/LandingPage'));
 const Login = lazy(() => import('./components/Login'));
 const Register = lazy(() => import('./components/Register'));
+const VerifyEmail = lazy(() => import('./components/VerifyEmail'));
 const Home = lazy(() => import('./components/Home'));
 const About = lazy(() => import('./components/About'));
 const Contact = lazy(() => import('./components/Contact'));
@@ -75,7 +76,7 @@ const AppContent: React.FC = () => {
 
   const investigationMatch = location.pathname.match(/^\/investigation\/(\d+)/);
   const currentInvestigationId = investigationMatch ? Number(investigationMatch[1]) : undefined;
-  const hideWatson = ['/', '/login', '/register'].includes(location.pathname);
+  const hideWatson = ['/', '/login', '/register', '/verify-email'].includes(location.pathname);
 
   return (
     <div className="App">
@@ -85,6 +86,7 @@ const AppContent: React.FC = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
           <Route
             path="/home"
             element={

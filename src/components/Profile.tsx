@@ -15,7 +15,29 @@ const Profile = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [emailChangeNotice, setEmailChangeNotice] = useState(false);
+
+  const validateEmail = (email: string): string => {
+    if (!email.trim()) return "L'email est obligatoire";
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) return "L'email doit être valide";
+    return '';
+  };
+
+  const extractServerError = (err: unknown, fallback: string): string => {
+    const axiosError = err as {
+      response?: { status?: number; data?: { message?: string; error?: string } };
+    };
+    const serverMessage =
+      axiosError.response?.data?.message || axiosError.response?.data?.error;
+    if (serverMessage) return serverMessage;
+    if (axiosError.response?.status && axiosError.response.status >= 500) {
+      return 'Une erreur est survenue côté serveur. Veuillez vérifier vos informations et réessayer.';
+    }
+    return fallback;
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -23,12 +45,27 @@ const Profile = () => {
       ...prev,
       [name]: value
     }));
+    if (name === 'email' && emailError) {
+      setEmailError('');
+    }
+  };
+
+  const handleEmailBlur = () => {
+    setEmailError(validateEmail(formData.email));
   };
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     setError('');
+
+    const emailValidationError = validateEmail(formData.email);
+    if (emailValidationError) {
+      setEmailError(emailValidationError);
+      return;
+    }
+
+    setIsLoading(true);
+    const emailChanged = formData.email.trim() !== (user?.email || '').trim();
 
     try {
       const updateData: { username?: string; email?: string; password?: string } = { ...formData };
@@ -37,13 +74,23 @@ const Profile = () => {
       }
 
       await updateUser(updateData);
-      setIsEditing(false);
       setFormData(prev => ({ ...prev, password: '' }));
+
+      if (emailChanged) {
+        setEmailChangeNotice(true);
+      } else {
+        setIsEditing(false);
+      }
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Erreur lors de la mise à jour');
+      setError(extractServerError(err, 'Erreur lors de la mise à jour'));
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleEmailChangeLogout = () => {
+    logout();
+    navigate('/login');
   };
 
   const handleDelete = async () => {
@@ -55,7 +102,7 @@ const Profile = () => {
       logout();
       navigate('/login');
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Erreur lors de la suppression');
+      setError(extractServerError(err, 'Erreur lors de la suppression'));
       setShowDeleteConfirm(false);
     } finally {
       setIsLoading(false);
@@ -64,6 +111,26 @@ const Profile = () => {
 
   if (!user) {
     return <div>Utilisateur non connecté</div>;
+  }
+
+  if (emailChangeNotice) {
+    return (
+      <div className="profile-container">
+        <div className="profile-card">
+          <h1>Email modifié</h1>
+          <p className="email-change-notice">
+            Votre nouvel email doit être vérifié. Consultez votre boîte mail.
+            <br />
+            Si vous ne le trouvez pas, pensez à regarder dans vos spams.
+          </p>
+          <div className="form-actions">
+            <button onClick={handleEmailChangeLogout} className="primary-button">
+              Se déconnecter
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -94,8 +161,10 @@ const Profile = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
+                onBlur={handleEmailBlur}
                 required
               />
+              {emailError && <p className="field-error">{emailError}</p>}
             </div>
             <div className="form-group">
               <label htmlFor="password">Nouveau mot de passe (optionnel):</label>
