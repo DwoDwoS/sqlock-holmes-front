@@ -109,6 +109,8 @@ const Register: React.FC = () => {
           <h1>Compte créé !</h1>
           <p className="login-card-tagline">
             Vérifiez votre email pour activer votre compte.
+            <br />
+            Si vous ne le trouvez pas, pensez à regarder dans vos spams.
           </p>
           <p className="login-card-footer">
             <a href="/login">Retour à la connexion</a>

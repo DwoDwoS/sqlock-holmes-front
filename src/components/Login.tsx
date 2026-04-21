@@ -49,7 +49,9 @@ const Login: React.FC = () => {
     try {
       await authService.resendVerification(username);
       setResendStatus('sent');
-      setResendMessage('Email de vérification renvoyé. Consultez votre boîte de réception.');
+      setResendMessage(
+        'Email de vérification renvoyé. Consultez votre boîte de réception (pensez aussi à regarder dans vos spams).'
+      );
     } catch {
       setResendStatus('error');
       setResendMessage("L'envoi a échoué. Veuillez réessayer dans quelques instants.");

@@ -85,6 +85,13 @@
       box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.2);
     }
   }
+
+  .field-error {
+    color: #ff6b6b;
+    font-size: 0.85rem;
+    margin-top: 0.4rem;
+    text-align: left;
+  }
 }
 
 .form-actions {
