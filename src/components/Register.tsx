@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
 import './Login.scss';
 
 const Register: React.FC = () => {
@@ -9,8 +8,8 @@ const Register: React.FC = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
   const { register } = useAuth();
-  const navigate = useNavigate();
 
   const [fieldErrors, setFieldErrors] = useState({
     username: '',
@@ -84,7 +83,7 @@ const Register: React.FC = () => {
 
     try {
       await register(username, email, password);
-      navigate('/login');
+      setSuccess(true);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message.toLowerCase() : '';
       const isConflict = message.includes('username') || message.includes('email') || message.includes('exist') || message.includes('déjà') || message.includes('conflict');
@@ -94,6 +93,32 @@ const Register: React.FC = () => {
       );
     }
   };
+
+  if (success) {
+    return (
+      <div className="login-page">
+        <div className="login-card" style={{ maxWidth: '460px' }}>
+          <img
+            src="SQLock_Holmes_Logo.webp"
+            alt="Logo SQLock Holmes"
+            className="login-card-logo"
+            fetchPriority="high"
+            width="280"
+            height="152"
+          />
+          <h1>Compte créé !</h1>
+          <p className="login-card-tagline">
+            Vérifiez votre email pour activer votre compte.
+            <br />
+            Si vous ne le trouvez pas, pensez à regarder dans vos spams.
+          </p>
+          <p className="login-card-footer">
+            <a href="/login">Retour à la connexion</a>
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="login-page">

@@ -58,21 +58,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const register = async (username: string, email: string, password: string): Promise<void> => {
-    const response = await authService.register(username, email, password);
-
-    if (response.token) {
-      localStorage.setItem('token', response.token);
-      
-      const userData: User = {
-        id: response.id.toString(),
-        username: response.username,
-        email: response.email,
-        role: response.role || 'USER'
-      };
-      
-      localStorage.setItem('user', JSON.stringify(userData));
-      setUser(userData);
-    }
+    await authService.register(username, email, password);
   };
 
   const updateUser = async (updates: { username?: string; email?: string }): Promise<void> => {
