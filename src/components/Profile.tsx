@@ -16,6 +16,7 @@ const Profile = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [emailChangeNotice, setEmailChangeNotice] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -30,6 +31,8 @@ const Profile = () => {
     setIsLoading(true);
     setError('');
 
+    const emailChanged = formData.email.trim() !== (user?.email || '').trim();
+
     try {
       const updateData: { username?: string; email?: string; password?: string } = { ...formData };
       if (!updateData.password?.trim()) {
@@ -37,13 +40,23 @@ const Profile = () => {
       }
 
       await updateUser(updateData);
-      setIsEditing(false);
       setFormData(prev => ({ ...prev, password: '' }));
+
+      if (emailChanged) {
+        setEmailChangeNotice(true);
+      } else {
+        setIsEditing(false);
+      }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Erreur lors de la mise à jour');
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleEmailChangeLogout = () => {
+    logout();
+    navigate('/login');
   };
 
   const handleDelete = async () => {
@@ -64,6 +77,24 @@ const Profile = () => {
 
   if (!user) {
     return <div>Utilisateur non connecté</div>;
+  }
+
+  if (emailChangeNotice) {
+    return (
+      <div className="profile-container">
+        <div className="profile-card">
+          <h1>Email modifié</h1>
+          <p className="email-change-notice">
+            Votre nouvel email doit être vérifié. Consultez votre boîte mail.
+          </p>
+          <div className="form-actions">
+            <button onClick={handleEmailChangeLogout} className="primary-button">
+              Se déconnecter
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

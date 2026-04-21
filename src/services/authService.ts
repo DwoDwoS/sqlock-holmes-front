@@ -25,13 +25,22 @@ export interface UpdateUserRequest {
   password?: string;
 }
 
+export interface RegisterResponse {
+  id?: string;
+  username?: string;
+  email?: string;
+  role?: 'USER' | 'ADMIN';
+  token?: string;
+  message?: string;
+}
+
 export const authService = {
   login: async (username: string, password: string): Promise<AuthResponse> => {
     const response = await api.post('/auth/login', { username, password });
     return response.data;
   },
 
-  register: async (username: string, email: string, password: string): Promise<AuthResponse> => {
+  register: async (username: string, email: string, password: string): Promise<RegisterResponse> => {
     try {
       const response = await api.post('/users/register', { username, email, password });
       return response.data;
@@ -41,6 +50,18 @@ export const authService = {
       if (message) throw new Error(message);
       throw error;
     }
+  },
+
+  verifyEmail: async (token: string): Promise<{ message?: string }> => {
+    const response = await api.get('/auth/verify-email', { params: { token } });
+    return response.data;
+  },
+
+  resendVerification: async (identifier: string): Promise<{ message?: string }> => {
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identifier);
+    const payload = isEmail ? { email: identifier } : { username: identifier };
+    const response = await api.post('/auth/resend-verification', payload);
+    return response.data;
   },
 
   getCurrentUser: async (): Promise<AuthResponse> => {

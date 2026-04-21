@@ -45,6 +45,17 @@
   text-align: center;
 }
 
+.email-change-notice {
+  background-color: rgba(100, 108, 255, 0.1);
+  border: 1px solid v.$color-primary;
+  color: v.$color-white;
+  padding: 1.25rem;
+  border-radius: v.$radius-sm;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  line-height: 1.5;
+}
+
 .profile-form {
   margin-bottom: 2rem;
 }

@@ -358,7 +358,11 @@ describe('Register Component', () => {
         expect(mockRegister).toHaveBeenCalledWith('testuser', 'test@example.com', 'Password123!');
       });
 
-      expect(mockNavigate).toHaveBeenCalledWith('/login');
+      await waitFor(() => {
+        expect(screen.getByRole('heading', { name: /compte créé/i })).toBeInTheDocument();
+      });
+      expect(screen.getByText(/vérifiez votre email pour activer votre compte/i)).toBeInTheDocument();
+      expect(mockNavigate).not.toHaveBeenCalled();
     });
 
     it('should show error message on registration failure', async () => {
