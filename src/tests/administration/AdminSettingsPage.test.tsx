@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import AdminSettingsPage from '../../components/administration/AdminSettingsPage';
+import { NotificationProvider } from '../../contexts/NotificationProvider';
 
 // Mock useNavigate
 const mockNavigate = vi.fn();
@@ -37,9 +38,11 @@ window.alert = vi.fn();
 
 const renderWithProviders = (component: React.ReactElement) => {
   return render(
-    <BrowserRouter>
-      {component}
-    </BrowserRouter>
+    <NotificationProvider>
+      <BrowserRouter>
+        {component}
+      </BrowserRouter>
+    </NotificationProvider>
   );
 };
 

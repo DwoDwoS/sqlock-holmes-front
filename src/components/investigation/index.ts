@@ -5,3 +5,6 @@ export { default as HintsModal } from './HintsModal';
 export { default as Actions } from './Actions';
 export { default as SubmitSolutionModal } from './SubmitSolutionModal';
 export { default as SolutionResultModal } from './SolutionResultModal';
+export { default as InvestigationCard } from './InvestigationCard';
+export { default as InvestigationFilters } from './InvestigationFilters';
+export { default as ScoringInfoButton } from './ScoringInfoButton';

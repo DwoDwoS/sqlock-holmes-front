@@ -1,13 +1,16 @@
 import { render, screen } from '@testing-library/react';
 import { AuthProvider } from '../contexts/AuthProvider';
+import { NotificationProvider } from '../contexts/NotificationProvider';
 import App from '../App';
 import { describe, it, expect } from 'vitest';
 
 const renderWithProviders = (component: React.ReactElement) => {
   return render(
-    <AuthProvider>
-      {component}
-    </AuthProvider>
+    <NotificationProvider>
+      <AuthProvider>
+        {component}
+      </AuthProvider>
+    </NotificationProvider>
   );
 };
 

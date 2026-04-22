@@ -8,7 +8,6 @@ import { useAuth } from '../hooks/useAuth';
 import type { AiChatResponse, AiStatusResponse } from '../types/watson';
 
 beforeAll(() => {
-  // jsdom does not implement scrollIntoView — the chatbox calls it on mount/update.
   if (!Element.prototype.scrollIntoView) {
     Element.prototype.scrollIntoView = vi.fn();
   }
@@ -86,7 +85,7 @@ describe('WatsonChatbox', () => {
     setAuthenticated();
     render(<WatsonChatbox />);
 
-    expect(screen.getByRole('button', { name: /ouvrir watson/i })).toBeInTheDocument();
+    expect(await screen.findByRole('button', { name: /ouvrir watson/i })).toBeInTheDocument();
   });
 
   it('opens the panel and focuses the textarea on toggle', async () => {

@@ -1,12 +1,18 @@
+export type InvestigationDifficulty = 'Facile' | 'Moyen' | 'Difficile';
+export type InvestigationStatus = 'Disponible' | 'En cours' | 'Terminée';
+
 export interface Investigation {
   id: number;
   title: string;
   description: string;
-  difficulty: 'Facile' | 'Moyen' | 'Difficile';
-  status: 'Disponible' | 'En cours' | 'Terminée';
+  difficulty: InvestigationDifficulty;
+  status: InvestigationStatus;
   databaseId: string;
   image?: string;
 }
+
+export type DifficultyFilter = 'ALL' | InvestigationDifficulty;
+export type StatusFilter = 'ALL' | 'SOLVED' | 'UNSOLVED';
 
 export interface SQLResult {
   columns?: string[];

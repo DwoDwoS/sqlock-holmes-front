@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { useConfirm } from '../../hooks/useConfirm';
+import { useToast } from '../../hooks/useToast';
 import './AdminSettingsPage.scss';
 
 interface SystemSettings {
@@ -16,6 +18,8 @@ interface SystemSettings {
 const AdminSettingsPage: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const confirm = useConfirm();
+  const toast = useToast();
   const [settings, setSettings] = useState<SystemSettings>({
     siteName: 'SQLock Holmes',
     maintenance: false,
@@ -34,18 +38,20 @@ const AdminSettingsPage: React.FC = () => {
       navigate('/');
       return;
     }
-    loadSettings();
-  }, [user, navigate]);
 
-  const loadSettings = async () => {
-    setLoading(true);
-    try {
-      setLoading(false);
-    } catch (error) {
-      console.error('Erreur lors du chargement des paramètres:', error);
-      setLoading(false);
-    }
-  };
+    const loadSettings = async () => {
+      setLoading(true);
+      try {
+        setLoading(false);
+      } catch (error) {
+        console.error('Erreur lors du chargement des paramètres:', error);
+        toast.warning('Impossible de charger les paramètres, les valeurs par défaut sont utilisées.');
+        setLoading(false);
+      }
+    };
+
+    loadSettings();
+  }, [user, navigate, toast]);
 
   const handleSaveSettings = async () => {
     setSaving(true);
@@ -65,9 +71,14 @@ const AdminSettingsPage: React.FC = () => {
   };
 
   const handleResetSettings = async () => {
-    if (!window.confirm('Êtes-vous sûr de vouloir réinitialiser tous les paramètres ?')) {
-      return;
-    }
+    const confirmed = await confirm({
+      title: 'Réinitialiser les paramètres ?',
+      message: 'Tous les paramètres reviendront à leur valeur par défaut.',
+      confirmLabel: 'Réinitialiser',
+      danger: true,
+    });
+    if (!confirmed) return;
+
     setSettings({
       siteName: 'SQLock Holmes',
       maintenance: false,

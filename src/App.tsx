@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { AuthProvider } from './contexts/AuthProvider';
 import { LeaderboardRefreshProvider } from './contexts/LeaderboardRefreshContext';
 import { CurrentSqlProvider } from './contexts/CurrentSqlProvider';
+import { NotificationProvider } from './contexts/NotificationProvider';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -51,15 +52,17 @@ const Layout: React.FC<{ children: React.ReactNode; isInvestigationsPage: boolea
 
 function App() {
   return (
-    <AuthProvider>
-      <LeaderboardRefreshProvider>
-        <CurrentSqlProvider>
-          <Router>
-            <AppContent />
-          </Router>
-        </CurrentSqlProvider>
-      </LeaderboardRefreshProvider>
-    </AuthProvider>
+    <NotificationProvider>
+      <AuthProvider>
+        <LeaderboardRefreshProvider>
+          <CurrentSqlProvider>
+            <Router>
+              <AppContent />
+            </Router>
+          </CurrentSqlProvider>
+        </LeaderboardRefreshProvider>
+      </AuthProvider>
+    </NotificationProvider>
   );
 }
 

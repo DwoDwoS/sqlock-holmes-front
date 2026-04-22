@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import AdminInvestigationsPage from '../../components/administration/AdminInvestigationsPage';
+import { NotificationProvider } from '../../contexts/NotificationProvider';
 
 // Mock useNavigate
 const mockNavigate = vi.fn();
@@ -33,9 +34,11 @@ vi.mock('../../hooks/useAuth', () => ({
 
 const renderWithProviders = (component: React.ReactElement) => {
   return render(
-    <BrowserRouter>
-      {component}
-    </BrowserRouter>
+    <NotificationProvider>
+      <BrowserRouter>
+        {component}
+      </BrowserRouter>
+    </NotificationProvider>
   );
 };
 

@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { AuthProvider } from '../contexts/AuthProvider';
+import { NotificationProvider } from '../contexts/NotificationProvider';
 import Investigations from '../components/Investigations';
 
 // Mock the API
@@ -59,11 +60,13 @@ vi.mock('react-router-dom', async () => {
 
 const renderWithProviders = (component: React.ReactElement) => {
   return render(
-    <BrowserRouter>
-      <AuthProvider>
-        {component}
-      </AuthProvider>
-    </BrowserRouter>
+    <NotificationProvider>
+      <BrowserRouter>
+        <AuthProvider>
+          {component}
+        </AuthProvider>
+      </BrowserRouter>
+    </NotificationProvider>
   );
 };
 

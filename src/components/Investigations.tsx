@@ -1,326 +1,100 @@
 import './Investigations.scss';
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { getInvestigations, restartInvestigation } from '../services/investigationService';
-import { getDifficultyClass } from '../utils/formatters';
-import type { Investigation } from '../types/investigation';
-
-type DifficultyFilter = 'ALL' | 'Facile' | 'Moyen' | 'Difficile';
-type StatusFilter = 'ALL' | 'SOLVED' | 'UNSOLVED';
+import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { restartInvestigation } from '../services/investigationService';
+import { useInvestigations } from '../hooks/useInvestigations';
+import { useToast } from '../hooks/useToast';
+import { getErrorMessage } from '../utils/errorMessage';
+import { InvestigationCard, InvestigationFilters, ScoringInfoButton } from './investigation';
+import type { DifficultyFilter, StatusFilter } from '../types/investigation';
 
 const Investigations: React.FC = () => {
   const navigate = useNavigate();
-  const [showScoringInfo, setShowScoringInfo] = useState(false);
-  const scoringRef = useRef<HTMLDivElement>(null);
+  const toast = useToast();
+  const { investigations, loading, loadError } = useInvestigations();
+
   const [filterDifficulty, setFilterDifficulty] = useState<DifficultyFilter>('ALL');
   const [filterStatus, setFilterStatus] = useState<StatusFilter>('ALL');
 
-  useEffect(() => {
-    if (!showScoringInfo) return;
-
-    const handleClickOutside = (e: MouseEvent) => {
-      if (scoringRef.current && !scoringRef.current.contains(e.target as Node)) {
-        setShowScoringInfo(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [showScoringInfo]);
-  const [investigations, setInvestigations] = useState<Investigation[]>([
-    {
-      id: 1,
-      title: 'Le vol du musée',
-      description: 'Un tableau de valeur inestimable a disparu du musée national. Les caméras de sécurité ont filmé plusieurs personnes suspectes. Analysez les données pour identifier le voleur.',
-      difficulty: 'Facile',
-      status: 'Disponible',
-      databaseId: 'museum_db'
-    },
-    {
-      id: 2,
-      title: 'Fraudes corporatives',
-      description: 'Des transactions suspectes ont été détectées dans les comptes de l\'entreprise TechCorp. Identifiez l\'employé responsable et découvrez comment il a détourné les fonds.',
-      difficulty: 'Moyen',
-      status: 'Disponible',
-      databaseId: 'corporate_db'
-    },
-    {
-      id: 3,
-      title: 'Meurtre au Manoir',
-      description: 'Lord Blackwood a été retrouvé mort dans sa bibliothèque. Six personnes étaient présentes ce soir-là. Qui est le meurtrier ? Et pourquoi ?',
-      difficulty: 'Difficile',
-      status: 'Disponible',
-      databaseId: 'manor_db'
-    },
-    {
-      id: 4,
-      title: 'Le Poison du Chef',
-      description: 'Un client prestigieux, le critique gastronomique Philippe Renard, a été hospitalisé après un dîner au restaurant étoilé "Le Cygne Doré". Les analyses révèlent un empoisonnement volontaire. Analysez les données pour trouver qui a empoisonné le critique.',
-      difficulty: 'Facile',
-      status: 'Disponible',
-      databaseId: 'poison_db'
-    },
-    {
-      id: 5,
-      title: 'Fuite de Données',
-      description: 'La startup MedSecure découvre que les dossiers patients de 50 000 utilisateurs ont été vendus sur le dark web. La fuite vient de l\'intérieur. Croisez les connexions VPN, les accès aux fichiers et les mouvements financiers pour identifier le traître.',
-      difficulty: 'Moyen',
-      status: 'Disponible',
-      databaseId: 'dataleak_db'
-    },
-    {
-      id: 6,
-      title: 'Le Mystère du Train de Nuit',
-      description: 'Henri Castellan, riche collectionneur, a disparu du train de nuit Paris-Nice. Son compartiment a été retrouvé vide, la fenêtre ouverte, et son diamant de 2 millions d\'euros a été volé. Suicide ? Enlèvement ? La vérité est bien plus tordue.',
-      difficulty: 'Difficile',
-      status: 'Disponible',
-      databaseId: 'train_db'
-    }
-  ]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const loadInvestigations = async () => {
-      setLoading(true);
-      try {
-        const data = await getInvestigations();
-        if (Array.isArray(data) && data.length > 0) {
-          setInvestigations(data);
-        }
-      } catch (error) {
-        console.error('Erreur lors du chargement des investigations:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadInvestigations();
-  }, []);
-
-  useEffect(() => {
-    const handleVisibilityChange = async () => {
-      if (!document.hidden) {
-        try {
-          const data = await getInvestigations();
-          if (Array.isArray(data) && data.length > 0) {
-            setInvestigations(data);
-          }
-        } catch (error) {
-          console.error('Erreur lors du rafraîchissement:', error);
-        }
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, []);
+  const filteredInvestigations = useMemo(() => {
+    return investigations.filter((investigation) => {
+      const matchesDifficulty =
+        filterDifficulty === 'ALL' || investigation.difficulty === filterDifficulty;
+      const matchesStatus =
+        filterStatus === 'ALL' ||
+        (filterStatus === 'SOLVED' && investigation.status === 'Terminée') ||
+        (filterStatus === 'UNSOLVED' && investigation.status !== 'Terminée');
+      return matchesDifficulty && matchesStatus;
+    });
+  }, [investigations, filterDifficulty, filterStatus]);
 
   const handleRestart = async (investigationId: number) => {
     if (loading) return;
-    
+
     try {
       await restartInvestigation(investigationId);
       navigate(`/investigation/${investigationId}`);
     } catch (error) {
       console.error('Erreur lors du redémarrage de l\'enquête:', error);
-      const message = error instanceof Error ? error.message : 'Erreur lors du redémarrage de l\'enquête.';
-      alert(`❌ ${message}\n\nSi le problème persiste, vérifiez que le backend autorise cette fonctionnalité.`);
+      const message = getErrorMessage(error, 'Erreur lors du redémarrage de l\'enquête.');
+      toast.error(`${message}\n\nSi le problème persiste, vérifiez que le backend autorise cette fonctionnalité.`, 6000);
     }
   };
+
+  const hasInvestigations = investigations.length > 0;
+  const showEmptyFromFilter =
+    !loading && !loadError && hasInvestigations && filteredInvestigations.length === 0;
+  const showEmptyFromLoad = !loading && !loadError && !hasInvestigations;
 
   return (
     <div className="investigations-container">
       <div className="investigations-header">
         <div className="investigations-title-row">
           <h1>Sélection des Enquêtes</h1>
-          <div className="scoring-info" ref={scoringRef}>
-            <button
-              className="scoring-info-btn"
-              onClick={() => setShowScoringInfo(!showScoringInfo)}
-              type="button"
-              aria-label="Informations sur le calcul des points"
-            >
-              i
-            </button>
-            {showScoringInfo && (
-              <div className="scoring-tooltip">
-                <p><strong>Calcul des points :</strong></p>
-                <ul>
-                  <li><span className="penalty">-1 point</span> par requête utilisée</li>
-                  <li><span className="penalty">-10 points</span> par indice révélé</li>
-                </ul>
-                <p className="scoring-tip">
-                  Un schéma de base de données est disponible à droite de chaque enquête pour éviter les requêtes inutiles.
-                </p>
-              </div>
-            )}
-          </div>
+          <ScoringInfoButton />
         </div>
         <p>Choisissez une enquête à résoudre en utilisant vos compétences SQL. Survolez les enquêtes pour en connaître l'intrigue.</p>
       </div>
 
       {loading && <p>Chargement des données depuis le serveur...</p>}
 
-      {Array.isArray(investigations) && investigations.length > 0 && (() => {
-        const countByDifficulty = (d: Exclude<DifficultyFilter, 'ALL'>) =>
-          investigations.filter(i => i.difficulty === d).length;
-        const solvedCount = investigations.filter(i => i.status === 'Terminée').length;
-        const unsolvedCount = investigations.length - solvedCount;
+      {!loading && loadError && (
+        <div className="investigations-empty">{loadError}</div>
+      )}
 
-        return (
-          <div className="investigations-filters">
-            <div className="filter-group">
-              <label>Difficulté :</label>
-              <div className="filter-buttons">
-                <button
-                  className={filterDifficulty === 'ALL' ? 'active' : ''}
-                  onClick={() => setFilterDifficulty('ALL')}
-                >
-                  Toutes ({investigations.length})
-                </button>
-                <button
-                  className={filterDifficulty === 'Facile' ? 'active' : ''}
-                  onClick={() => setFilterDifficulty('Facile')}
-                >
-                  Facile ({countByDifficulty('Facile')})
-                </button>
-                <button
-                  className={filterDifficulty === 'Moyen' ? 'active' : ''}
-                  onClick={() => setFilterDifficulty('Moyen')}
-                >
-                  Moyen ({countByDifficulty('Moyen')})
-                </button>
-                <button
-                  className={filterDifficulty === 'Difficile' ? 'active' : ''}
-                  onClick={() => setFilterDifficulty('Difficile')}
-                >
-                  Difficile ({countByDifficulty('Difficile')})
-                </button>
-              </div>
-            </div>
-            <div className="filter-group">
-              <label>Statut :</label>
-              <div className="filter-buttons">
-                <button
-                  className={filterStatus === 'ALL' ? 'active' : ''}
-                  onClick={() => setFilterStatus('ALL')}
-                >
-                  Toutes ({investigations.length})
-                </button>
-                <button
-                  className={filterStatus === 'UNSOLVED' ? 'active' : ''}
-                  onClick={() => setFilterStatus('UNSOLVED')}
-                >
-                  Non résolues ({unsolvedCount})
-                </button>
-                <button
-                  className={filterStatus === 'SOLVED' ? 'active' : ''}
-                  onClick={() => setFilterStatus('SOLVED')}
-                >
-                  Résolues ({solvedCount})
-                </button>
-              </div>
-            </div>
-          </div>
-        );
-      })()}
+      {showEmptyFromLoad && (
+        <div className="investigations-empty">
+          Aucune enquête disponible pour le moment.
+        </div>
+      )}
 
-      {(() => {
-        const filteredInvestigations = Array.isArray(investigations)
-          ? investigations.filter((investigation) => {
-              const matchesDifficulty =
-                filterDifficulty === 'ALL' || investigation.difficulty === filterDifficulty;
-              const matchesStatus =
-                filterStatus === 'ALL' ||
-                (filterStatus === 'SOLVED' && investigation.status === 'Terminée') ||
-                (filterStatus === 'UNSOLVED' && investigation.status !== 'Terminée');
-              return matchesDifficulty && matchesStatus;
-            })
-          : [];
+      {hasInvestigations && (
+        <InvestigationFilters
+          investigations={investigations}
+          difficulty={filterDifficulty}
+          status={filterStatus}
+          onDifficultyChange={setFilterDifficulty}
+          onStatusChange={setFilterStatus}
+        />
+      )}
 
-        if (!loading && Array.isArray(investigations) && investigations.length > 0 && filteredInvestigations.length === 0) {
-          return (
-            <div className="investigations-empty">
-              Aucune enquête ne correspond aux filtres sélectionnés.
-            </div>
-          );
-        }
-
-        return (
+      {showEmptyFromFilter ? (
+        <div className="investigations-empty">
+          Aucune enquête ne correspond aux filtres sélectionnés.
+        </div>
+      ) : (
+        hasInvestigations && (
           <div className="investigations-grid">
-            {filteredInvestigations.map((investigation) => {
-          let backgroundClass = '';
-          if (investigation.id === 1) backgroundClass = 'investigation-museum';
-          else if (investigation.id === 2) backgroundClass = 'investigation-corporate';
-          else if (investigation.id === 3) backgroundClass = 'investigation-manor';
-          else if (investigation.id === 4) backgroundClass = 'investigation-restaurant';
-          else if (investigation.id === 5) backgroundClass = 'investigation-dataleak';
-          else if (investigation.id === 6) backgroundClass = 'investigation-train';
-          
-          return (
-            <div key={investigation.id} className={`investigation-card ${backgroundClass} ${investigation.status === 'Disponible' ? 'status-available' : 'status-unavailable'} ${investigation.status === 'Terminée' ? 'status-completed' : ''}`}>
-              <div className="investigation-header">
-                <h2>{investigation.title || 'Sans titre'}</h2>
-                <div className="investigation-badges">
-                  {investigation.status === 'Terminée' && (
-                    <span className="badge badge-resolved">
-                      ✓ Résolue
-                    </span>
-                  )}
-                  <span className={`badge difficulte ${getDifficultyClass(investigation.difficulty)}`}>
-                    {investigation.difficulty || '—'}
-                  </span>
-                  <div className="status-icon" aria-label={investigation.status}>
-                    {investigation.status === 'Disponible' ? (
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-check-circle">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                        <polyline points="22,4 12,14.01 9,11.01"/>
-                      </svg>
-                    ) : (
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-x-circle">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="m15 9-6 6"/>
-                        <path d="m9 9 6 6"/>
-                      </svg>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="investigation-description">
-                <p>{investigation.description}</p>
-              </div>
-              {investigation.status === 'Terminée' ? (
-                <button
-                  className="primary-button"
-                  onClick={() => handleRestart(investigation.id)}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: 'middle', marginRight: '0.5rem' }}>
-                    <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
-                    <path d="M21 3v5h-5"/>
-                    <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
-                    <path d="M3 21v-5h5"/>
-                  </svg>
-                  Rejouer l'enquête
-                </button>
-              ) : (
-                <Link
-                  to={`/investigation/${investigation.id}`}
-                  className={`primary-button ${investigation.status !== 'Disponible' && investigation.status !== 'En cours' ? 'disabled' : ''}`}
-                  onClick={(e) => {
-                    if (investigation.status !== 'Disponible' && investigation.status !== 'En cours') {
-                      e.preventDefault();
-                    }
-                  }}
-                >
-                  {investigation.status === 'Disponible' ? 'Commencer l\'enquête' : 'Continuer'}
-                </Link>
-              )}
-            </div>
-          );
-        })}
+            {filteredInvestigations.map((investigation) => (
+              <InvestigationCard
+                key={investigation.id}
+                investigation={investigation}
+                onRestart={handleRestart}
+              />
+            ))}
           </div>
-        );
-      })()}
+        )
+      )}
 
       <div className="investigations-actions">
         <button className="primary-button" onClick={() => navigate('/')}>
