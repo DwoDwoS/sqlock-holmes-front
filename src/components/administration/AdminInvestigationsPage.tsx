@@ -23,6 +23,7 @@ const AdminInvestigationsPage: React.FC = () => {
   const confirm = useConfirm();
   const [investigations, setInvestigations] = useState<Investigation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
@@ -39,6 +40,7 @@ const AdminInvestigationsPage: React.FC = () => {
 
     const loadInvestigations = async () => {
       setLoading(true);
+      setLoadError(null);
       try {
         setInvestigations([
           {
@@ -105,6 +107,7 @@ const AdminInvestigationsPage: React.FC = () => {
         setLoading(false);
       } catch (error) {
         console.error('Erreur lors du chargement des enquêtes:', error);
+        setLoadError('Impossible de charger les enquêtes. Veuillez réessayer.');
         setLoading(false);
       }
     };
@@ -115,11 +118,12 @@ const AdminInvestigationsPage: React.FC = () => {
   const handleToggleActive = async (investigationId: number) => {
     try {
       // TODO: Appel API pour activer/désactiver
-      setInvestigations(investigations.map(inv => 
+      setInvestigations(investigations.map(inv =>
         inv.id === investigationId ? { ...inv, isActive: !inv.isActive } : inv
       ));
     } catch (error) {
       console.error('Erreur lors de la modification:', error);
+      toast.error('Erreur lors de la modification du statut de l\'enquête');
     }
   };
 
@@ -174,6 +178,15 @@ const AdminInvestigationsPage: React.FC = () => {
 
   if (loading) {
     return <div className="admin-loading">Chargement...</div>;
+  }
+
+  if (loadError) {
+    return (
+      <div className="admin-error">
+        <p>{loadError}</p>
+        <button onClick={() => window.location.reload()}>Réessayer</button>
+      </div>
+    );
   }
 
   return (

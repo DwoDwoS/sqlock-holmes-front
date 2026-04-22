@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { HintsService } from '../services/hintsService';
 import type { Hint, HintCount } from '../types/investigation';
 import { getMockHints } from '../utils/investigationUtils';
+import { getErrorMessage, getErrorStatus } from '../utils/errorMessage';
 import { useToast } from './useToast';
 
 export const useHints = (investigationId: number | undefined) => {
@@ -62,19 +63,20 @@ export const useHints = (investigationId: number | undefined) => {
       setHintCount(prev => prev ? { ...prev, unlocked: prev.unlocked + 1, remaining: prev.remaining - 1 } : null);
     } catch (error) {
       console.error('Erreur lors du déblocage du prochain indice:', error);
-      
-      let errorMessage = 'Erreur lors du déblocage de l\'indice.';
-      const axiosError = error as { response?: { status?: number; data?: { message?: string; error?: string } } };
-      
-      if (axiosError.response?.status === 403) {
-        const backendMessage = axiosError.response?.data?.message || axiosError.response?.data?.error;
-        errorMessage = backendMessage || 'Accès refusé. Vous n\'avez peut-être pas démarré cette enquête ou votre session a expiré.';
-      } else if (axiosError.response?.status === 404) {
+
+      const status = getErrorStatus(error);
+      let errorMessage: string;
+      if (status === 404) {
         errorMessage = 'Aucun indice supplémentaire disponible.';
-      } else if (axiosError.response?.data?.message) {
-        errorMessage = axiosError.response.data.message;
+      } else if (status === 403) {
+        errorMessage = getErrorMessage(
+          error,
+          'Accès refusé. Vous n\'avez peut-être pas démarré cette enquête ou votre session a expiré.'
+        );
+      } else {
+        errorMessage = getErrorMessage(error, 'Erreur lors du déblocage de l\'indice.');
       }
-      
+
       toast.error(`${errorMessage}\n\nSi le problème persiste, essayez de vous reconnecter ou vérifiez que vous avez démarré l'enquête.`, 6000);
     }
   };
