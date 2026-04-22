@@ -8,7 +8,6 @@ import { useAuth } from '../hooks/useAuth';
 import type { AiChatResponse, AiStatusResponse } from '../types/watson';
 
 beforeAll(() => {
-  // jsdom does not implement scrollIntoView — the chatbox calls it on mount/update.
   if (!Element.prototype.scrollIntoView) {
     Element.prototype.scrollIntoView = vi.fn();
   }

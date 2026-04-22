@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useWatsonChat } from '../../hooks/useWatsonChat';
 import ChatToggleButton from './ChatToggleButton';
@@ -16,8 +16,7 @@ interface Props {
 const WatsonChatbox: React.FC<Props> = ({ investigationId }) => {
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
-  const [hasUnread, setHasUnread] = useState(false);
-  const lastSeenIdRef = useRef<string | null>(null);
+  const [lastSeenId, setLastSeenId] = useState<string | null>(null);
 
   const {
     messages,
@@ -34,20 +33,18 @@ const WatsonChatbox: React.FC<Props> = ({ investigationId }) => {
   const latestId = latestMessage?.id;
   const latestRole = latestMessage?.role;
 
-  useEffect(() => {
-    if (!latestId || latestRole !== 'watson') return;
-
-    if (isOpen) {
-      lastSeenIdRef.current = latestId;
-      setHasUnread(false);
-    } else if (lastSeenIdRef.current !== latestId) {
-      setHasUnread(true);
-    }
-  }, [isOpen, latestId, latestRole]);
+  const hasUnread =
+    !isOpen &&
+    !!latestId &&
+    latestRole === 'watson' &&
+    lastSeenId !== latestId;
 
   const handleToggle = useCallback(() => {
+    if (isOpen) {
+      setLastSeenId(latestId ?? null);
+    }
     setIsOpen((prev) => !prev);
-  }, []);
+  }, [isOpen, latestId]);
 
   const handleSend = useCallback(
     (message: string) => {
