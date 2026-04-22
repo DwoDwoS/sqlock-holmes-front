@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { useConfirm } from '../../hooks/useConfirm';
 import './AdminSettingsPage.scss';
 
 interface SystemSettings {
@@ -16,6 +17,7 @@ interface SystemSettings {
 const AdminSettingsPage: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const confirm = useConfirm();
   const [settings, setSettings] = useState<SystemSettings>({
     siteName: 'SQLock Holmes',
     maintenance: false,
@@ -65,9 +67,14 @@ const AdminSettingsPage: React.FC = () => {
   };
 
   const handleResetSettings = async () => {
-    if (!window.confirm('Êtes-vous sûr de vouloir réinitialiser tous les paramètres ?')) {
-      return;
-    }
+    const confirmed = await confirm({
+      title: 'Réinitialiser les paramètres ?',
+      message: 'Tous les paramètres reviendront à leur valeur par défaut.',
+      confirmLabel: 'Réinitialiser',
+      danger: true,
+    });
+    if (!confirmed) return;
+
     setSettings({
       siteName: 'SQLock Holmes',
       maintenance: false,

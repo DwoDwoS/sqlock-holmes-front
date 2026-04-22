@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { HintsService } from '../services/hintsService';
 import type { Hint, HintCount } from '../types/investigation';
 import { getMockHints } from '../utils/investigationUtils';
+import { useToast } from './useToast';
 
 export const useHints = (investigationId: number | undefined) => {
+  const toast = useToast();
   const [hints, setHints] = useState<Hint[]>([]);
   const [hintCount, setHintCount] = useState<HintCount | null>(null);
   const [loading, setLoading] = useState(false);
@@ -73,7 +75,7 @@ export const useHints = (investigationId: number | undefined) => {
         errorMessage = axiosError.response.data.message;
       }
       
-      alert(`❌ ${errorMessage}\n\nSi le problème persiste, essayez de vous reconnecter ou vérifiez que vous avez démarré l'enquête.`);
+      toast.error(`${errorMessage}\n\nSi le problème persiste, essayez de vous reconnecter ou vérifiez que vous avez démarré l'enquête.`, 6000);
     }
   };
 

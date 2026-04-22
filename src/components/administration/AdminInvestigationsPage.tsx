@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { useToast } from '../../hooks/useToast';
+import { useConfirm } from '../../hooks/useConfirm';
 import './AdminInvestigationsPage.scss';
 
 interface Investigation {
@@ -17,6 +19,8 @@ interface Investigation {
 const AdminInvestigationsPage: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const toast = useToast();
+  const confirm = useConfirm();
   const [investigations, setInvestigations] = useState<Investigation[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -120,16 +124,21 @@ const AdminInvestigationsPage: React.FC = () => {
   };
 
   const handleDeleteInvestigation = async (investigationId: number) => {
-    if (!window.confirm('Êtes-vous sûr de vouloir supprimer cette enquête ?')) {
-      return;
-    }
+    const confirmed = await confirm({
+      title: 'Supprimer cette enquête ?',
+      message: 'Cette action est irréversible.',
+      confirmLabel: 'Supprimer',
+      danger: true,
+    });
+    if (!confirmed) return;
+
     try {
       // TODO: Appel API pour supprimer
       setInvestigations(investigations.filter(inv => inv.id !== investigationId));
-      alert('Enquête supprimée avec succès');
+      toast.success('Enquête supprimée avec succès');
     } catch (error) {
       console.error('Erreur lors de la suppression:', error);
-      alert('Erreur lors de la suppression de l\'enquête');
+      toast.error('Erreur lors de la suppression de l\'enquête');
     }
   };
 
@@ -147,10 +156,10 @@ const AdminInvestigationsPage: React.FC = () => {
       setInvestigations([...investigations, newInvestigation]);
       setShowCreateForm(false);
       setFormData({ title: '', description: '', difficulty: 'Facile', databaseId: '' });
-      alert('Enquête créée avec succès');
+      toast.success('Enquête créée avec succès');
     } catch (error) {
       console.error('Erreur lors de la création:', error);
-      alert('Erreur lors de la création de l\'enquête');
+      toast.error('Erreur lors de la création de l\'enquête');
     }
   };
 

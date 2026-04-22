@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { AuthProvider } from '../contexts/AuthProvider';
 import { LeaderboardRefreshProvider } from '../contexts/LeaderboardRefreshContext';
+import { NotificationProvider } from '../contexts/NotificationProvider';
 import InvestigationPage from '../components/InvestigationPage';
 
 // Mock useNavigate
@@ -79,13 +80,15 @@ vi.mock('@monaco-editor/react', () => ({
 
 const renderWithProviders = (component: React.ReactElement) => {
   return render(
-    <BrowserRouter>
-      <AuthProvider>
-        <LeaderboardRefreshProvider>
-          {component}
-        </LeaderboardRefreshProvider>
-      </AuthProvider>
-    </BrowserRouter>
+    <NotificationProvider>
+      <BrowserRouter>
+        <AuthProvider>
+          <LeaderboardRefreshProvider>
+            {component}
+          </LeaderboardRefreshProvider>
+        </AuthProvider>
+      </BrowserRouter>
+    </NotificationProvider>
   );
 };
 

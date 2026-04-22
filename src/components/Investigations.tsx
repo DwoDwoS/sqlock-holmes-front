@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getInvestigations, restartInvestigation } from '../services/investigationService';
 import { getDifficultyClass } from '../utils/formatters';
+import { useToast } from '../hooks/useToast';
 import type { Investigation } from '../types/investigation';
 
 type DifficultyFilter = 'ALL' | 'Facile' | 'Moyen' | 'Difficile';
@@ -10,6 +11,7 @@ type StatusFilter = 'ALL' | 'SOLVED' | 'UNSOLVED';
 
 const Investigations: React.FC = () => {
   const navigate = useNavigate();
+  const toast = useToast();
   const [showScoringInfo, setShowScoringInfo] = useState(false);
   const scoringRef = useRef<HTMLDivElement>(null);
   const [filterDifficulty, setFilterDifficulty] = useState<DifficultyFilter>('ALL');
@@ -76,7 +78,7 @@ const Investigations: React.FC = () => {
     } catch (error) {
       console.error('Erreur lors du redémarrage de l\'enquête:', error);
       const message = error instanceof Error ? error.message : 'Erreur lors du redémarrage de l\'enquête.';
-      alert(`❌ ${message}\n\nSi le problème persiste, vérifiez que le backend autorise cette fonctionnalité.`);
+      toast.error(`${message}\n\nSi le problème persiste, vérifiez que le backend autorise cette fonctionnalité.`, 6000);
     }
   };
 
