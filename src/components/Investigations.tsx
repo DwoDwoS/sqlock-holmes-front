@@ -1,114 +1,57 @@
 import './Investigations.scss';
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { getInvestigations, restartInvestigation } from '../services/investigationService';
-import { getDifficultyClass } from '../utils/formatters';
+import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { restartInvestigation } from '../services/investigationService';
+import { useInvestigations } from '../hooks/useInvestigations';
 import { useToast } from '../hooks/useToast';
-import type { Investigation } from '../types/investigation';
-
-type DifficultyFilter = 'ALL' | 'Facile' | 'Moyen' | 'Difficile';
-type StatusFilter = 'ALL' | 'SOLVED' | 'UNSOLVED';
+import { getErrorMessage } from '../utils/errorMessage';
+import { InvestigationCard, InvestigationFilters, ScoringInfoButton } from './investigation';
+import type { DifficultyFilter, StatusFilter } from '../types/investigation';
 
 const Investigations: React.FC = () => {
   const navigate = useNavigate();
   const toast = useToast();
-  const [showScoringInfo, setShowScoringInfo] = useState(false);
-  const scoringRef = useRef<HTMLDivElement>(null);
+  const { investigations, loading, loadError } = useInvestigations();
+
   const [filterDifficulty, setFilterDifficulty] = useState<DifficultyFilter>('ALL');
   const [filterStatus, setFilterStatus] = useState<StatusFilter>('ALL');
 
-  useEffect(() => {
-    if (!showScoringInfo) return;
-
-    const handleClickOutside = (e: MouseEvent) => {
-      if (scoringRef.current && !scoringRef.current.contains(e.target as Node)) {
-        setShowScoringInfo(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [showScoringInfo]);
-  const [investigations, setInvestigations] = useState<Investigation[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [loadError, setLoadError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const loadInvestigations = async () => {
-      setLoading(true);
-      setLoadError(null);
-      try {
-        const data = await getInvestigations();
-        setInvestigations(Array.isArray(data) ? data : []);
-      } catch (error) {
-        console.error('Erreur lors du chargement des investigations:', error);
-        setLoadError('Impossible de charger les enquêtes. Veuillez réessayer.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadInvestigations();
-  }, []);
-
-  useEffect(() => {
-    const handleVisibilityChange = async () => {
-      if (!document.hidden) {
-        try {
-          const data = await getInvestigations();
-          if (Array.isArray(data)) {
-            setInvestigations(data);
-          }
-        } catch (error) {
-          console.error('Erreur lors du rafraîchissement:', error);
-        }
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, []);
+  const filteredInvestigations = useMemo(() => {
+    return investigations.filter((investigation) => {
+      const matchesDifficulty =
+        filterDifficulty === 'ALL' || investigation.difficulty === filterDifficulty;
+      const matchesStatus =
+        filterStatus === 'ALL' ||
+        (filterStatus === 'SOLVED' && investigation.status === 'Terminée') ||
+        (filterStatus === 'UNSOLVED' && investigation.status !== 'Terminée');
+      return matchesDifficulty && matchesStatus;
+    });
+  }, [investigations, filterDifficulty, filterStatus]);
 
   const handleRestart = async (investigationId: number) => {
     if (loading) return;
-    
+
     try {
       await restartInvestigation(investigationId);
       navigate(`/investigation/${investigationId}`);
     } catch (error) {
       console.error('Erreur lors du redémarrage de l\'enquête:', error);
-      const message = error instanceof Error ? error.message : 'Erreur lors du redémarrage de l\'enquête.';
+      const message = getErrorMessage(error, 'Erreur lors du redémarrage de l\'enquête.');
       toast.error(`${message}\n\nSi le problème persiste, vérifiez que le backend autorise cette fonctionnalité.`, 6000);
     }
   };
+
+  const hasInvestigations = investigations.length > 0;
+  const showEmptyFromFilter =
+    !loading && !loadError && hasInvestigations && filteredInvestigations.length === 0;
+  const showEmptyFromLoad = !loading && !loadError && !hasInvestigations;
 
   return (
     <div className="investigations-container">
       <div className="investigations-header">
         <div className="investigations-title-row">
           <h1>Sélection des Enquêtes</h1>
-          <div className="scoring-info" ref={scoringRef}>
-            <button
-              className="scoring-info-btn"
-              onClick={() => setShowScoringInfo(!showScoringInfo)}
-              type="button"
-              aria-label="Informations sur le calcul des points"
-            >
-              i
-            </button>
-            {showScoringInfo && (
-              <div className="scoring-tooltip">
-                <p><strong>Calcul des points :</strong></p>
-                <ul>
-                  <li><span className="penalty">-1 point</span> par requête utilisée</li>
-                  <li><span className="penalty">-10 points</span> par indice révélé</li>
-                </ul>
-                <p className="scoring-tip">
-                  Un schéma de base de données est disponible à droite de chaque enquête pour éviter les requêtes inutiles.
-                </p>
-              </div>
-            )}
-          </div>
+          <ScoringInfoButton />
         </div>
         <p>Choisissez une enquête à résoudre en utilisant vos compétences SQL. Survolez les enquêtes pour en connaître l'intrigue.</p>
       </div>
@@ -116,177 +59,42 @@ const Investigations: React.FC = () => {
       {loading && <p>Chargement des données depuis le serveur...</p>}
 
       {!loading && loadError && (
-        <div className="investigations-empty">
-          {loadError}
-        </div>
+        <div className="investigations-empty">{loadError}</div>
       )}
 
-      {!loading && !loadError && investigations.length === 0 && (
+      {showEmptyFromLoad && (
         <div className="investigations-empty">
           Aucune enquête disponible pour le moment.
         </div>
       )}
 
-      {Array.isArray(investigations) && investigations.length > 0 && (() => {
-        const countByDifficulty = (d: Exclude<DifficultyFilter, 'ALL'>) =>
-          investigations.filter(i => i.difficulty === d).length;
-        const solvedCount = investigations.filter(i => i.status === 'Terminée').length;
-        const unsolvedCount = investigations.length - solvedCount;
+      {hasInvestigations && (
+        <InvestigationFilters
+          investigations={investigations}
+          difficulty={filterDifficulty}
+          status={filterStatus}
+          onDifficultyChange={setFilterDifficulty}
+          onStatusChange={setFilterStatus}
+        />
+      )}
 
-        return (
-          <div className="investigations-filters">
-            <div className="filter-group">
-              <label>Difficulté :</label>
-              <div className="filter-buttons">
-                <button
-                  className={filterDifficulty === 'ALL' ? 'active' : ''}
-                  onClick={() => setFilterDifficulty('ALL')}
-                >
-                  Toutes ({investigations.length})
-                </button>
-                <button
-                  className={filterDifficulty === 'Facile' ? 'active' : ''}
-                  onClick={() => setFilterDifficulty('Facile')}
-                >
-                  Facile ({countByDifficulty('Facile')})
-                </button>
-                <button
-                  className={filterDifficulty === 'Moyen' ? 'active' : ''}
-                  onClick={() => setFilterDifficulty('Moyen')}
-                >
-                  Moyen ({countByDifficulty('Moyen')})
-                </button>
-                <button
-                  className={filterDifficulty === 'Difficile' ? 'active' : ''}
-                  onClick={() => setFilterDifficulty('Difficile')}
-                >
-                  Difficile ({countByDifficulty('Difficile')})
-                </button>
-              </div>
-            </div>
-            <div className="filter-group">
-              <label>Statut :</label>
-              <div className="filter-buttons">
-                <button
-                  className={filterStatus === 'ALL' ? 'active' : ''}
-                  onClick={() => setFilterStatus('ALL')}
-                >
-                  Toutes ({investigations.length})
-                </button>
-                <button
-                  className={filterStatus === 'UNSOLVED' ? 'active' : ''}
-                  onClick={() => setFilterStatus('UNSOLVED')}
-                >
-                  Non résolues ({unsolvedCount})
-                </button>
-                <button
-                  className={filterStatus === 'SOLVED' ? 'active' : ''}
-                  onClick={() => setFilterStatus('SOLVED')}
-                >
-                  Résolues ({solvedCount})
-                </button>
-              </div>
-            </div>
-          </div>
-        );
-      })()}
-
-      {(() => {
-        const filteredInvestigations = Array.isArray(investigations)
-          ? investigations.filter((investigation) => {
-              const matchesDifficulty =
-                filterDifficulty === 'ALL' || investigation.difficulty === filterDifficulty;
-              const matchesStatus =
-                filterStatus === 'ALL' ||
-                (filterStatus === 'SOLVED' && investigation.status === 'Terminée') ||
-                (filterStatus === 'UNSOLVED' && investigation.status !== 'Terminée');
-              return matchesDifficulty && matchesStatus;
-            })
-          : [];
-
-        if (!loading && Array.isArray(investigations) && investigations.length > 0 && filteredInvestigations.length === 0) {
-          return (
-            <div className="investigations-empty">
-              Aucune enquête ne correspond aux filtres sélectionnés.
-            </div>
-          );
-        }
-
-        return (
+      {showEmptyFromFilter ? (
+        <div className="investigations-empty">
+          Aucune enquête ne correspond aux filtres sélectionnés.
+        </div>
+      ) : (
+        hasInvestigations && (
           <div className="investigations-grid">
-            {filteredInvestigations.map((investigation) => {
-          let backgroundClass = '';
-          if (investigation.id === 1) backgroundClass = 'investigation-museum';
-          else if (investigation.id === 2) backgroundClass = 'investigation-corporate';
-          else if (investigation.id === 3) backgroundClass = 'investigation-manor';
-          else if (investigation.id === 4) backgroundClass = 'investigation-restaurant';
-          else if (investigation.id === 5) backgroundClass = 'investigation-dataleak';
-          else if (investigation.id === 6) backgroundClass = 'investigation-train';
-          
-          return (
-            <div key={investigation.id} className={`investigation-card ${backgroundClass} ${investigation.status === 'Disponible' ? 'status-available' : 'status-unavailable'} ${investigation.status === 'Terminée' ? 'status-completed' : ''}`}>
-              <div className="investigation-header">
-                <h2>{investigation.title || 'Sans titre'}</h2>
-                <div className="investigation-badges">
-                  {investigation.status === 'Terminée' && (
-                    <span className="badge badge-resolved">
-                      ✓ Résolue
-                    </span>
-                  )}
-                  <span className={`badge difficulte ${getDifficultyClass(investigation.difficulty)}`}>
-                    {investigation.difficulty || '—'}
-                  </span>
-                  <div className="status-icon" aria-label={investigation.status}>
-                    {investigation.status === 'Disponible' ? (
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-check-circle">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                        <polyline points="22,4 12,14.01 9,11.01"/>
-                      </svg>
-                    ) : (
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-x-circle">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="m15 9-6 6"/>
-                        <path d="m9 9 6 6"/>
-                      </svg>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="investigation-description">
-                <p>{investigation.description}</p>
-              </div>
-              {investigation.status === 'Terminée' ? (
-                <button
-                  className="primary-button"
-                  onClick={() => handleRestart(investigation.id)}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: 'middle', marginRight: '0.5rem' }}>
-                    <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
-                    <path d="M21 3v5h-5"/>
-                    <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
-                    <path d="M3 21v-5h5"/>
-                  </svg>
-                  Rejouer l'enquête
-                </button>
-              ) : (
-                <Link
-                  to={`/investigation/${investigation.id}`}
-                  className={`primary-button ${investigation.status !== 'Disponible' && investigation.status !== 'En cours' ? 'disabled' : ''}`}
-                  onClick={(e) => {
-                    if (investigation.status !== 'Disponible' && investigation.status !== 'En cours') {
-                      e.preventDefault();
-                    }
-                  }}
-                >
-                  {investigation.status === 'Disponible' ? 'Commencer l\'enquête' : 'Continuer'}
-                </Link>
-              )}
-            </div>
-          );
-        })}
+            {filteredInvestigations.map((investigation) => (
+              <InvestigationCard
+                key={investigation.id}
+                investigation={investigation}
+                onRestart={handleRestart}
+              />
+            ))}
           </div>
-        );
-      })()}
+        )
+      )}
 
       <div className="investigations-actions">
         <button className="primary-button" onClick={() => navigate('/')}>
