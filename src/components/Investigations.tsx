@@ -27,68 +27,20 @@ const Investigations: React.FC = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [showScoringInfo]);
-  const [investigations, setInvestigations] = useState<Investigation[]>([
-    {
-      id: 1,
-      title: 'Le vol du musée',
-      description: 'Un tableau de valeur inestimable a disparu du musée national. Les caméras de sécurité ont filmé plusieurs personnes suspectes. Analysez les données pour identifier le voleur.',
-      difficulty: 'Facile',
-      status: 'Disponible',
-      databaseId: 'museum_db'
-    },
-    {
-      id: 2,
-      title: 'Fraudes corporatives',
-      description: 'Des transactions suspectes ont été détectées dans les comptes de l\'entreprise TechCorp. Identifiez l\'employé responsable et découvrez comment il a détourné les fonds.',
-      difficulty: 'Moyen',
-      status: 'Disponible',
-      databaseId: 'corporate_db'
-    },
-    {
-      id: 3,
-      title: 'Meurtre au Manoir',
-      description: 'Lord Blackwood a été retrouvé mort dans sa bibliothèque. Six personnes étaient présentes ce soir-là. Qui est le meurtrier ? Et pourquoi ?',
-      difficulty: 'Difficile',
-      status: 'Disponible',
-      databaseId: 'manor_db'
-    },
-    {
-      id: 4,
-      title: 'Le Poison du Chef',
-      description: 'Un client prestigieux, le critique gastronomique Philippe Renard, a été hospitalisé après un dîner au restaurant étoilé "Le Cygne Doré". Les analyses révèlent un empoisonnement volontaire. Analysez les données pour trouver qui a empoisonné le critique.',
-      difficulty: 'Facile',
-      status: 'Disponible',
-      databaseId: 'poison_db'
-    },
-    {
-      id: 5,
-      title: 'Fuite de Données',
-      description: 'La startup MedSecure découvre que les dossiers patients de 50 000 utilisateurs ont été vendus sur le dark web. La fuite vient de l\'intérieur. Croisez les connexions VPN, les accès aux fichiers et les mouvements financiers pour identifier le traître.',
-      difficulty: 'Moyen',
-      status: 'Disponible',
-      databaseId: 'dataleak_db'
-    },
-    {
-      id: 6,
-      title: 'Le Mystère du Train de Nuit',
-      description: 'Henri Castellan, riche collectionneur, a disparu du train de nuit Paris-Nice. Son compartiment a été retrouvé vide, la fenêtre ouverte, et son diamant de 2 millions d\'euros a été volé. Suicide ? Enlèvement ? La vérité est bien plus tordue.',
-      difficulty: 'Difficile',
-      status: 'Disponible',
-      databaseId: 'train_db'
-    }
-  ]);
+  const [investigations, setInvestigations] = useState<Investigation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadInvestigations = async () => {
       setLoading(true);
+      setLoadError(null);
       try {
         const data = await getInvestigations();
-        if (Array.isArray(data) && data.length > 0) {
-          setInvestigations(data);
-        }
+        setInvestigations(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error('Erreur lors du chargement des investigations:', error);
+        setLoadError('Impossible de charger les enquêtes. Veuillez réessayer.');
       } finally {
         setLoading(false);
       }
@@ -102,7 +54,7 @@ const Investigations: React.FC = () => {
       if (!document.hidden) {
         try {
           const data = await getInvestigations();
-          if (Array.isArray(data) && data.length > 0) {
+          if (Array.isArray(data)) {
             setInvestigations(data);
           }
         } catch (error) {
@@ -160,6 +112,18 @@ const Investigations: React.FC = () => {
       </div>
 
       {loading && <p>Chargement des données depuis le serveur...</p>}
+
+      {!loading && loadError && (
+        <div className="investigations-empty">
+          {loadError}
+        </div>
+      )}
+
+      {!loading && !loadError && investigations.length === 0 && (
+        <div className="investigations-empty">
+          Aucune enquête disponible pour le moment.
+        </div>
+      )}
 
       {Array.isArray(investigations) && investigations.length > 0 && (() => {
         const countByDifficulty = (d: Exclude<DifficultyFilter, 'ALL'>) =>
