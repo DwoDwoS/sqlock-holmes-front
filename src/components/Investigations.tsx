@@ -5,10 +5,15 @@ import { getInvestigations, restartInvestigation } from '../services/investigati
 import { getDifficultyClass } from '../utils/formatters';
 import type { Investigation } from '../types/investigation';
 
+type DifficultyFilter = 'ALL' | 'Facile' | 'Moyen' | 'Difficile';
+type StatusFilter = 'ALL' | 'SOLVED' | 'UNSOLVED';
+
 const Investigations: React.FC = () => {
   const navigate = useNavigate();
   const [showScoringInfo, setShowScoringInfo] = useState(false);
   const scoringRef = useRef<HTMLDivElement>(null);
+  const [filterDifficulty, setFilterDifficulty] = useState<DifficultyFilter>('ALL');
+  const [filterStatus, setFilterStatus] = useState<StatusFilter>('ALL');
 
   useEffect(() => {
     if (!showScoringInfo) return;
@@ -156,8 +161,94 @@ const Investigations: React.FC = () => {
 
       {loading && <p>Chargement des données depuis le serveur...</p>}
 
-      <div className="investigations-grid">
-        {Array.isArray(investigations) && investigations.map((investigation) => {
+      {Array.isArray(investigations) && investigations.length > 0 && (() => {
+        const countByDifficulty = (d: Exclude<DifficultyFilter, 'ALL'>) =>
+          investigations.filter(i => i.difficulty === d).length;
+        const solvedCount = investigations.filter(i => i.status === 'Terminée').length;
+        const unsolvedCount = investigations.length - solvedCount;
+
+        return (
+          <div className="investigations-filters">
+            <div className="filter-group">
+              <label>Difficulté :</label>
+              <div className="filter-buttons">
+                <button
+                  className={filterDifficulty === 'ALL' ? 'active' : ''}
+                  onClick={() => setFilterDifficulty('ALL')}
+                >
+                  Toutes ({investigations.length})
+                </button>
+                <button
+                  className={filterDifficulty === 'Facile' ? 'active' : ''}
+                  onClick={() => setFilterDifficulty('Facile')}
+                >
+                  Facile ({countByDifficulty('Facile')})
+                </button>
+                <button
+                  className={filterDifficulty === 'Moyen' ? 'active' : ''}
+                  onClick={() => setFilterDifficulty('Moyen')}
+                >
+                  Moyen ({countByDifficulty('Moyen')})
+                </button>
+                <button
+                  className={filterDifficulty === 'Difficile' ? 'active' : ''}
+                  onClick={() => setFilterDifficulty('Difficile')}
+                >
+                  Difficile ({countByDifficulty('Difficile')})
+                </button>
+              </div>
+            </div>
+            <div className="filter-group">
+              <label>Statut :</label>
+              <div className="filter-buttons">
+                <button
+                  className={filterStatus === 'ALL' ? 'active' : ''}
+                  onClick={() => setFilterStatus('ALL')}
+                >
+                  Toutes ({investigations.length})
+                </button>
+                <button
+                  className={filterStatus === 'UNSOLVED' ? 'active' : ''}
+                  onClick={() => setFilterStatus('UNSOLVED')}
+                >
+                  Non résolues ({unsolvedCount})
+                </button>
+                <button
+                  className={filterStatus === 'SOLVED' ? 'active' : ''}
+                  onClick={() => setFilterStatus('SOLVED')}
+                >
+                  Résolues ({solvedCount})
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
+      {(() => {
+        const filteredInvestigations = Array.isArray(investigations)
+          ? investigations.filter((investigation) => {
+              const matchesDifficulty =
+                filterDifficulty === 'ALL' || investigation.difficulty === filterDifficulty;
+              const matchesStatus =
+                filterStatus === 'ALL' ||
+                (filterStatus === 'SOLVED' && investigation.status === 'Terminée') ||
+                (filterStatus === 'UNSOLVED' && investigation.status !== 'Terminée');
+              return matchesDifficulty && matchesStatus;
+            })
+          : [];
+
+        if (!loading && Array.isArray(investigations) && investigations.length > 0 && filteredInvestigations.length === 0) {
+          return (
+            <div className="investigations-empty">
+              Aucune enquête ne correspond aux filtres sélectionnés.
+            </div>
+          );
+        }
+
+        return (
+          <div className="investigations-grid">
+            {filteredInvestigations.map((investigation) => {
           let backgroundClass = '';
           if (investigation.id === 1) backgroundClass = 'investigation-museum';
           else if (investigation.id === 2) backgroundClass = 'investigation-corporate';
@@ -227,7 +318,9 @@ const Investigations: React.FC = () => {
             </div>
           );
         })}
-      </div>
+          </div>
+        );
+      })()}
 
       <div className="investigations-actions">
         <button className="primary-button" onClick={() => navigate('/')}>
