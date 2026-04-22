@@ -86,7 +86,7 @@ describe('WatsonChatbox', () => {
     setAuthenticated();
     render(<WatsonChatbox />);
 
-    expect(screen.getByRole('button', { name: /ouvrir watson/i })).toBeInTheDocument();
+    expect(await screen.findByRole('button', { name: /ouvrir watson/i })).toBeInTheDocument();
   });
 
   it('opens the panel and focuses the textarea on toggle', async () => {
