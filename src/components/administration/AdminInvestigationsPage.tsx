@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { useToast } from '../../hooks/useToast';
+import { useConfirm } from '../../hooks/useConfirm';
 import './AdminInvestigationsPage.scss';
 
 interface Investigation {
@@ -17,8 +19,11 @@ interface Investigation {
 const AdminInvestigationsPage: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const toast = useToast();
+  const confirm = useConfirm();
   const [investigations, setInvestigations] = useState<Investigation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
@@ -35,6 +40,7 @@ const AdminInvestigationsPage: React.FC = () => {
 
     const loadInvestigations = async () => {
       setLoading(true);
+      setLoadError(null);
       try {
         setInvestigations([
           {
@@ -101,6 +107,7 @@ const AdminInvestigationsPage: React.FC = () => {
         setLoading(false);
       } catch (error) {
         console.error('Erreur lors du chargement des enquêtes:', error);
+        setLoadError('Impossible de charger les enquêtes. Veuillez réessayer.');
         setLoading(false);
       }
     };
@@ -111,25 +118,31 @@ const AdminInvestigationsPage: React.FC = () => {
   const handleToggleActive = async (investigationId: number) => {
     try {
       // TODO: Appel API pour activer/désactiver
-      setInvestigations(investigations.map(inv => 
+      setInvestigations(investigations.map(inv =>
         inv.id === investigationId ? { ...inv, isActive: !inv.isActive } : inv
       ));
     } catch (error) {
       console.error('Erreur lors de la modification:', error);
+      toast.error('Erreur lors de la modification du statut de l\'enquête');
     }
   };
 
   const handleDeleteInvestigation = async (investigationId: number) => {
-    if (!window.confirm('Êtes-vous sûr de vouloir supprimer cette enquête ?')) {
-      return;
-    }
+    const confirmed = await confirm({
+      title: 'Supprimer cette enquête ?',
+      message: 'Cette action est irréversible.',
+      confirmLabel: 'Supprimer',
+      danger: true,
+    });
+    if (!confirmed) return;
+
     try {
       // TODO: Appel API pour supprimer
       setInvestigations(investigations.filter(inv => inv.id !== investigationId));
-      alert('Enquête supprimée avec succès');
+      toast.success('Enquête supprimée avec succès');
     } catch (error) {
       console.error('Erreur lors de la suppression:', error);
-      alert('Erreur lors de la suppression de l\'enquête');
+      toast.error('Erreur lors de la suppression de l\'enquête');
     }
   };
 
@@ -147,10 +160,10 @@ const AdminInvestigationsPage: React.FC = () => {
       setInvestigations([...investigations, newInvestigation]);
       setShowCreateForm(false);
       setFormData({ title: '', description: '', difficulty: 'Facile', databaseId: '' });
-      alert('Enquête créée avec succès');
+      toast.success('Enquête créée avec succès');
     } catch (error) {
       console.error('Erreur lors de la création:', error);
-      alert('Erreur lors de la création de l\'enquête');
+      toast.error('Erreur lors de la création de l\'enquête');
     }
   };
 
@@ -165,6 +178,15 @@ const AdminInvestigationsPage: React.FC = () => {
 
   if (loading) {
     return <div className="admin-loading">Chargement...</div>;
+  }
+
+  if (loadError) {
+    return (
+      <div className="admin-error">
+        <p>{loadError}</p>
+        <button onClick={() => window.location.reload()}>Réessayer</button>
+      </div>
+    );
   }
 
   return (

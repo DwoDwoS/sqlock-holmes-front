@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { submitSolution } from '../services/investigationService';
 import { useLeaderboardRefresh } from '../contexts/LeaderboardRefreshContext';
+import { useToast } from './useToast';
 
 export interface SolutionResult {
   success: boolean;
@@ -11,6 +12,7 @@ export interface SolutionResult {
 export const useInvestigationSubmission = (investigationId: string | undefined) => {
   const navigate = useNavigate();
   const { triggerRefresh } = useLeaderboardRefresh();
+  const toast = useToast();
   const [culprit, setCulprit] = useState('');
   const [motive, setMotive] = useState('');
   const [showSubmitModal, setShowSubmitModal] = useState(false);
@@ -55,7 +57,7 @@ export const useInvestigationSubmission = (investigationId: string | undefined) 
 
     const submissionData = getSubmissionData(sqlCode);
     if (!submissionData) {
-      alert('Veuillez remplir soit les champs simples, soit un SQL valide avec culprit et motive.');
+      toast.warning('Veuillez remplir soit les champs simples, soit un SQL valide avec culprit et motive.');
       return;
     }
 

@@ -13,6 +13,7 @@ const LeaderboardModal: React.FC<LeaderboardModalProps> = ({ isOpen, onClose }) 
   const [viewMode, setViewMode] = useState<'global' | 'personal'>('global');
   const [selectedInvestigation, setSelectedInvestigation] = useState<number | null>(null);
   const [investigations, setInvestigations] = useState<{id: number, title: string}[]>([]);
+  const [investigationsError, setInvestigationsError] = useState<string | null>(null);
   const [showScoringInfo, setShowScoringInfo] = useState(false);
   const hasInitializedRef = useRef(false);
   
@@ -24,17 +25,19 @@ const LeaderboardModal: React.FC<LeaderboardModalProps> = ({ isOpen, onClose }) 
   useEffect(() => {
     const loadInvestigations = async () => {
       try {
+        setInvestigationsError(null);
         const response = await api.get('/investigations');
         interface InvestigationData { id: number; title: string; }
         const invs = response.data.map((inv: InvestigationData) => ({ id: inv.id, title: inv.title }));
         setInvestigations(invs);
-        
+
         if (invs.length > 0 && !hasInitializedRef.current) {
           setSelectedInvestigation(invs[0].id);
           hasInitializedRef.current = true;
         }
       } catch (error) {
         console.error('Erreur lors du chargement des enquêtes:', error);
+        setInvestigationsError('Impossible de charger la liste des enquêtes.');
       }
     };
 
@@ -73,6 +76,10 @@ const LeaderboardModal: React.FC<LeaderboardModalProps> = ({ isOpen, onClose }) 
               </button>
             </div>
             
+            {viewMode === 'personal' && investigationsError && (
+              <p className="leaderboard-investigations-error">{investigationsError}</p>
+            )}
+
             {viewMode === 'personal' && investigations.length > 0 && (
               <div className="leaderboard-select-wrapper">
                 <select

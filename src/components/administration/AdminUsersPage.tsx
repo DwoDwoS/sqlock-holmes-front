@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { useToast } from '../../hooks/useToast';
+import { useConfirm } from '../../hooks/useConfirm';
 import { adminService } from '../../services/adminService';
 import type { AdminUserDTO } from '../../types/admin';
 import './AdminUsersPage.scss';
@@ -8,6 +10,8 @@ import './AdminUsersPage.scss';
 const AdminUsersPage: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const toast = useToast();
+  const confirm = useConfirm();
   const [users, setUsers] = useState<AdminUserDTO[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -40,16 +44,21 @@ const AdminUsersPage: React.FC = () => {
   }, [user, navigate]);
 
   const handleDeleteUser = async (userId: string) => {
-    if (!window.confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
-      return;
-    }
+    const confirmed = await confirm({
+      title: 'Supprimer cet utilisateur ?',
+      message: 'Cette action est irréversible.',
+      confirmLabel: 'Supprimer',
+      danger: true,
+    });
+    if (!confirmed) return;
+
     try {
       await adminService.deleteUser(userId);
       setUsers(users.filter(u => u.id !== userId));
-      alert('Utilisateur supprimé avec succès');
+      toast.success('Utilisateur supprimé avec succès');
     } catch (error) {
       console.error('Erreur lors de la suppression:', error);
-      alert('Erreur lors de la suppression de l\'utilisateur');
+      toast.error('Erreur lors de la suppression de l\'utilisateur');
     }
   };
 
@@ -57,10 +66,10 @@ const AdminUsersPage: React.FC = () => {
     try {
       const updatedUser = await adminService.updateUserRole(userId, newRole);
       setUsers(users.map(u => u.id === userId ? updatedUser : u));
-      alert('Rôle modifié avec succès');
+      toast.success('Rôle modifié avec succès');
     } catch (error) {
       console.error('Erreur lors de la modification du rôle:', error);
-      alert('Erreur lors de la modification du rôle');
+      toast.error('Erreur lors de la modification du rôle');
     }
   };
 
@@ -70,7 +79,7 @@ const AdminUsersPage: React.FC = () => {
       setUsers(users.map(u => u.id === userId ? updatedUser : u));
     } catch (error) {
       console.error('Erreur lors de la modification du statut:', error);
-      alert('Erreur lors de la modification du statut de l\'utilisateur');
+      toast.error('Erreur lors de la modification du statut de l\'utilisateur');
     }
   };
 

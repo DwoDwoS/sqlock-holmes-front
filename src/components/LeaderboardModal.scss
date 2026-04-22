@@ -440,3 +440,13 @@
     border-color: rgba(255, 255, 255, 0.2);
   }
 }
+
+.leaderboard-investigations-error {
+  margin: 0.5rem 0 0;
+  padding: 0.5rem 0.75rem;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: v.$radius-sm;
+  color: v.$color-danger-text;
+  font-size: 0.85rem;
+}

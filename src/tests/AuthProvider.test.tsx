@@ -140,7 +140,7 @@ describe('AuthProvider', () => {
   });
 
   describe('Logout functionality', () => {
-    it('should clear token and user data on logout', () => {
+    it('should clear token and user data on logout', async () => {
       localStorage.setItem('token', 'some-token');
       localStorage.setItem('user', JSON.stringify({ id: 1, username: 'user' }));
 
@@ -156,7 +156,9 @@ describe('AuthProvider', () => {
 
       renderWithAuthProvider(<TestComponent />);
 
-      expect(mockLogout).toHaveBeenCalled();
+      await waitFor(() => {
+        expect(mockLogout).toHaveBeenCalled();
+      });
     });
   });
 });

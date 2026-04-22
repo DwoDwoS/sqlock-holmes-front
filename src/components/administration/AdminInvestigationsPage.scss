@@ -268,3 +268,22 @@
 .admin-loading {
   @include m.admin-state-center;
 }
+
+.admin-error {
+  @include m.admin-state-center;
+  flex-direction: column;
+  color: v.$color-danger;
+  gap: v.$spacing-md;
+
+  button {
+    padding: 0.75rem 1.5rem;
+    background-color: v.$color-primary;
+    color: v.$color-white;
+    border: none;
+    border-radius: v.$radius-md;
+    cursor: pointer;
+    transition: all v.$transition-base;
+
+    &:hover { background-color: #535bf2; }
+  }
+}

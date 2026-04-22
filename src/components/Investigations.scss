@@ -353,8 +353,16 @@
   }
 }
 
-.investigation-museum {
-  background-image: url('/museum-heist.webp');
+$investigation-backgrounds: (
+  'museum': '/museum-heist.webp',
+  'corporate': '/corporate-fraud.webp',
+  'manor': '/manor-murder.webp',
+  'restaurant': '/poison-restaurant.webp',
+  'dataleak': '/data-leak.webp',
+  'train': '/train-mystery.webp',
+);
+
+%investigation-background-card {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -366,69 +374,11 @@
   .badge-resolved { background-color: #28a745; color: white; }
 }
 
-.investigation-corporate {
-  background-image: url('/corporate-fraud.webp');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  color: white;
-
-  .investigation-header h2 { color: white; text-shadow: none; }
-  .investigation-description { background: #f8f5ee; }
-  .badge { background-color: rgba(255, 255, 255, 0.9); color: #2c3e50; text-shadow: none; }
-  .badge-resolved { background-color: #28a745; color: white; }
-}
-
-.investigation-manor {
-  background-image: url('/manor-murder.webp');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  color: white;
-
-  .investigation-header h2 { color: white; text-shadow: none; }
-  .investigation-description { background: #f8f5ee; }
-  .badge { background-color: rgba(255, 255, 255, 0.9); color: #2c3e50; text-shadow: none; }
-  .badge-resolved { background-color: #28a745; color: white; }
-}
-
-.investigation-restaurant {
-  background-image: url('/poison-restaurant.webp');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  color: white;
-
-  .investigation-header h2 { color: white; text-shadow: none; }
-  .investigation-description { background: #f8f5ee; }
-  .badge { background-color: rgba(255, 255, 255, 0.9); color: #2c3e50; text-shadow: none; }
-  .badge-resolved { background-color: #28a745; color: white; }
-}
-
-.investigation-dataleak {
-  background-image: url('/data-leak.webp');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  color: white;
-
-  .investigation-header h2 { color: white; text-shadow: none; }
-  .investigation-description { background: #f8f5ee; }
-  .badge { background-color: rgba(255, 255, 255, 0.9); color: #2c3e50; text-shadow: none; }
-  .badge-resolved { background-color: #28a745; color: white; }
-}
-
-.investigation-train {
-  background-image: url('/train-mystery.webp');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  color: white;
-
-  .investigation-header h2 { color: white; text-shadow: none; }
-  .investigation-description { background: #f8f5ee; }
-  .badge { background-color: rgba(255, 255, 255, 0.9); color: #2c3e50; text-shadow: none; }
-  .badge-resolved { background-color: #28a745; color: white; }
+@each $name, $url in $investigation-backgrounds {
+  .investigation-#{$name} {
+    @extend %investigation-background-card;
+    background-image: url($url);
+  }
 }
 
 .investigation-header {
