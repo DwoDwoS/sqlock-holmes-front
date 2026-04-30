@@ -55,6 +55,33 @@ export const getMockInvestigationData = (id: number): Investigation => {
       status: 'En cours' as const,
       databaseId: 'train_db',
       image: '/train-mystery.webp'
+    },
+    7: {
+      id: 7,
+      title: 'Le Kidnapping du Chien Star',
+      description: 'Bella, championne de l\'exposition canine nationale, a disparu la veille du grand concours. Son propriétaire est effondré. Jalousie entre concurrents, réputation en jeu, messages haineux sur les forums… Qui a enlevé Bella ?',
+      difficulty: 'Facile' as const,
+      status: 'En cours' as const,
+      databaseId: 'dog_db',
+      image: '/dog-kidnapping.webp'
+    },
+    8: {
+      id: 8,
+      title: 'L\'Arnaque aux Cryptomonnaies',
+      description: 'La plateforme CryptoNova s\'est effondrée du jour au lendemain, emportant les économies de 400 investisseurs. Fausse identité, schéma de Ponzi, fuite à l\'étranger… Retrouvez le cerveau de l\'arnaque avant qu\'il disparaisse.',
+      difficulty: 'Facile' as const,
+      status: 'En cours' as const,
+      databaseId: 'crypto_db',
+      image: '/crypto-scam.webp'
+    },
+    9: {
+      id: 9,
+      title: 'Le Vandalisme à l\'École',
+      description: 'Le lycée Voltaire a été saccagé la nuit suivant le conseil de discipline. Des tags, du mobilier détruit, un trophée brisé. Vengeance d\'un élève renvoyé pour tricherie ? Les badges, caméras et réseaux sociaux ne mentent pas.',
+      difficulty: 'Facile' as const,
+      status: 'En cours' as const,
+      databaseId: 'school_db',
+      image: '/school-vandalism.webp'
     }
   };
 
@@ -76,6 +103,9 @@ export const getDefaultQuery = (investigationId: number): string => {
     4: 'SELECT * FROM restaurant_staff LIMIT 5;',
     5: 'SELECT * FROM medsecure_employees LIMIT 5;',
     6: 'SELECT * FROM train_passengers LIMIT 5;',
+    7: 'SELECT * FROM dog_show_participants LIMIT 5;',
+    8: 'SELECT * FROM platform_employees LIMIT 5;',
+    9: 'SELECT * FROM school_badge_access LIMIT 5;',
   };
   return queries[investigationId] || 'SELECT \'Utilisez les indices pour découvrir les tables disponibles\' as hint;';
 };
@@ -111,6 +141,21 @@ export const getMockHints = (investigationId: number): Hint[] => {
       { id: 1, content: 'Analysez qui est sorti de son compartiment entre 2h et 4h du matin.' },
       { id: 2, content: 'Comment un passager peut-il émettre un signal téléphonique hors du trajet du train ?' },
       { id: 3, content: 'Ce n\'est peut-être pas un vol ni un meurtre. Regardez les assurances et l\'historique de navigation.' }
+    ],
+    7: [
+      { id: 1, content: 'Consultez la liste des participants : qui avait le plus à perdre face à Bella ?' },
+      { id: 2, content: 'Les caméras de sécurité couvrent les entrées et les couloirs. Cherchez des présences inhabituelles la nuit du kidnapping.' },
+      { id: 3, content: 'Les messages du forum révèlent des tensions. Cherchez des mentions de jalousie professionnelle et de réputation perdue.' }
+    ],
+    8: [
+      { id: 1, content: 'Commencez par les logs d\'administration : qui avait accès aux fonds clients ?' },
+      { id: 2, content: 'Croisez les transactions avec les réservations de vols : quelqu\'un a fui juste avant l\'effondrement.' },
+      { id: 3, content: 'Les documents d\'identité contiennent un indice clé : comparez les noms et les photos.' }
+    ],
+    9: [
+      { id: 1, content: 'Les badges d\'accès enregistrent toutes les entrées et sorties, même la nuit.' },
+      { id: 2, content: 'Les caméras du parking ont filmé les véhicules présents cette nuit-là.' },
+      { id: 3, content: 'Le dossier disciplinaire révèle qui a été renvoyé pour tricherie peu avant les faits.' }
     ]
   };
   return mockHints[investigationId] || [{ id: 1, content: 'Indices non disponibles pour cette enquête.' }];

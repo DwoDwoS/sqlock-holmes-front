@@ -179,4 +179,187 @@ export const SCHEMAS: Record<number, InvestigationSchema> = {
       },
     ],
   },
+
+  7: {
+    label: 'Le Kidnapping du Chien Star',
+    tables: [
+      {
+        name: 'dog_show_participants', color: 'cyan',
+        columns: [
+          { name: 'id',                  type: 'INTEGER', description: 'Identifiant unique'   },
+          { name: 'owner_name',          type: 'TEXT',    description: 'Nom du propriétaire'  },
+          { name: 'dog_name',            type: 'TEXT',    description: 'Nom du chien'         },
+          { name: 'breed',               type: 'TEXT',    description: 'Race'                 },
+          { name: 'registration_number', type: 'TEXT',    description: "Numéro d'inscription" },
+          { name: 'arrival_time',        type: 'TEXT',    description: "Heure d'arrivée"      },
+        ],
+      },
+      {
+        name: 'security_footage', color: 'blue',
+        columns: [
+          { name: 'id',              type: 'INTEGER', description: 'Identifiant'               },
+          { name: 'timestamp',       type: 'TEXT',    description: 'Horodatage'                },
+          { name: 'camera_location', type: 'TEXT',    description: 'Emplacement de la caméra'  },
+          { name: 'person_seen',     type: 'TEXT',    description: 'Personne filmée'           },
+          { name: 'activity',        type: 'TEXT',    description: 'Activité observée'         },
+        ],
+      },
+      {
+        name: 'competition_history', color: 'emerald',
+        columns: [
+          { name: 'id',               type: 'INTEGER', description: 'Identifiant'         },
+          { name: 'owner_name',       type: 'TEXT',    description: 'Nom du propriétaire' },
+          { name: 'dog_name',         type: 'TEXT',    description: 'Nom du chien'        },
+          { name: 'competition_name', type: 'TEXT',    description: 'Nom du concours'     },
+          { name: 'year',             type: 'INTEGER', description: 'Année'               },
+          { name: 'rank',             type: 'INTEGER', description: 'Classement obtenu'   },
+          { name: 'prize',            type: 'TEXT',    description: 'Prix remporté'       },
+        ],
+      },
+      {
+        name: 'forum_messages', color: 'purple',
+        columns: [
+          { name: 'id',             type: 'INTEGER', description: 'Identifiant'         },
+          { name: 'author',         type: 'TEXT',    description: 'Auteur du message'   },
+          { name: 'post_date',      type: 'TEXT',    description: 'Date de publication' },
+          { name: 'thread_subject', type: 'TEXT',    description: 'Sujet du fil'        },
+          { name: 'content',        type: 'TEXT',    description: 'Contenu du message'  },
+        ],
+      },
+      {
+        name: 'phone_records', color: 'amber',
+        columns: [
+          { name: 'id',           type: 'INTEGER', description: 'Identifiant'        },
+          { name: 'caller_name',  type: 'TEXT',    description: "Nom de l'appelant"  },
+          { name: 'call_date',    type: 'TEXT',    description: "Date de l'appel"    },
+          { name: 'call_time',    type: 'TEXT',    description: "Heure de l'appel"   },
+          { name: 'duration_sec', type: 'INTEGER', description: 'Durée (secondes)'   },
+          { name: 'recipient',    type: 'TEXT',    description: 'Destinataire'       },
+          { name: 'location',     type: 'TEXT',    description: 'Localisation'       },
+        ],
+      },
+    ],
+  },
+
+  8: {
+    label: "L'Arnaque aux Cryptomonnaies",
+    tables: [
+      {
+        name: 'platform_employees', color: 'cyan',
+        columns: [
+          { name: 'id',           type: 'INTEGER', description: 'Identifiant unique' },
+          { name: 'name',         type: 'TEXT',    description: "Nom de l'employé"   },
+          { name: 'role',         type: 'TEXT',    description: 'Rôle'               },
+          { name: 'department',   type: 'TEXT',    description: 'Département'        },
+          { name: 'hire_date',    type: 'TEXT',    description: "Date d'embauche"    },
+          { name: 'access_level', type: 'TEXT',    description: "Niveau d'accès"     },
+        ],
+      },
+      {
+        name: 'crypto_transactions', color: 'amber',
+        columns: [
+          { name: 'id',                type: 'INTEGER', description: 'Identifiant'            },
+          { name: 'sender_id',         type: 'INTEGER', description: "ID de l'expéditeur"     },
+          { name: 'recipient_address', type: 'TEXT',    description: 'Adresse destinataire'   },
+          { name: 'amount_eur',        type: 'REAL',    description: 'Montant (€)'            },
+          { name: 'transaction_date',  type: 'TEXT',    description: 'Date de la transaction' },
+          { name: 'transaction_type',  type: 'TEXT',    description: 'Type de transaction'    },
+          { name: 'status',            type: 'TEXT',    description: 'Statut'                 },
+        ],
+      },
+      {
+        name: 'admin_access_logs', color: 'red',
+        columns: [
+          { name: 'id',          type: 'INTEGER', description: 'Identifiant'      },
+          { name: 'employee_id', type: 'INTEGER', description: "ID de l'employé"  },
+          { name: 'access_date', type: 'TEXT',    description: "Date d'accès"     },
+          { name: 'access_time', type: 'TEXT',    description: "Heure d'accès"    },
+          { name: 'action',      type: 'TEXT',    description: 'Action effectuée' },
+          { name: 'ip_address',  type: 'TEXT',    description: 'Adresse IP'       },
+        ],
+      },
+      {
+        name: 'flight_bookings', color: 'blue',
+        columns: [
+          { name: 'id',             type: 'INTEGER', description: 'Identifiant'         },
+          { name: 'passenger_name', type: 'TEXT',    description: 'Nom du passager'     },
+          { name: 'flight_number',  type: 'TEXT',    description: 'Numéro de vol'       },
+          { name: 'departure_date', type: 'TEXT',    description: 'Date de départ'      },
+          { name: 'destination',    type: 'TEXT',    description: 'Destination'         },
+          { name: 'booking_date',   type: 'TEXT',    description: 'Date de réservation' },
+        ],
+      },
+      {
+        name: 'identity_documents', color: 'emerald',
+        columns: [
+          { name: 'id',              type: 'INTEGER', description: 'Identifiant'        },
+          { name: 'document_type',   type: 'TEXT',    description: 'Type de document'   },
+          { name: 'holder_name',     type: 'TEXT',    description: 'Nom du titulaire'   },
+          { name: 'document_number', type: 'TEXT',    description: 'Numéro du document' },
+          { name: 'issue_date',      type: 'TEXT',    description: "Date d'émission"    },
+          { name: 'country',         type: 'TEXT',    description: 'Pays émetteur'      },
+        ],
+      },
+    ],
+  },
+
+  9: {
+    label: "Le Vandalisme à l'École",
+    tables: [
+      {
+        name: 'school_badge_access', color: 'cyan',
+        columns: [
+          { name: 'id',          type: 'INTEGER', description: 'Identifiant unique'    },
+          { name: 'badge_id',    type: 'TEXT',    description: 'Identifiant du badge'  },
+          { name: 'holder_name', type: 'TEXT',    description: 'Nom du porteur'        },
+          { name: 'access_time', type: 'TEXT',    description: "Heure d'accès"         },
+          { name: 'location',    type: 'TEXT',    description: 'Zone accédée'          },
+          { name: 'access_type', type: 'TEXT',    description: "Type d'accès"          },
+        ],
+      },
+      {
+        name: 'school_cameras', color: 'blue',
+        columns: [
+          { name: 'id',              type: 'INTEGER', description: 'Identifiant'               },
+          { name: 'camera_location', type: 'TEXT',    description: 'Emplacement de la caméra'  },
+          { name: 'timestamp',       type: 'TEXT',    description: 'Horodatage'                },
+          { name: 'person_detected', type: 'TEXT',    description: 'Personne détectée'         },
+          { name: 'activity',        type: 'TEXT',    description: 'Activité observée'         },
+        ],
+      },
+      {
+        name: 'school_disciplinary', color: 'red',
+        columns: [
+          { name: 'id',            type: 'INTEGER', description: 'Identifiant'           },
+          { name: 'student_name',  type: 'TEXT',    description: "Nom de l'élève"        },
+          { name: 'incident_date', type: 'TEXT',    description: "Date de l'incident"    },
+          { name: 'incident_type', type: 'TEXT',    description: "Type d'incident"       },
+          { name: 'decision',      type: 'TEXT',    description: 'Décision du conseil'   },
+          { name: 'teacher_name',  type: 'TEXT',    description: 'Enseignant rapporteur' },
+        ],
+      },
+      {
+        name: 'school_parking', color: 'emerald',
+        columns: [
+          { name: 'id',            type: 'INTEGER', description: 'Identifiant'              },
+          { name: 'vehicle_plate', type: 'TEXT',    description: "Plaque d'immatriculation" },
+          { name: 'owner_name',    type: 'TEXT',    description: 'Nom du propriétaire'      },
+          { name: 'entry_time',    type: 'TEXT',    description: "Heure d'entrée"           },
+          { name: 'exit_time',     type: 'TEXT',    description: 'Heure de sortie'          },
+          { name: 'parking_zone',  type: 'TEXT',    description: 'Zone de stationnement'    },
+        ],
+      },
+      {
+        name: 'school_social_media', color: 'purple',
+        columns: [
+          { name: 'id',        type: 'INTEGER', description: 'Identifiant'         },
+          { name: 'username',  type: 'TEXT',    description: "Nom d'utilisateur"   },
+          { name: 'post_date', type: 'TEXT',    description: 'Date de publication' },
+          { name: 'platform',  type: 'TEXT',    description: 'Plateforme'          },
+          { name: 'content',   type: 'TEXT',    description: 'Contenu du post'     },
+          { name: 'reactions', type: 'INTEGER', description: 'Nombre de réactions' },
+        ],
+      },
+    ],
+  },
 };
