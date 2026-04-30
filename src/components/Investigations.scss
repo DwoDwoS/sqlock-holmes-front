@@ -360,6 +360,9 @@ $investigation-backgrounds: (
   'restaurant': '/poison-restaurant.webp',
   'dataleak': '/data-leak.webp',
   'train': '/train-mystery.webp',
+  'dog': '/dog-kidnapping.webp',
+  'crypto': '/crypto-scam.webp',
+  'school': '/school-vandalism.webp',
 );
 
 %investigation-background-card {
@@ -392,6 +395,8 @@ $investigation-backgrounds: (
     color: #2c3e50;
     margin: 0;
     flex: 1;
+    min-width: 0;
+    overflow-wrap: break-word;
   }
 
   @include m.mobile {

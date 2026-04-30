@@ -103,6 +103,36 @@ const AdminInvestigationsPage: React.FC = () => {
             createdAt: '2024-03-01',
             completions: 0
           },
+          {
+            id: 7,
+            title: 'Le Kidnapping du Chien Star',
+            description: 'Bella, championne de l\'exposition canine, a disparu la veille du grand concours.',
+            difficulty: 'Facile',
+            databaseId: 'dog_db',
+            isActive: true,
+            createdAt: '2024-04-01',
+            completions: 0
+          },
+          {
+            id: 8,
+            title: 'L\'Arnaque aux Cryptomonnaies',
+            description: 'La plateforme CryptoNova s\'est effondrée, emportant les économies de 400 investisseurs.',
+            difficulty: 'Facile',
+            databaseId: 'crypto_db',
+            isActive: true,
+            createdAt: '2024-04-01',
+            completions: 0
+          },
+          {
+            id: 9,
+            title: 'Le Vandalisme à l\'École',
+            description: 'Le lycée Voltaire a été saccagé la nuit suivant le conseil de discipline.',
+            difficulty: 'Facile',
+            databaseId: 'school_db',
+            isActive: true,
+            createdAt: '2024-04-01',
+            completions: 0
+          },
         ]);
         setLoading(false);
       } catch (error) {
