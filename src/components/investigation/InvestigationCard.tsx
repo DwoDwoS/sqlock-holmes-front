@@ -10,6 +10,9 @@ const BACKGROUND_CLASS_BY_ID: Record<number, string> = {
   4: 'investigation-restaurant',
   5: 'investigation-dataleak',
   6: 'investigation-train',
+  7: 'investigation-dog',
+  8: 'investigation-crypto',
+  9: 'investigation-school',
 };
 
 interface InvestigationCardProps {
