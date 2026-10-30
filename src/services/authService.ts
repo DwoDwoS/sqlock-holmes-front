@@ -26,13 +26,20 @@ export interface UpdateUserRequest {
 }
 
 export interface RegisterResponse {
-  id?: string;
-  username?: string;
-  email?: string;
-  role?: 'USER' | 'ADMIN';
-  token?: string;
   message?: string;
 }
+
+const extractRegisterErrorMessage = (data: unknown): string | undefined => {
+  if (!data || typeof data !== 'object') return undefined;
+  const record = data as Record<string, unknown>;
+  const direct = [record.message, record.error].find(
+    (value): value is string => typeof value === 'string' && value.length > 0
+  );
+  if (direct) return direct;
+  return Object.values(record).find(
+    (value): value is string => typeof value === 'string' && value.length > 0
+  );
+};
 
 export const authService = {
   login: async (username: string, password: string): Promise<AuthResponse> => {
@@ -42,11 +49,11 @@ export const authService = {
 
   register: async (username: string, email: string, password: string): Promise<RegisterResponse> => {
     try {
-      const response = await api.post('/users/register', { username, email, password });
+      const response = await api.post('/auth/register', { username, email, password });
       return response.data;
     } catch (error) {
-      const axiosError = error as { response?: { data?: { message?: string; error?: string } } };
-      const message = axiosError.response?.data?.message || axiosError.response?.data?.error;
+      const data = (error as { response?: { data?: unknown } }).response?.data;
+      const message = extractRegisterErrorMessage(data);
       if (message) throw new Error(message);
       throw error;
     }
