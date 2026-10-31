@@ -47,21 +47,15 @@ describe('authService', () => {
   });
 
   describe('register', () => {
-    it('should register successfully and return user data', async () => {
+    it('should register successfully and return the confirmation message', async () => {
       const mockResponse = {
-        data: {
-          id: '456',
-          username: 'newuser',
-          email: 'new@example.com',
-          role: 'USER' as const,
-          token: 'mock-token',
-        },
+        data: { message: 'Compte créé' },
       };
       (api.post as Mock).mockResolvedValue(mockResponse);
 
       const result = await authService.register('newuser', 'new@example.com', 'password');
 
-      expect(api.post).toHaveBeenCalledWith('/users/register', {
+      expect(api.post).toHaveBeenCalledWith('/auth/register', {
         username: 'newuser',
         email: 'new@example.com',
         password: 'password',
@@ -74,6 +68,22 @@ describe('authService', () => {
       (api.post as Mock).mockRejectedValue(mockError);
 
       await expect(authService.register('newuser', 'new@example.com', 'password')).rejects.toThrow('Registration failed');
+    });
+  });
+
+  describe('register error handling', () => {
+    it('should use the first field error when the backend returns { field: message }', async () => {
+      (api.post as Mock).mockRejectedValue({
+        response: { data: { email: 'Email invalide', username: 'Nom trop court' } },
+      });
+
+      await expect(authService.register('u', 'bad', 'password')).rejects.toThrow('Email invalide');
+    });
+
+    it('should prefer message over field errors', async () => {
+      (api.post as Mock).mockRejectedValue({ response: { data: { message: 'Conflit' } } });
+
+      await expect(authService.register('u', 'e@e.fr', 'password')).rejects.toThrow('Conflit');
     });
   });
 
